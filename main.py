@@ -146,12 +146,17 @@ def main():
             # 执行 torchrun 命令
             result = subprocess.run(torchrun_cmd)
             sys.exit(result.returncode)
-    elif num_gpus > 1 and args.ddp:
-        print(f"检测到 {num_gpus} 个 GPU，使用分布式训练模式")
-    elif num_gpus == 1:
-        print(f"检测到 1 个 GPU，使用单 GPU 训练模式：{args.device}")
-    else:
-        print(f"未检测到 GPU，使用 CPU 训练模式")
+
+    # 只在主进程打印（DDP 模式下 rank 0，或非 DDP 模式）
+    is_main_process = int(os.environ.get("RANK", 0)) == 0
+
+    if is_main_process:
+        if num_gpus > 1 and args.ddp:
+            print(f"检测到 {num_gpus} 个 GPU，使用分布式训练模式")
+        elif num_gpus == 1:
+            print(f"检测到 1 个 GPU，使用单 GPU 训练模式：{args.device}")
+        else:
+            print(f"未检测到 GPU，使用 CPU 训练模式")
 
     if args.mode == "pretrain":
         # 构建预训练参数列表
