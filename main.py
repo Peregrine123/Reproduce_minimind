@@ -92,10 +92,16 @@ def main():
         sys.argv = pretrain_args
 
         # 使用 exec 直接执行训练脚本
-        with open('triainer/train_pretrian.py', 'r', encoding='utf-8') as f:
+        script_path = 'triainer/train_pretrian.py'
+        with open(script_path, 'r', encoding='utf-8') as f:
             code = f.read()
+            # 创建执行环境，包含 __file__ 变量
+            exec_globals = {
+                '__file__': os.path.abspath(script_path),
+                '__name__': '__main__',
+            }
             # 移除 if __name__ == "__main__" 检查，直接执行
-            exec(code.replace('if __name__ == "__main__":', 'if True:'))
+            exec(code.replace('if __name__ == "__main__":', 'if True:'), exec_globals)
 
     elif args.mode == "sft":
         # 构建SFT参数列表
