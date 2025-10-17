@@ -3,30 +3,23 @@
 """
 MiniMind项目主入口文件
 提供预训练和SFT训练的统一入口
+针对 Kaggle/Jupyter 环境优化
 """
 
 import argparse
 import os
 import sys
 
-# 添加项目根目录到Python路径
-# 兼容Jupyter环境，其中__file__可能未定义
-try:
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-except NameError:
-    # 在Jupyter环境中，使用当前工作目录
-    current_dir = os.getcwd()
-sys.path.append(current_dir)
 
 def main():
     parser = argparse.ArgumentParser(description="MiniMind 训练脚本")
     parser.add_argument(
-        "--mode", 
-        choices=["pretrain", "sft"], 
+        "--mode",
+        choices=["pretrain", "sft"],
         default="pretrain",
         help="训练模式: pretrain(预训练) 或 sft(监督微调)，默认为pretrain"
     )
-    
+
     # 通用参数
     parser.add_argument("--out_dir", type=str, default="./out", help="输出目录")
     parser.add_argument("--epochs", type=int, default=2, help="训练轮数")
@@ -48,22 +41,22 @@ def main():
     parser.add_argument("--num_hidden_layers", default=8, type=int, help="隐藏层层数")
     parser.add_argument("--max_seq_len", default=512, type=int, help="最大序列长度")
     parser.add_argument("--use_moe", default=False, type=bool, help="是否使用混合专家模型")
-    
+
     # 预训练特定参数
     parser.add_argument("--pretrain_data_path", type=str, default="./dataset/pretrain_hq.jsonl", help="预训练数据路径")
-    
+
     # SFT特定参数
     parser.add_argument("--sft_data_path", type=str, default="./dataset/sft_data.jsonl", help="SFT训练数据路径")
-    
+
     # 解析参数，忽略Jupyter/Colab环境自动添加的参数
     args, unknown_args = parser.parse_known_args()
-    
+
     # 如果有未知参数且是Jupyter/Colab相关的，忽略它们
     # 通常Jupyter/Colab会传递-f参数和JSON文件路径
     if unknown_args and any(arg.startswith('-f') or arg.endswith('.json') for arg in unknown_args):
         # 忽略这些参数，不进行任何处理
         pass
-    
+
     if args.mode == "pretrain":
         # 构建预训练参数列表
         pretrain_args = [
@@ -87,19 +80,23 @@ def main():
             f"--use_moe={args.use_moe}",
             f"--data_path={args.pretrain_data_path}"
         ]
-        
+
         if args.use_wandb:
             pretrain_args.append("--use_wandb")
             pretrain_args.append(f"--wandb_project={args.wandb_project}-Pretrain")
-        
+
         if args.ddp:
             pretrain_args.append("--ddp")
-            
-        # 修改sys.argv以传递参数
+
+        # 修改sys.argv以传递参数并直接执行训练脚本
         sys.argv = pretrain_args
-        from triainer.train_pretrian import main as pretrain_main
-        pretrain_main()
-        
+
+        # 使用 exec 直接执行训练脚本
+        with open('triainer/train_pretrian.py', 'r', encoding='utf-8') as f:
+            code = f.read()
+            # 移除 if __name__ == "__main__" 检查，直接执行
+            exec(code.replace('if __name__ == "__main__":', 'if True:'))
+
     elif args.mode == "sft":
         # 构建SFT参数列表
         sft_args = [
@@ -123,18 +120,19 @@ def main():
             f"--use_moe={args.use_moe}",
             f"--data_path={args.sft_data_path}"
         ]
-        
+
         if args.use_wandb:
             sft_args.append("--use_wandb")
             sft_args.append(f"--wandb_project={args.wandb_project}-SFT")
-        
+
         if args.ddp:
             sft_args.append("--ddp")
-            
+
         # 修改sys.argv以传递参数
         sys.argv = sft_args
         from triainer.train_full_sft import main as sft_main
         sft_main()
+
 
 if __name__ == "__main__":
     main()
