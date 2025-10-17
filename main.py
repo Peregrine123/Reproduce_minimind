@@ -10,7 +10,13 @@ import os
 import sys
 
 # 添加项目根目录到Python路径
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# 兼容Jupyter环境，其中__file__可能未定义
+try:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+except NameError:
+    # 在Jupyter环境中，使用当前工作目录
+    current_dir = os.getcwd()
+sys.path.append(current_dir)
 
 def main():
     parser = argparse.ArgumentParser(description="MiniMind 训练脚本")
