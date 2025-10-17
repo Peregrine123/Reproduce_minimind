@@ -9,10 +9,20 @@ MiniMind项目主入口文件
 
 import argparse
 import os
+import socket
 import subprocess
 import sys
 
 import torch
+
+
+def find_free_port():
+    """查找一个可用的端口"""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))
+        s.listen(1)
+        port = s.getsockname()[1]
+    return port
 
 
 def main():
@@ -62,51 +72,80 @@ def main():
         # 忽略这些参数，不进行任何处理
         pass
 
+    # 检测是否在 Jupyter/IPython 环境中
+    def is_jupyter_environment():
+        """检测是否在 Jupyter/IPython 环境中"""
+        try:
+            # 检查是否有 get_ipython 函数
+            get_ipython()
+            return True
+        except NameError:
+            return False
+        except:
+            # 检查 __file__ 是否存在
+            return '__file__' not in globals()
+
+    in_jupyter = is_jupyter_environment()
+
     # 自动检测多GPU并启用分布式训练
     num_gpus = torch.cuda.device_count()
     if args.auto_ddp and num_gpus > 1 and not args.ddp:
-        print(f"检测到 {num_gpus} 个 GPU，自动启用分布式训练")
-        print(f"使用 torchrun 启动分布式训练...")
-
-        # 构建 torchrun 命令
-        torchrun_cmd = [
-            sys.executable, "-m", "torch.distributed.run",
-            f"--nproc_per_node={num_gpus}",
-            __file__,
-            f"--mode={args.mode}",
-            f"--out_dir={args.out_dir}",
-            f"--epochs={args.epochs}",
-            f"--batch_size={args.batch_size}",
-            f"--learning_rate={args.learning_rate}",
-            f"--device={args.device}",
-            f"--dtype={args.dtype}",
-            f"--num_workers={args.num_workers}",
-            "--ddp",  # 显式启用 DDP
-            "--no-auto_ddp",  # 防止递归调用
-            f"--accumulation_steps={args.accumulation_steps}",
-            f"--grad_clip={args.grad_clip}",
-            f"--warmup_iters={args.warmup_iters}",
-            f"--log_interval={args.log_interval}",
-            f"--save_interval={args.save_interval}",
-            f"--local_rank={args.local_rank}",
-            f"--hidden_size={args.hidden_size}",
-            f"--num_hidden_layers={args.num_hidden_layers}",
-            f"--max_seq_len={args.max_seq_len}",
-            f"--use_moe={args.use_moe}",
-        ]
-
-        if args.mode == "pretrain":
-            torchrun_cmd.append(f"--pretrain_data_path={args.pretrain_data_path}")
+        if in_jupyter:
+            # 在 Jupyter 环境中，不能使用 torchrun 自动启动多进程
+            print(f"检测到 {num_gpus} 个 GPU，但当前运行在 Jupyter 环境中")
+            print(f"Jupyter 环境不支持自动多 GPU 分布式训练")
+            print(f"将使用单 GPU 训练模式：{args.device}")
+            print(f"\n如需使用多 GPU，请在命令行环境中运行：")
+            free_port = find_free_port()
+            print(f"  torchrun --nproc_per_node={num_gpus} --master_port={free_port} main.py --mode={args.mode}")
         else:
-            torchrun_cmd.append(f"--sft_data_path={args.sft_data_path}")
+            print(f"检测到 {num_gpus} 个 GPU，自动启用分布式训练")
+            print(f"使用 torchrun 启动分布式训练...")
 
-        if args.use_wandb:
-            torchrun_cmd.append("--use_wandb")
-            torchrun_cmd.append(f"--wandb_project={args.wandb_project}")
+            # 查找可用端口
+            master_port = find_free_port()
+            print(f"使用端口: {master_port}")
 
-        # 执行 torchrun 命令
-        result = subprocess.run(torchrun_cmd)
-        sys.exit(result.returncode)
+            # 构建 torchrun 命令
+            torchrun_cmd = [
+                sys.executable, "-m", "torch.distributed.run",
+                f"--nproc_per_node={num_gpus}",
+                f"--master_port={master_port}",
+                __file__,
+                f"--mode={args.mode}",
+                f"--out_dir={args.out_dir}",
+                f"--epochs={args.epochs}",
+                f"--batch_size={args.batch_size}",
+                f"--learning_rate={args.learning_rate}",
+                f"--device={args.device}",
+                f"--dtype={args.dtype}",
+                f"--num_workers={args.num_workers}",
+                "--ddp",  # 显式启用 DDP
+                "--no-auto_ddp",  # 防止递归调用
+                f"--accumulation_steps={args.accumulation_steps}",
+                f"--grad_clip={args.grad_clip}",
+                f"--warmup_iters={args.warmup_iters}",
+                f"--log_interval={args.log_interval}",
+                f"--save_interval={args.save_interval}",
+                f"--local_rank={args.local_rank}",
+                f"--hidden_size={args.hidden_size}",
+                f"--num_hidden_layers={args.num_hidden_layers}",
+                f"--max_seq_len={args.max_seq_len}",
+                f"--use_moe={args.use_moe}",
+            ]
+
+            if args.mode == "pretrain":
+                torchrun_cmd.append(f"--pretrain_data_path={args.pretrain_data_path}")
+            else:
+                torchrun_cmd.append(f"--sft_data_path={args.sft_data_path}")
+
+            if args.use_wandb:
+                torchrun_cmd.append("--use_wandb")
+                torchrun_cmd.append(f"--wandb_project={args.wandb_project}")
+
+            # 执行 torchrun 命令
+            result = subprocess.run(torchrun_cmd)
+            sys.exit(result.returncode)
     elif num_gpus > 1 and args.ddp:
         print(f"检测到 {num_gpus} 个 GPU，使用分布式训练模式")
     elif num_gpus == 1:
