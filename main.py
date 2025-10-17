@@ -55,8 +55,14 @@ def main():
     # SFT特定参数
     parser.add_argument("--sft_data_path", type=str, default="./dataset/sft_data.jsonl", help="SFT训练数据路径")
     
-    # 解析参数
-    args = parser.parse_args()
+    # 解析参数，忽略Jupyter/Colab环境自动添加的参数
+    args, unknown_args = parser.parse_known_args()
+    
+    # 如果有未知参数且是Jupyter/Colab相关的，忽略它们
+    # 通常Jupyter/Colab会传递-f参数和JSON文件路径
+    if unknown_args and any(arg.startswith('-f') or arg.endswith('.json') for arg in unknown_args):
+        # 忽略这些参数，不进行任何处理
+        pass
     
     if args.mode == "pretrain":
         # 构建预训练参数列表
