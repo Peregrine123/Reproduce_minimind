@@ -15,9 +15,10 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 def main():
     parser = argparse.ArgumentParser(description="MiniMind 训练脚本")
     parser.add_argument(
-        "mode", 
+        "--mode", 
         choices=["pretrain", "sft"], 
-        help="训练模式: pretrain(预训练) 或 sft(监督微调)"
+        default="pretrain",
+        help="训练模式: pretrain(预训练) 或 sft(监督微调)，默认为pretrain"
     )
     
     # 通用参数
