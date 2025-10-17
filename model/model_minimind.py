@@ -315,8 +315,13 @@ class MoEFeedForward(nn.Module):
             y = torch.empty_like(x, dtype=torch.float16)
             for i, expert in enumerate(self.experts):
                 y[flat_topk_idx == i] = expert(x[flat_topk_idx == i]).to(y.dtype)
-            y = (y.view(*topk_weight.shape, -1) *
-            topk_weight.unsqueeze(-1)).sum(dim=2)
+            # y的形状: (bsz*seq_len*num_experts_per_tok, hidden_size)
+            # topk_weight的形状: (bsz*seq_len, num_experts_per_tok)
+            # 需要将y重塑为 (bsz*seq_len, num_experts_per_tok, hidden_size)
+            y = y.view(bsz*seq_len, self.config.num_experts_per_tok, -1)
+            # 加权求和
+            y = (y * topk_weight.unsqueeze(-1)).sum(dim=1)
+            # 重塑回原始形状
             y = y.view(*orig_shape)
         else:
             y = self.moe_infer(x, flat_topk_idx, topk_weight.view(-1, 1)).view(*orig_shape)
