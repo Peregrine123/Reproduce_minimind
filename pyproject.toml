@@ -1,0 +1,95 @@
+[project]
+name = "minimind"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.3.0",
+    "torchvision>=0.18.0",
+    "transformers>=4.44.0",
+    "datasets>=2.21.0",
+    "accelerate>=1.0.1",
+    "peft>=0.7.1",
+    "tiktoken>=0.5.1",
+    "numpy>=1.26.4",
+    "pandas>=1.5.3",
+    "matplotlib>=3.7.2",
+    "scikit-learn>=1.5.1",
+    "sentence-transformers>=2.3.1",
+    "jieba>=0.42.1",
+    "rich>=13.7.1",
+    "psutil>=5.9.8",
+    "pydantic>=2.8.2",
+    "jinja2>=3.1.2",
+    "jsonlines>=4.0.0",
+    "trl>=0.13.0",
+    "ujson>=5.1.0",
+    "wandb>=0.18.3",
+    "streamlit>=1.30.0",
+    "flask>=3.0.3",
+    "flask-cors>=4.0.0",
+    "datasketch>=1.6.4",
+    "marshmallow>=3.22.0",
+    "ngrok>=1.4.0",
+    "nltk>=3.8",
+    "openai>=1.59.6",
+    "simhash>=2.1.2",
+    "safetensors>=0.4.4",
+    "tokenizers>=0.19.1",
+    "einops>=0.8.0",
+    "tqdm>=4.67.1",
+    "ruff>=0.8.0",
+]
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
+torchaudio = { index = "pytorch" }
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = [
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "C90",  # mccabe
+    "PL",   # pylint
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "PLR0913", # too many arguments
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+    "N803",   # argument name should be lowercase
+    "N806",   # variable in function should be lowercase
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["model", "triainer"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
