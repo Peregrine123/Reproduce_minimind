@@ -9,7 +9,8 @@ from contextlib import nullcontext
 import torch
 import torch.distributed as dist
 from torch import nn, optim
-from torch.utils.data import DataLoader
+from torch.nn.parallel import DistributedDataParallel
+from torch.utils.data import DataLoader, DistributedSampler
 from transformers import AutoTokenizer
 
 from dataset.lm_dataset import PretrianDataset
@@ -127,6 +128,20 @@ def init_model(lm_config):
     return model, tokenizer
 
 
+def init_distributed_mode():
+    """初始化分布式训练环境"""
+    if not ddp:
+        return
+    global ddp_local_rank, DEVICE
+
+    dist.init_process_group(backend="nccl")
+    ddp_rank = int(os.environ["RANK"])
+    ddp_local_rank = int(os.environ["LOCAL_RANK"])
+    ddp_world_size = int(os.environ["WORLD_SIZE"])
+    DEVICE = f"cuda:{ddp_local_rank}"
+    torch.cuda.set_device(DEVICE)
+
+
 if __name__ == "__main__":
     # 命令行参数解析
     parser = argparse.ArgumentParser(description="MiniMind Pretraining")
@@ -178,7 +193,15 @@ if __name__ == "__main__":
     torch.manual_seed(base_seed)
     torch.cuda.manual_seed(base_seed)
 
-    if args.use_wandb:
+    # 如果启用 DDP，初始化分布式训练
+    if ddp:
+        init_distributed_mode()
+        args.device = torch.device(DEVICE)
+        rank = dist.get_rank()
+        torch.manual_seed(base_seed + rank)
+        torch.cuda.manual_seed(base_seed + rank)
+
+    if args.use_wandb and (not ddp or dist.get_rank() == 0):
         import wandb
 
         wandb.init(project=args.wandb_project, name=args.wandb_run_name)
@@ -191,19 +214,28 @@ if __name__ == "__main__":
 
     train_ds = PretrianDataset(args.data_path, tokenizer, max_length=args.max_seq_len)
 
+    # 使用 DistributedSampler 进行分布式数据采样
+    train_sampler = DistributedSampler(train_ds) if ddp else None
 
     train_loader = DataLoader(
         train_ds,
         batch_size=args.batch_size,
         pin_memory=True,
         drop_last=False,
-        shuffle=False,
-        num_workers=args.num_workers
+        shuffle=False if ddp else True,  # DDP 时不使用 shuffle，由 sampler 处理
+        num_workers=args.num_workers,
+        sampler=train_sampler,
     )
 
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype in ["float16", "bfloat16"]))
 
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
+
+    # 使用 DistributedDataParallel 包装模型
+    if ddp:
+        # RoPE 的频率缓冲区不需要在 DDP 中同步（每个进程都是相同的）
+        model._ddp_params_and_buffers_to_ignore = {"freqs_cos", "freqs_sin"}
+        model = DistributedDataParallel(model, device_ids=[ddp_local_rank])
 
     iter_per_epoch = len(train_loader)
 

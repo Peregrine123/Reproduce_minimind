@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 这是一个 MiniMind LLM 的复现项目，包含了一个基于 Transformer 架构的小型语言模型实现。项目支持标准的 Transformer 结构以及混合专家（MoE）模式。
 
+**核心组件**：
+- 模型定义：`model/model_minimind.py` (466行)
+- 数据处理：`dataset/lm_dataset.py` (233行)
+- 训练流程：`triainer/train_pretrian.py` (211行) + `triainer/train_full_sft.py` (230行)
+- 统一入口：`main.py` (144行) - 支持 Kaggle/Jupyter 环境
+
 ## Environment Setup
 
 项目使用 uv 作为包管理器，配置在 pyproject.toml 中：
@@ -21,11 +27,91 @@ uv sync
 source .venv/bin/activate
 ```
 
+## Training Workflow
+
+### 方法一：使用统一入口 main.py（推荐用于 Kaggle/Jupyter）
+
+```bash
+# 预训练（默认模式）
+python main.py --mode pretrain \
+    --epochs 2 \
+    --batch_size 32 \
+    --learning_rate 5e-4 \
+    --hidden_size 512 \
+    --pretrain_data_path ./dataset/pretrain_hq.jsonl
+
+# 监督微调 (SFT)
+python main.py --mode sft \
+    --epochs 2 \
+    --batch_size 16 \
+    --learning_rate 5e-7 \
+    --hidden_size 512 \
+    --sft_data_path ./dataset/sft_data.jsonl
+
+# MoE 训练
+python main.py --mode pretrain \
+    --use_moe True \
+    --hidden_size 512
+
+# 分布式训练（需要配合 torchrun）
+torchrun --nproc_per_node=2 main.py \
+    --mode pretrain \
+    --ddp \
+    --batch_size 32
+```
+
+**main.py 特点**：
+- 自动处理 Jupyter/Colab 环境的特殊参数（`-f` 和 `.json` 文件）
+- 使用 `exec()` 直接执行训练脚本，解决 `__file__` 未定义问题
+- 统一参数接口，简化命令行操作
+
+### 方法二：直接调用训练脚本
+
+```bash
+# 预训练
+python triainer/train_pretrian.py \
+    --data_path ./dataset/pretrain_hq.jsonl \
+    --epochs 2 \
+    --batch_size 32 \
+    --learning_rate 5e-4
+
+# SFT 训练
+python triainer/train_full_sft.py \
+    --data_path ./dataset/sft_data.jsonl \
+    --epochs 2 \
+    --batch_size 16 \
+    --learning_rate 5e-7
+
+# 分布式训练
+torchrun --nproc_per_node=2 triainer/train_pretrian.py \
+    --ddp \
+    --batch_size 32
+```
+
+### 通用训练参数
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `--out_dir` | `./out` | 模型保存目录 |
+| `--epochs` | `2` | 训练轮数 |
+| `--batch_size` | `16` (SFT) / `32` (Pretrain) | 批次大小 |
+| `--learning_rate` | `5e-7` (SFT) / `5e-4` (Pretrain) | 学习率 |
+| `--hidden_size` | `512` | 隐藏层维度 |
+| `--num_hidden_layers` | `8` | Transformer 层数 |
+| `--max_seq_len` | `512` | 最大序列长度 |
+| `--use_moe` | `False` | 是否使用 MoE |
+| `--accumulation_steps` | `8` | 梯度累积步数 |
+| `--grad_clip` | `1.0` | 梯度裁剪阈值 |
+| `--warmup_iters` | `0` | 学习率预热步数 |
+| `--save_interval` | `500` | 模型保存间隔（步） |
+| `--log_interval` | `100` | 日志输出间隔（步） |
+| `--use_wandb` | - | 启用 WandB 日志 |
+| `--ddp` | - | 启用分布式训练 |
+
 ## Code Quality Tools
 
 项目配置了 Ruff + basedpyright 组合：
 
-### Ruff Commands
 ```bash
 # 检查代码风格和质量
 ruff check
@@ -36,144 +122,168 @@ ruff check --fix
 # 格式化代码
 ruff format
 
-# 检查并格式化
+# 完整的代码质量检查流程
 ruff check --fix && ruff format
 
 # 检查特定文件
 ruff check model/model_minimind.py
 ```
 
-### Lint and Format
-运行完整的代码质量检查：
-```bash
-# 完整的代码质量检查流程
-ruff check --fix && ruff format
-```
+**Ruff 配置要点**：
+- 行长度限制：88 字符
+- 启用规则：pycodestyle, pyflakes, isort, pep8-naming, pyupgrade, mccabe, pylint, flake8-bugbear
+- Import 排序：自动对 `model` 和 `triainer` 包进行优先排序
+- 忽略规则：E501（行长），PLR0913/0912/0915（复杂度），N803/N806（命名）
 
 ## Core Architecture
 
-### Model Structure
-- **模型实现**: `model/model_minimind.py` - 包含完整的 MiniMind 模型定义
-  - `MiniMindConfig`: 模型配置类，支持标准和 MoE 配置
-  - `MiniMindForCausalLM`: 主模型类（因文件截断未完整显示，但基于导入判断存在）
-  - `Attention`: 支持 Flash Attention 和 RoPE 位置编码的注意力机制
-  - `RMSNorm`: RMS 归一化层
+### 模型结构 (`model/model_minimind.py`)
 
-### Training Components
-- **训练脚本**: `triainer/train_full_sft.py` - 全参数 SFT 训练
-  - 支持分布式训练 (DDP)
-  - 支持混合精度训练
-  - 集成 WandB 日志记录
-  - 梯度累积和裁剪
+**核心类**：
+- `MiniMindConfig`: 模型配置类，支持标准和 MoE 配置
+- `MiniMindForCasualLM`: 主模型类，用于因果语言建模
+- `MiniMindModel`: Transformer 主体，多层堆叠
+- `MiniMindBlock`: 单个 Transformer 块（Attention + FFN）
+- `Attention`: 支持 Flash Attention 和 RoPE 位置编码
+- `FeedForward`: SwiGLU 前馈网络
+- `MoEGate` + `MoEFeedForward`: 混合专家模块
+- `RMSNorm`: RMS 归一化层
 
-### Key Features
-- **RoPE 位置编码**: 旋转位置编码实现
-- **Flash Attention**: 高效注意力计算
-- **MoE 支持**: 混合专家模型配置
-- **分布式训练**: 支持多 GPU 训练
+**关键技术**：
+- **RoPE 位置编码**：旋转位置编码（`rope_theta=1e6`）
+- **Flash Attention**：高效注意力计算，支持分页 KV 缓存
+- **GQA**：分组查询注意力（`num_key_value_heads=2`，`num_attention_heads=8`）
+- **MoE**：
+  - `num_experts_per_tok=2`：每个 token 选择 2 个专家
+  - `n_routed_experts=4`：总共 4 个路由专家
+  - `n_shared_experts=1`：1 个共享专家
+  - 辅助损失（aux_loss）：平衡专家负载
 
-## Model Configuration
-
-模型配置参数（在 `MiniMindConfig` 中）：
-- `hidden_size`: 隐藏层大小 (默认由训练脚本设置)
-- `num_hidden_layers`: Transformer 层数 (默认8)
-- `num_attention_heads`: 注意力头数 (默认8)
-- `num_key_value_heads`: KV 头数，支持 GQA (默认2)
-- `max_position_embeddings`: 最大序列长度 (默认32768)
-- `vocab_size`: 词汇表大小 (默认6400)
-- `use_moe`: 是否使用混合专家模型
-- `flash_attn`: 是否使用 Flash Attention
-
-## Training Commands
-
-### Full SFT Training
-```bash
-# 基本训练
-python triainer/train_full_sft.py \
-    --epochs 2 \
-    --batch_size 16 \
-    --learning_rate 5e-7 \
-    --hidden_size 512 \
-    --num_hidden_layers 8
-
-# 分布式训练
-torchrun --nproc_per_node=2 triainer/train_full_sft.py \
-    --ddp \
-    --epochs 2 \
-    --batch_size 16
-
-# 使用 WandB 记录
-python triainer/train_full_sft.py \
-    --use_wandb \
-    --wandb_project "MiniMind-Full-SFT"
-
-# MoE 训练
-python triainer/train_full_sft.py \
-    --use_moe True \
-    --hidden_size 512
+**模型配置默认值**：
+```python
+hidden_size=512
+num_hidden_layers=8
+num_attention_heads=8
+num_key_value_heads=2
+max_position_embeddings=32768
+vocab_size=6400
+intermediate_size=1536  # 3 * hidden_size
 ```
 
-### Training Parameters
-- `--data_path`: 训练数据路径 (默认: `../dataset/sft_mini_512.jsonl`)
-- `--out_dir`: 模型保存目录 (默认: `../out`)
-- `--max_seq_len`: 最大序列长度 (默认: 512)
-- `--accumulation_steps`: 梯度累积步数 (默认: 1)
-- `--grad_clip`: 梯度裁剪阈值 (默认: 1.0)
-- `--save_interval`: 模型保存间隔 (默认: 100步)
-- `--log_interval`: 日志输出间隔 (默认: 100步)
+### 数据处理 (`dataset/lm_dataset.py`)
 
-## Data Requirements
+**支持的数据集类型**：
+1. `PretrianDataset`：预训练数据集（JSONL 格式）
+2. `SFTDataset`：监督微调数据集（ChatML 格式）
+3. `DPODataset`：直接偏好优化数据集
+4. `RLAIFDataset`：强化学习微调数据集
 
-训练脚本期望数据格式：
-- 数据文件：JSONL 格式
-- 默认路径：`../dataset/sft_mini_512.jsonl`
-- 需要与 `SFTDataset` 类兼容（从 `dataset.lm_dataset` 导入）
+**数据格式**：
+- 输入：JSONL 格式（每行一个 JSON 对象）
+- 输出：`(X, Y, loss_mask)` 三元组
+  - `X`：输入 token ID
+  - `Y`：目标 token ID
+  - `loss_mask`：损失掩码（区分真实 token 和 padding）
+- 聊天模板：ChatML 格式（`<|im_start|>user/assistant/system<|im_end|>`）
+
+**Tokenizer**：
+- 词汇量：6400
+- 特殊 token：`<|endoftext|>`(0), `<|im_start|>`(1), `<|im_end|>`(2)
+- 文件：`model/tokenizer.json`, `model/vocab.json`, `model/tokenizer_config.json`
+
+### 训练流程架构
+
+**学习率调度**：
+- 策略：Cosine Annealing with Warmup
+- 实现：`get_lr()` 函数（在 `train_pretrian.py:25` 和 `train_full_sft.py:24`）
+- 公式：
+  ```python
+  # Warmup 阶段
+  lr = max_lr * it / warmup_iters
+
+  # Decay 阶段
+  decay_ratio = (it - warmup_iters) / (max_iters - warmup_iters)
+  coeff = 0.5 * (1.0 + math.cos(math.pi * decay_ratio))
+  lr = min_lr + coeff * (max_lr - min_lr)
+  ```
+
+**训练循环**：
+1. 加载数据 → 2. 前向传播 → 3. 计算损失 → 4. 反向传播 → 5. 梯度累积 → 6. 梯度裁剪 → 7. 优化器更新 → 8. 保存检查点
+
+**混合精度训练**：
+- 使用 `torch.cuda.amp.autocast()` 自动混合精度
+- 使用 `GradScaler` 防止梯度下溢
+- 支持 `bfloat16` 和 `float16`
+
+**分布式训练**：
+- 使用 `torch.nn.parallel.DistributedDataParallel` (DDP)
+- 自动同步梯度和模型参数
+- 支持 `torchrun` 启动
 
 ## Model Checkpoints
 
-模型检查点保存格式：
-- 预训练模型：`{save_dir}/pretrain_{hidden_size}[_moe].pth`
-- SFT 模型：`{save_dir}/full_stf_{hidden_size}[_moe].pth`
-- 模型以半精度（.half()）格式保存
+**保存格式**：
+- 预训练模型：`{out_dir}/pretrain_{hidden_size}[_moe].pth`
+- SFT 模型：`{out_dir}/full_sft_{hidden_size}[_moe].pth`
+- 存储精度：半精度（`.half()`）
+
+**检查点内容**：
+- 模型权重：`model.state_dict()`
+- 优化器状态：通常不保存（仅推理）
+
+**加载方式**：
+```python
+# SFT 训练会自动加载对应的预训练模型
+pretrain_model_path = f"{out_dir}/pretrain_{hidden_size}{'_moe' if use_moe else ''}.pth"
+model.load_state_dict(torch.load(pretrain_model_path))
+```
+
+## Data Requirements
+
+**预训练数据**：
+- 文件：`dataset/pretrain_hq.jsonl` (1.6GB)
+- 格式：每行一个 JSON 对象，包含 `text` 字段
+- 示例：`{"text": "这是一段预训练文本..."}`
+
+**SFT 数据**：
+- 文件：`dataset/sft_data.jsonl` (用户需自行准备)
+- 格式：每行一个 JSON 对象，包含 `conversations` 字段
+- 示例：
+  ```json
+  {
+    "conversations": [
+      {"role": "user", "content": "你好"},
+      {"role": "assistant", "content": "你好！有什么可以帮助你的吗？"}
+    ]
+  }
+  ```
 
 ## Dependencies
 
-主要依赖包括：
+**核心依赖**：
 - PyTorch >= 2.3.0 (CUDA 12.4 支持)
 - Transformers >= 4.44.0
 - Accelerate >= 1.0.1
-- PEFT >= 0.7.1 (参数高效微调)
-- TRL >= 0.13.0 (强化学习训练)
-- WandB >= 0.18.3 (实验追踪)
+- PEFT >= 0.7.1
+- TRL >= 0.13.0
+- WandB >= 0.18.3
+
+**完整依赖**：参考 `pyproject.toml`，包含数据处理（pandas, jieba, nltk）、可视化（matplotlib, streamlit）、API（flask, openai）等
 
 ## Development Notes
 
-- 项目结构相对简单，主要包含模型定义和训练脚本
-- 训练脚本中存在一些拼写错误（如 `fileterwarning`, `learing_rate` 等）
+**已知问题**：
+- 训练脚本所在目录拼写为 `triainer`（应为 `trainer`）
+- SFT 模型保存文件名拼写为 `full_stf`（应为 `full_sft`）
+- 代码中存在一些拼写错误（如 `fileterwarning`, `learing_rate`）
+
+**环境兼容性**：
 - 支持 CPU 和 GPU 训练，自动检测 CUDA 可用性
-- 使用 cosine 学习率调度策略
+- 自动处理 Jupyter/Colab 环境的特殊参数
+- 兼容 Kaggle 环境的 `__file__` 未定义问题
 
-## IDE Configuration
-
-项目已配置完整的开发工具链：
-
-### Ruff (代码质量)
-- **Linting** - 代码风格检查 (pycodestyle, pyflakes, etc.)
-- **Formatting** - 自动格式化代码
-- **Import sorting** - 自动排序导入语句
-- **性能** - 极快的检查速度
-
-### basedpyright (类型检查)
-- **类型推断** - 实时类型分析和检查
-- **智能提示** - 基于类型的代码补全
-- **错误诊断** - 深度静态分析
-- **优化配置** - 减少内存使用，保持对整个项目的分析覆盖
-
-### 推荐工作流
-```bash
-# 开发前运行代码质量检查
-ruff check --fix && ruff format
-
-# IDE 会自动提供类型检查和智能提示
-# 保存时可配置自动运行 ruff format
-```
+**优化建议**：
+- 预训练时使用较大的批次大小（32）和学习率（5e-4）
+- SFT 时使用较小的学习率（5e-7）避免灾难性遗忘
+- MoE 模式会增加约 4x 参数量和计算量
+- 使用梯度累积可以模拟更大的批次大小

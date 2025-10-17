@@ -4,11 +4,15 @@
 MiniMind项目主入口文件
 提供预训练和SFT训练的统一入口
 针对 Kaggle/Jupyter 环境优化
+支持自动检测多GPU并启用分布式训练
 """
 
 import argparse
 import os
+import subprocess
 import sys
+
+import torch
 
 
 def main():
@@ -25,12 +29,13 @@ def main():
     parser.add_argument("--epochs", type=int, default=2, help="训练轮数")
     parser.add_argument("--batch_size", type=int, default=16, help="批次大小")
     parser.add_argument("--learning_rate", type=float, default=5e-4, help="学习率")
-    parser.add_argument("--device", type=str, default="cuda:0" if "cuda" in os.environ.get("CUDA_VISIBLE_DEVICES", "") else "cpu", help="训练设备")
+    parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu", help="训练设备")
     parser.add_argument("--dtype", type=str, default="bfloat16", help="数据类型")
     parser.add_argument("--use_wandb", action="store_true", help="是否使用 wandb 记录训练过程")
     parser.add_argument("--wandb_project", type=str, default="MiniMind", help="wandb 项目名称")
     parser.add_argument("--num_workers", type=int, default=1, help="数据加载器工作进程数")
     parser.add_argument("--ddp", action="store_true", help="是否启用分布式训练")
+    parser.add_argument("--auto_ddp", action="store_true", default=True, help="自动检测多GPU并启用分布式训练")
     parser.add_argument("--accumulation_steps", type=int, default=8, help="梯度累积步数")
     parser.add_argument("--grad_clip", type=float, default=1.0, help="梯度裁剪阈值")
     parser.add_argument("--warmup_iters", type=int, default=0, help="学习率预热步数")
@@ -56,6 +61,58 @@ def main():
     if unknown_args and any(arg.startswith('-f') or arg.endswith('.json') for arg in unknown_args):
         # 忽略这些参数，不进行任何处理
         pass
+
+    # 自动检测多GPU并启用分布式训练
+    num_gpus = torch.cuda.device_count()
+    if args.auto_ddp and num_gpus > 1 and not args.ddp:
+        print(f"检测到 {num_gpus} 个 GPU，自动启用分布式训练")
+        print(f"使用 torchrun 启动分布式训练...")
+
+        # 构建 torchrun 命令
+        torchrun_cmd = [
+            sys.executable, "-m", "torch.distributed.run",
+            f"--nproc_per_node={num_gpus}",
+            __file__,
+            f"--mode={args.mode}",
+            f"--out_dir={args.out_dir}",
+            f"--epochs={args.epochs}",
+            f"--batch_size={args.batch_size}",
+            f"--learning_rate={args.learning_rate}",
+            f"--device={args.device}",
+            f"--dtype={args.dtype}",
+            f"--num_workers={args.num_workers}",
+            "--ddp",  # 显式启用 DDP
+            "--no-auto_ddp",  # 防止递归调用
+            f"--accumulation_steps={args.accumulation_steps}",
+            f"--grad_clip={args.grad_clip}",
+            f"--warmup_iters={args.warmup_iters}",
+            f"--log_interval={args.log_interval}",
+            f"--save_interval={args.save_interval}",
+            f"--local_rank={args.local_rank}",
+            f"--hidden_size={args.hidden_size}",
+            f"--num_hidden_layers={args.num_hidden_layers}",
+            f"--max_seq_len={args.max_seq_len}",
+            f"--use_moe={args.use_moe}",
+        ]
+
+        if args.mode == "pretrain":
+            torchrun_cmd.append(f"--pretrain_data_path={args.pretrain_data_path}")
+        else:
+            torchrun_cmd.append(f"--sft_data_path={args.sft_data_path}")
+
+        if args.use_wandb:
+            torchrun_cmd.append("--use_wandb")
+            torchrun_cmd.append(f"--wandb_project={args.wandb_project}")
+
+        # 执行 torchrun 命令
+        result = subprocess.run(torchrun_cmd)
+        sys.exit(result.returncode)
+    elif num_gpus > 1 and args.ddp:
+        print(f"检测到 {num_gpus} 个 GPU，使用分布式训练模式")
+    elif num_gpus == 1:
+        print(f"检测到 1 个 GPU，使用单 GPU 训练模式：{args.device}")
+    else:
+        print(f"未检测到 GPU，使用 CPU 训练模式")
 
     if args.mode == "pretrain":
         # 构建预训练参数列表
