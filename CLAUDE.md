@@ -29,6 +29,31 @@ source .venv/bin/activate
 
 ## Training Workflow
 
+### 优化后的推荐配置（针对 T4 x 2）
+
+```bash
+# 预训练（优化版）
+python main.py --mode pretrain \
+    --epochs 5 \
+    --batch_size 32 \
+    --learning_rate 2e-4 \
+    --warmup_iters 2000 \
+    --accumulation_steps 4 \
+    --use_moe True
+
+# 有效 batch_size = 32 × 4 × 2 = 256
+# 预计训练时间：约 25 小时 (基于实测 2 epoch = 10 小时)
+```
+
+**关键改进**：
+- ✅ Epochs 从 2 增加到 5（训练更充分，避免欠拟合）
+- ✅ Batch size 从 16 增加到 32（充分利用 T4 显存）
+- ✅ Learning rate 从 5e-4 降至 2e-4（提高稳定性）
+- ✅ Warmup 从 0 增加到 2000 步（避免初期震荡）
+- ✅ Accumulation steps 从 8 降至 4（batch size 已增大）
+
+📄 **详细分析**：参见 `TRAINING_OPTIMIZATION.md`
+
 ### 方法一：使用统一入口 main.py（推荐用于 Kaggle/Jupyter）
 
 ```bash

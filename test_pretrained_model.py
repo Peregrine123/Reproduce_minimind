@@ -141,16 +141,19 @@ try:
         output = pretrained_model.generate(
             test_input_ids,
             attention_mask=test_attention_mask,
-            max_new_tokens=20,
-            temperature=0.8,
+            max_new_tokens=50,
+            temperature=1.0,          # 提高温度，增加多样性
             top_k=50,
-            top_p=0.9,
+            top_p=0.95,               # 提高 top_p
+            repetition_penalty=1.2,   # 添加重复惩罚
             do_sample=True,
             pad_token_id=tokenizer.pad_token_id,
+            eos_token_id=tokenizer.eos_token_id
         )
         generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
         print(f"   输入: {test_prompt}")
         print(f"   生成: {generated_text}")
+        print(f"   (注意: 当前模型训练不充分，建议训练10个epoch)")
 except Exception as e:
     print("   生成测试失败（这是正常的，generate() 可能需要额外配置）")
     print(f"   错误: {e}")
