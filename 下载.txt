@@ -1,0 +1,524 @@
+11.7s 1 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+11.7s 2 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+11.7s 3 0.00s - to python to disable frozen modules.
+11.7s 4 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+12.7s 5 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+12.7s 6 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+12.7s 7 0.00s - to python to disable frozen modules.
+12.7s 8 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+22.0s 9 Collecting modelscope
+22.1s 10 Downloading modelscope-1.31.0-py3-none-any.whl.metadata (40 kB)
+22.1s 11 [?25l     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/40.4 kB[0m [31m?[0m eta [36m-:--:--[0m[2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m40.4/40.4 kB[0m [31m1.8 MB/s[0m eta [36m0:00:00[0m
+22.2s 12 [?25hRequirement already satisfied: filelock in /usr/local/lib/python3.11/dist-packages (from modelscope) (3.18.0)
+22.2s 13 Requirement already satisfied: requests>=2.25 in /usr/local/lib/python3.11/dist-packages (from modelscope) (2.32.4)
+22.2s 14 Requirement already satisfied: setuptools in /usr/local/lib/python3.11/dist-packages (from modelscope) (75.2.0)
+22.2s 15 Requirement already satisfied: tqdm>=4.64.0 in /usr/local/lib/python3.11/dist-packages (from modelscope) (4.67.1)
+22.2s 16 Requirement already satisfied: urllib3>=1.26 in /usr/local/lib/python3.11/dist-packages (from modelscope) (2.5.0)
+22.2s 17 Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests>=2.25->modelscope) (3.4.2)
+22.2s 18 Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.11/dist-packages (from requests>=2.25->modelscope) (3.10)
+22.2s 19 Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.11/dist-packages (from requests>=2.25->modelscope) (2025.6.15)
+22.3s 20 Downloading modelscope-1.31.0-py3-none-any.whl (5.9 MB)
+22.4s 21 [?25l   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.0/5.9 MB[0m [31m?[0m eta [36m-:--:--[0m[2K   [91m━━━━[0m[90m╺[0m[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m0.6/5.9 MB[0m [31m19.3 MB/s[0m eta [36m0:00:01[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[90m╺[0m[90m━━━━[0m [32m5.2/5.9 MB[0m [31m76.8 MB/s[0m eta [36m0:00:01[0m[2K   [91m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[91m╸[0m [32m5.9/5.9 MB[0m [31m81.2 MB/s[0m eta [36m0:00:01[0m[2K   [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m5.9/5.9 MB[0m [31m48.4 MB/s[0m eta [36m0:00:00[0m
+24.2s 22 [?25hInstalling collected packages: modelscope
+29.0s 23 Successfully installed modelscope-1.31.0
+29.2s 24 rm: cannot remove '/kaggle/working/': Device or resource busy
+29.5s 25 Cloning into '/kaggle/working'...
+30.3s 26 remote: Enumerating objects: 58, done.[K
+30.3s 27 remote: Counting objects:   1% (1/58)[Kremote: Counting objects:   3% (2/58)[Kremote: Counting objects:   5% (3/58)[Kremote: Counting objects:   6% (4/58)[Kremote: Counting objects:   8% (5/58)[Kremote: Counting objects:  10% (6/58)[Kremote: Counting objects:  12% (7/58)[Kremote: Counting objects:  13% (8/58)[Kremote: Counting objects:  15% (9/58)[Kremote: Counting objects:  17% (10/58)[Kremote: Counting objects:  18% (11/58)[Kremote: Counting objects:  20% (12/58)[Kremote: Counting objects:  22% (13/58)[Kremote: Counting objects:  24% (14/58)[Kremote: Counting objects:  25% (15/58)[Kremote: Counting objects:  27% (16/58)[Kremote: Counting objects:  29% (17/58)[Kremote: Counting objects:  31% (18/58)[Kremote: Counting objects:  32% (19/58)[Kremote: Counting objects:  34% (20/58)[Kremote: Counting objects:  36% (21/58)[Kremote: Counting objects:  37% (22/58)[Kremote: Counting objects:  39% (23/58)[Kremote: Counting objects:  41% (24/58)[Kremote: Counting objects:  43% (25/58)[Kremote: Counting objects:  44% (26/58)[Kremote: Counting objects:  46% (27/58)[Kremote: Counting objects:  48% (28/58)[Kremote: Counting objects:  50% (29/58)[Kremote: Counting objects:  51% (30/58)[Kremote: Counting objects:  53% (31/58)[Kremote: Counting objects:  55% (32/58)[Kremote: Counting objects:  56% (33/58)[Kremote: Counting objects:  58% (34/58)[Kremote: Counting objects:  60% (35/58)[Kremote: Counting objects:  62% (36/58)[Kremote: Counting objects:  63% (37/58)[Kremote: Counting objects:  65% (38/58)[Kremote: Counting objects:  67% (39/58)[Kremote: Counting objects:  68% (40/58)[Kremote: Counting objects:  70% (41/58)[Kremote: Counting objects:  72% (42/58)[Kremote: Counting objects:  74% (43/58)[Kremote: Counting objects:  75% (44/58)[Kremote: Counting objects:  77% (45/58)[Kremote: Counting objects:  79% (46/58)[Kremote: Counting objects:  81% (47/58)[Kremote: Counting objects:  82% (48/58)[Kremote: Counting objects:  84% (49/58)[Kremote: Counting objects:  86% (50/58)[Kremote: Counting objects:  87% (51/58)[Kremote: Counting objects:  89% (52/58)[Kremote: Counting objects:  91% (53/58)[Kremote: Counting objects:  93% (54/58)[Kremote: Counting objects:  94% (55/58)[Kremote: Counting objects:  96% (56/58)[Kremote: Counting objects:  98% (57/58)[Kremote: Counting objects: 100% (58/58)[Kremote: Counting objects: 100% (58/58), done.[K
+30.4s 28 remote: Compressing objects:   2% (1/38)[Kremote: Compressing objects:   5% (2/38)[Kremote: Compressing objects:   7% (3/38)[Kremote: Compressing objects:  10% (4/38)[Kremote: Compressing objects:  13% (5/38)[Kremote: Compressing objects:  15% (6/38)[Kremote: Compressing objects:  18% (7/38)[Kremote: Compressing objects:  21% (8/38)[Kremote: Compressing objects:  23% (9/38)[Kremote: Compressing objects:  26% (10/38)[Kremote: Compressing objects:  28% (11/38)[Kremote: Compressing objects:  31% (12/38)[Kremote: Compressing objects:  34% (13/38)[Kremote: Compressing objects:  36% (14/38)[Kremote: Compressing objects:  39% (15/38)[Kremote: Compressing objects:  42% (16/38)[Kremote: Compressing objects:  44% (17/38)[Kremote: Compressing objects:  47% (18/38)[Kremote: Compressing objects:  50% (19/38)[Kremote: Compressing objects:  52% (20/38)[Kremote: Compressing objects:  55% (21/38)[Kremote: Compressing objects:  57% (22/38)[Kremote: Compressing objects:  60% (23/38)[Kremote: Compressing objects:  63% (24/38)[Kremote: Compressing objects:  65% (25/38)[Kremote: Compressing objects:  68% (26/38)[Kremote: Compressing objects:  71% (27/38)[Kremote: Compressing objects:  73% (28/38)[Kremote: Compressing objects:  76% (29/38)[Kremote: Compressing objects:  78% (30/38)[Kremote: Compressing objects:  81% (31/38)[Kremote: Compressing objects:  84% (32/38)[Kremote: Compressing objects:  86% (33/38)[Kremote: Compressing objects:  89% (34/38)[Kremote: Compressing objects:  92% (35/38)[Kremote: Compressing objects:  94% (36/38)[Kremote: Compressing objects:  97% (37/38)[Kremote: Compressing objects: 100% (38/38)[Kremote: Compressing objects: 100% (38/38), done.[K
+30.5s 29 Receiving objects:   1% (1/58)Receiving objects:   3% (2/58)Receiving objects:   5% (3/58)Receiving objects:   6% (4/58)Receiving objects:   8% (5/58)Receiving objects:  10% (6/58)Receiving objects:  12% (7/58)Receiving objects:  13% (8/58)Receiving objects:  15% (9/58)Receiving objects:  17% (10/58)Receiving objects:  18% (11/58)Receiving objects:  20% (12/58)Receiving objects:  22% (13/58)Receiving objects:  24% (14/58)Receiving objects:  25% (15/58)Receiving objects:  27% (16/58)Receiving objects:  29% (17/58)Receiving objects:  31% (18/58)Receiving objects:  32% (19/58)Receiving objects:  34% (20/58)Receiving objects:  36% (21/58)Receiving objects:  37% (22/58)Receiving objects:  39% (23/58)Receiving objects:  41% (24/58)Receiving objects:  43% (25/58)Receiving objects:  44% (26/58)Receiving objects:  46% (27/58)Receiving objects:  48% (28/58)Receiving objects:  50% (29/58)Receiving objects:  51% (30/58)Receiving objects:  53% (31/58)Receiving objects:  55% (32/58)Receiving objects:  56% (33/58)Receiving objects:  58% (34/58)Receiving objects:  60% (35/58)Receiving objects:  62% (36/58)Receiving objects:  63% (37/58)Receiving objects:  65% (38/58)Receiving objects:  67% (39/58)remote: Total 58 (delta 24), reused 52 (delta 18), pack-reused 0 (from 0)[K
+30.5s 30 Receiving objects:  68% (40/58)Receiving objects:  70% (41/58)Receiving objects:  72% (42/58)Receiving objects:  74% (43/58)Receiving objects:  75% (44/58)Receiving objects:  77% (45/58)Receiving objects:  79% (46/58)Receiving objects:  81% (47/58)Receiving objects:  82% (48/58)Receiving objects:  84% (49/58)Receiving objects:  86% (50/58)Receiving objects:  87% (51/58)Receiving objects:  89% (52/58)Receiving objects:  91% (53/58)Receiving objects:  93% (54/58)Receiving objects:  94% (55/58)Receiving objects:  96% (56/58)Receiving objects:  98% (57/58)Receiving objects: 100% (58/58)Receiving objects: 100% (58/58), 336.80 KiB | 3.66 MiB/s, done.
+30.5s 31 Resolving deltas:   0% (0/24)Resolving deltas:   4% (1/24)Resolving deltas:   8% (2/24)Resolving deltas:  12% (3/24)Resolving deltas:  16% (4/24)Resolving deltas:  20% (5/24)Resolving deltas:  25% (6/24)Resolving deltas:  29% (7/24)Resolving deltas:  33% (8/24)Resolving deltas:  37% (9/24)Resolving deltas:  41% (10/24)Resolving deltas:  45% (11/24)Resolving deltas:  50% (12/24)Resolving deltas:  54% (13/24)Resolving deltas:  58% (14/24)Resolving deltas:  62% (15/24)Resolving deltas:  66% (16/24)Resolving deltas:  70% (17/24)Resolving deltas:  75% (18/24)Resolving deltas:  79% (19/24)Resolving deltas:  83% (20/24)Resolving deltas:  87% (21/24)Resolving deltas:  91% (22/24)Resolving deltas:  95% (23/24)Resolving deltas: 100% (24/24)Resolving deltas: 100% (24/24), done.
+37.7s 32 
+37.7s 33 _   .-')                _ .-') _     ('-.             .-')                              _ (`-.    ('-.
+37.7s 34 ( '.( OO )_             ( (  OO) )  _(  OO)           ( OO ).                           ( (OO  ) _(  OO)
+37.7s 35 ,--.   ,--.).-'),-----. \     .'_ (,------.,--.     (_)---\_)   .-----.  .-'),-----.  _.`     \(,------.
+37.7s 36 |   `.'   |( OO'  .-.  ',`'--..._) |  .---'|  |.-') /    _ |   '  .--./ ( OO'  .-.  '(__...--'' |  .---'
+37.7s 37 |         |/   |  | |  ||  |  \  ' |  |    |  | OO )\  :` `.   |  |('-. /   |  | |  | |  /  | | |  |
+37.7s 38 |  |'.'|  |\_) |  |\|  ||  |   ' |(|  '--. |  |`-' | '..`''.) /_) |OO  )\_) |  |\|  | |  |_.' |(|  '--.
+37.7s 39 |  |   |  |  \ |  | |  ||  |   / : |  .--'(|  '---.'.-._)   \ ||  |`-'|   \ |  | |  | |  .___.' |  .--'
+37.7s 40 |  |   |  |   `'  '-'  '|  '--'  / |  `---.|      | \       /(_'  '--'\    `'  '-'  ' |  |      |  `---.
+37.7s 41 `--'   `--'     `-----' `-------'  `------'`------'  `-----'    `-----'      `-----'  `--'      `------'
+37.7s 42 
+89.5s 43 Downloading [pretrain_hq.jsonl]:   0%|              | 0.00/1.56G [00:00<?, ?B/s]Downloading [pretrain_hq.jsonl]:   0%|      | 1.00M/1.56G [00:01<38:14, 727kB/s]Downloading [pretrain_hq.jsonl]:   0%|     | 5.00M/1.56G [00:01<06:23, 4.34MB/s]Downloading [pretrain_hq.jsonl]:   1%|     | 9.00M/1.56G [00:01<03:16, 8.45MB/s]Downloading [pretrain_hq.jsonl]:   1%|     | 13.0M/1.56G [00:01<02:09, 12.8MB/s]Downloading [pretrain_hq.jsonl]:   1%|     | 17.0M/1.56G [00:01<01:36, 17.1MB/s]Downloading [pretrain_hq.jsonl]:   1%|     | 21.0M/1.56G [00:02<01:17, 21.3MB/s]Downloading [pretrain_hq.jsonl]:   2%|     | 25.0M/1.56G [00:02<01:07, 24.4MB/s]Downloading [pretrain_hq.jsonl]:   2%|     | 29.0M/1.56G [00:02<01:01, 26.9MB/s]Downloading [pretrain_hq.jsonl]:   2%|     | 33.0M/1.56G [00:02<00:55, 29.4MB/s]Downloading [pretrain_hq.jsonl]:   2%|     | 37.0M/1.56G [00:02<00:51, 31.6MB/s]Downloading [pretrain_hq.jsonl]:   3%|▏    | 41.0M/1.56G [00:02<00:49, 32.8MB/s]Downloading [pretrain_hq.jsonl]:   3%|▏    | 45.0M/1.56G [00:02<00:48, 33.7MB/s]Downloading [pretrain_hq.jsonl]:   3%|▏    | 49.0M/1.56G [00:02<00:48, 33.1MB/s]Downloading [pretrain_hq.jsonl]:   3%|▏    | 53.0M/1.56G [00:02<00:47, 33.8MB/s]Downloading [pretrain_hq.jsonl]:   4%|▏    | 57.0M/1.56G [00:03<00:46, 34.8MB/s]Downloading [pretrain_hq.jsonl]:   4%|▏    | 61.0M/1.56G [00:03<00:46, 34.9MB/s]Downloading [pretrain_hq.jsonl]:   4%|▏    | 65.0M/1.56G [00:03<00:44, 35.6MB/s]Downloading [pretrain_hq.jsonl]:   4%|▏    | 69.0M/1.56G [00:03<00:46, 34.7MB/s]Downloading [pretrain_hq.jsonl]:   5%|▏    | 73.0M/1.56G [00:03<00:45, 35.2MB/s]Downloading [pretrain_hq.jsonl]:   5%|▏    | 77.0M/1.56G [00:03<00:44, 35.8MB/s]Downloading [pretrain_hq.jsonl]:   5%|▎    | 81.0M/1.56G [00:03<00:44, 36.0MB/s]Downloading [pretrain_hq.jsonl]:   5%|▎    | 85.0M/1.56G [00:03<00:44, 35.9MB/s]Downloading [pretrain_hq.jsonl]:   6%|▎    | 89.0M/1.56G [00:04<00:42, 36.9MB/s]Downloading [pretrain_hq.jsonl]:   6%|▎    | 93.0M/1.56G [00:04<00:42, 37.2MB/s]Downloading [pretrain_hq.jsonl]:   6%|▎    | 97.0M/1.56G [00:04<00:41, 37.3MB/s]Downloading [pretrain_hq.jsonl]:   6%|▍     | 101M/1.56G [00:04<00:41, 37.3MB/s]Downloading [pretrain_hq.jsonl]:   7%|▍     | 105M/1.56G [00:04<00:40, 38.1MB/s]Downloading [pretrain_hq.jsonl]:   7%|▍     | 109M/1.56G [00:04<00:41, 37.1MB/s]Downloading [pretrain_hq.jsonl]:   7%|▍     | 113M/1.56G [00:04<00:41, 37.0MB/s]Downloading [pretrain_hq.jsonl]:   7%|▍     | 117M/1.56G [00:04<00:41, 37.0MB/s]Downloading [pretrain_hq.jsonl]:   8%|▍     | 121M/1.56G [00:04<00:42, 36.7MB/s]Downloading [pretrain_hq.jsonl]:   8%|▍     | 125M/1.56G [00:05<00:41, 37.0MB/s]Downloading [pretrain_hq.jsonl]:   8%|▍     | 129M/1.56G [00:05<00:41, 36.6MB/s]Downloading [pretrain_hq.jsonl]:   8%|▌     | 133M/1.56G [00:05<00:41, 36.9MB/s]Downloading [pretrain_hq.jsonl]:   9%|▌     | 137M/1.56G [00:05<00:41, 37.1MB/s]Downloading [pretrain_hq.jsonl]:   9%|▌     | 141M/1.56G [00:05<00:40, 37.2MB/s]Downloading [pretrain_hq.jsonl]:   9%|▌     | 145M/1.56G [00:05<00:40, 37.1MB/s]Downloading [pretrain_hq.jsonl]:   9%|▌     | 149M/1.56G [00:05<00:40, 37.3MB/s]Downloading [pretrain_hq.jsonl]:  10%|▌     | 153M/1.56G [00:05<00:41, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  10%|▌     | 157M/1.56G [00:05<00:41, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  10%|▌     | 161M/1.56G [00:06<00:40, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  10%|▌     | 165M/1.56G [00:06<00:40, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  11%|▋     | 169M/1.56G [00:06<00:40, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  11%|▋     | 173M/1.56G [00:06<00:40, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  11%|▋     | 177M/1.56G [00:06<00:40, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  11%|▋     | 181M/1.56G [00:06<00:40, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  12%|▋     | 185M/1.56G [00:06<00:40, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  12%|▋     | 189M/1.56G [00:06<00:40, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  12%|▋     | 193M/1.56G [00:06<00:40, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  12%|▋     | 197M/1.56G [00:07<00:39, 37.3MB/s]Downloading [pretrain_hq.jsonl]:  13%|▊     | 201M/1.56G [00:07<00:39, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  13%|▊     | 205M/1.56G [00:07<00:39, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  13%|▊     | 209M/1.56G [00:07<00:39, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  13%|▊     | 213M/1.56G [00:07<00:39, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  14%|▊     | 217M/1.56G [00:07<00:41, 34.6MB/s]Downloading [pretrain_hq.jsonl]:  14%|▊     | 221M/1.56G [00:07<00:40, 35.2MB/s]Downloading [pretrain_hq.jsonl]:  14%|▊     | 225M/1.56G [00:07<00:41, 34.9MB/s]Downloading [pretrain_hq.jsonl]:  14%|▊     | 229M/1.56G [00:08<00:40, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  15%|▉     | 233M/1.56G [00:08<00:38, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  15%|▉     | 237M/1.56G [00:08<00:38, 37.3MB/s]Downloading [pretrain_hq.jsonl]:  15%|▉     | 241M/1.56G [00:08<00:37, 38.0MB/s]Downloading [pretrain_hq.jsonl]:  15%|▉     | 245M/1.56G [00:08<00:36, 38.2MB/s]Downloading [pretrain_hq.jsonl]:  16%|▉     | 249M/1.56G [00:08<00:37, 37.8MB/s]Downloading [pretrain_hq.jsonl]:  16%|▉     | 253M/1.56G [00:08<00:36, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  16%|▉     | 257M/1.56G [00:08<00:36, 38.6MB/s]Downloading [pretrain_hq.jsonl]:  16%|▉     | 261M/1.56G [00:08<00:35, 39.1MB/s]Downloading [pretrain_hq.jsonl]:  17%|▉     | 265M/1.56G [00:08<00:35, 39.3MB/s]Downloading [pretrain_hq.jsonl]:  17%|█     | 269M/1.56G [00:09<00:35, 39.6MB/s]Downloading [pretrain_hq.jsonl]:  17%|█     | 273M/1.56G [00:09<00:36, 38.2MB/s]Downloading [pretrain_hq.jsonl]:  17%|█     | 277M/1.56G [00:09<00:40, 34.4MB/s]Downloading [pretrain_hq.jsonl]:  18%|█     | 281M/1.56G [00:09<00:38, 35.8MB/s]Downloading [pretrain_hq.jsonl]:  18%|█     | 285M/1.56G [00:09<00:38, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  18%|█     | 289M/1.56G [00:09<00:37, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  18%|█     | 293M/1.56G [00:09<00:36, 37.7MB/s]Downloading [pretrain_hq.jsonl]:  19%|█     | 297M/1.56G [00:09<00:36, 37.7MB/s]Downloading [pretrain_hq.jsonl]:  19%|█▏    | 301M/1.56G [00:10<00:35, 37.7MB/s]Downloading [pretrain_hq.jsonl]:  19%|█▏    | 305M/1.56G [00:10<00:35, 37.7MB/s]Downloading [pretrain_hq.jsonl]:  19%|█▏    | 309M/1.56G [00:10<00:35, 37.9MB/s]Downloading [pretrain_hq.jsonl]:  20%|█▏    | 313M/1.56G [00:10<00:35, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  20%|█▏    | 317M/1.56G [00:10<00:35, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  20%|█▏    | 321M/1.56G [00:10<00:34, 38.3MB/s]Downloading [pretrain_hq.jsonl]:  20%|█▏    | 325M/1.56G [00:10<00:34, 38.4MB/s]Downloading [pretrain_hq.jsonl]:  21%|█▏    | 329M/1.56G [00:10<00:33, 39.0MB/s]Downloading [pretrain_hq.jsonl]:  21%|█▎    | 333M/1.56G [00:10<00:34, 38.6MB/s]Downloading [pretrain_hq.jsonl]:  21%|█▎    | 337M/1.56G [00:10<00:34, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  21%|█▎    | 341M/1.56G [00:11<00:34, 38.2MB/s]Downloading [pretrain_hq.jsonl]:  22%|█▎    | 345M/1.56G [00:11<00:34, 38.3MB/s]Downloading [pretrain_hq.jsonl]:  22%|█▎    | 349M/1.56G [00:11<00:33, 38.7MB/s]Downloading [pretrain_hq.jsonl]:  22%|█▎    | 353M/1.56G [00:11<00:33, 39.1MB/s]Downloading [pretrain_hq.jsonl]:  22%|█▎    | 357M/1.56G [00:11<00:32, 39.4MB/s]Downloading [pretrain_hq.jsonl]:  23%|█▎    | 361M/1.56G [00:11<00:33, 39.1MB/s]Downloading [pretrain_hq.jsonl]:  23%|█▍    | 365M/1.56G [00:11<00:33, 38.3MB/s]Downloading [pretrain_hq.jsonl]:  23%|█▍    | 369M/1.56G [00:11<00:33, 38.3MB/s]Downloading [pretrain_hq.jsonl]:  23%|█▍    | 373M/1.56G [00:11<00:33, 38.7MB/s]Downloading [pretrain_hq.jsonl]:  24%|█▍    | 377M/1.56G [00:12<00:32, 39.0MB/s]Downloading [pretrain_hq.jsonl]:  24%|█▍    | 381M/1.56G [00:12<00:32, 39.4MB/s]Downloading [pretrain_hq.jsonl]:  24%|█▍    | 385M/1.56G [00:12<00:32, 39.5MB/s]Downloading [pretrain_hq.jsonl]:  24%|█▍    | 389M/1.56G [00:12<00:31, 39.8MB/s]Downloading [pretrain_hq.jsonl]:  25%|█▍    | 393M/1.56G [00:12<00:31, 39.6MB/s]Downloading [pretrain_hq.jsonl]:  25%|█▍    | 397M/1.56G [00:12<00:33, 37.9MB/s]Downloading [pretrain_hq.jsonl]:  25%|█▌    | 401M/1.56G [00:12<00:32, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  25%|█▌    | 405M/1.56G [00:12<00:34, 35.8MB/s]Downloading [pretrain_hq.jsonl]:  26%|█▌    | 409M/1.56G [00:12<00:34, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  26%|█▌    | 413M/1.56G [00:13<00:33, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  26%|█▌    | 417M/1.56G [00:13<00:32, 37.7MB/s]Downloading [pretrain_hq.jsonl]:  26%|█▌    | 421M/1.56G [00:13<00:32, 38.3MB/s]Downloading [pretrain_hq.jsonl]:  27%|█▌    | 425M/1.56G [00:13<00:31, 38.9MB/s]Downloading [pretrain_hq.jsonl]:  27%|█▌    | 429M/1.56G [00:13<00:30, 39.5MB/s]Downloading [pretrain_hq.jsonl]:  27%|█▋    | 433M/1.56G [00:13<00:32, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  27%|█▋    | 437M/1.56G [00:13<00:32, 37.3MB/s]Downloading [pretrain_hq.jsonl]:  28%|█▋    | 441M/1.56G [00:13<00:32, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  28%|█▋    | 445M/1.56G [00:13<00:31, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  28%|█▋    | 449M/1.56G [00:14<00:31, 38.2MB/s]Downloading [pretrain_hq.jsonl]:  28%|█▋    | 453M/1.56G [00:14<00:30, 38.6MB/s]Downloading [pretrain_hq.jsonl]:  29%|█▋    | 458M/1.56G [00:14<00:29, 39.7MB/s]Downloading [pretrain_hq.jsonl]:  29%|█▋    | 462M/1.56G [00:14<00:29, 39.7MB/s]Downloading [pretrain_hq.jsonl]:  29%|█▊    | 466M/1.56G [00:14<00:29, 39.8MB/s]Downloading [pretrain_hq.jsonl]:  30%|█▊    | 470M/1.56G [00:14<00:29, 40.0MB/s]Downloading [pretrain_hq.jsonl]:  30%|█▊    | 474M/1.56G [00:14<00:29, 39.7MB/s]Downloading [pretrain_hq.jsonl]:  30%|█▊    | 478M/1.56G [00:14<00:29, 39.6MB/s]Downloading [pretrain_hq.jsonl]:  30%|█▊    | 482M/1.56G [00:14<00:29, 39.2MB/s]Downloading [pretrain_hq.jsonl]:  31%|█▊    | 486M/1.56G [00:15<00:30, 38.6MB/s]Downloading [pretrain_hq.jsonl]:  31%|█▊    | 490M/1.56G [00:15<00:30, 38.0MB/s]Downloading [pretrain_hq.jsonl]:  31%|█▊    | 494M/1.56G [00:15<00:30, 37.9MB/s]Downloading [pretrain_hq.jsonl]:  31%|█▉    | 498M/1.56G [00:15<00:30, 38.1MB/s]Downloading [pretrain_hq.jsonl]:  32%|█▉    | 502M/1.56G [00:15<00:29, 38.5MB/s]Downloading [pretrain_hq.jsonl]:  32%|█▉    | 506M/1.56G [00:15<00:29, 38.4MB/s]Downloading [pretrain_hq.jsonl]:  32%|█▉    | 510M/1.56G [00:15<00:29, 38.8MB/s]Downloading [pretrain_hq.jsonl]:  32%|█▉    | 514M/1.56G [00:15<00:29, 38.7MB/s]Downloading [pretrain_hq.jsonl]:  33%|█▉    | 518M/1.56G [00:15<00:29, 38.6MB/s]Downloading [pretrain_hq.jsonl]:  33%|█▉    | 522M/1.56G [00:16<00:28, 38.8MB/s]Downloading [pretrain_hq.jsonl]:  33%|█▉    | 526M/1.56G [00:16<00:28, 39.4MB/s]Downloading [pretrain_hq.jsonl]:  33%|█▉    | 530M/1.56G [00:16<00:28, 39.5MB/s]Downloading [pretrain_hq.jsonl]:  34%|██    | 534M/1.56G [00:16<00:27, 39.7MB/s]Downloading [pretrain_hq.jsonl]:  34%|██    | 538M/1.56G [00:16<00:28, 39.4MB/s]Downloading [pretrain_hq.jsonl]:  34%|██    | 542M/1.56G [00:16<00:27, 40.0MB/s]Downloading [pretrain_hq.jsonl]:  34%|██    | 546M/1.56G [00:16<00:27, 39.8MB/s]Downloading [pretrain_hq.jsonl]:  35%|██    | 551M/1.56G [00:16<00:26, 40.8MB/s]Downloading [pretrain_hq.jsonl]:  35%|██    | 555M/1.56G [00:16<00:26, 40.4MB/s]Downloading [pretrain_hq.jsonl]:  35%|██    | 559M/1.56G [00:16<00:26, 40.3MB/s]Downloading [pretrain_hq.jsonl]:  35%|██    | 563M/1.56G [00:17<00:26, 40.4MB/s]Downloading [pretrain_hq.jsonl]:  36%|██▏   | 567M/1.56G [00:17<00:27, 39.4MB/s]Downloading [pretrain_hq.jsonl]:  36%|██▏   | 572M/1.56G [00:17<00:26, 40.4MB/s]Downloading [pretrain_hq.jsonl]:  36%|██▏   | 576M/1.56G [00:17<00:26, 39.9MB/s]Downloading [pretrain_hq.jsonl]:  36%|██▏   | 580M/1.56G [00:17<00:26, 39.8MB/s]Downloading [pretrain_hq.jsonl]:  37%|██▏   | 584M/1.56G [00:17<00:26, 39.3MB/s]Downloading [pretrain_hq.jsonl]:  37%|██▏   | 588M/1.56G [00:17<00:27, 38.9MB/s]Downloading [pretrain_hq.jsonl]:  37%|██▏   | 592M/1.56G [00:17<00:26, 38.9MB/s]Downloading [pretrain_hq.jsonl]:  37%|██▏   | 596M/1.56G [00:17<00:26, 38.9MB/s]Downloading [pretrain_hq.jsonl]:  38%|██▎   | 600M/1.56G [00:18<00:26, 38.6MB/s]Downloading [pretrain_hq.jsonl]:  38%|██▎   | 604M/1.56G [00:18<00:26, 39.5MB/s]Downloading [pretrain_hq.jsonl]:  38%|██▎   | 608M/1.56G [00:18<00:26, 39.0MB/s]Downloading [pretrain_hq.jsonl]:  38%|██▎   | 612M/1.56G [00:18<00:25, 39.8MB/s]Downloading [pretrain_hq.jsonl]:  39%|██▎   | 616M/1.56G [00:18<00:25, 40.3MB/s]Downloading [pretrain_hq.jsonl]:  39%|██▎   | 620M/1.56G [00:18<00:25, 39.7MB/s]Downloading [pretrain_hq.jsonl]:  39%|██▎   | 624M/1.56G [00:18<00:26, 38.8MB/s]Downloading [pretrain_hq.jsonl]:  39%|██▎   | 628M/1.56G [00:18<00:26, 38.3MB/s]Downloading [pretrain_hq.jsonl]:  40%|██▍   | 632M/1.56G [00:18<00:26, 37.9MB/s]Downloading [pretrain_hq.jsonl]:  40%|██▍   | 636M/1.56G [00:19<00:26, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  40%|██▍   | 640M/1.56G [00:19<00:37, 26.5MB/s]Downloading [pretrain_hq.jsonl]:  40%|██▍   | 644M/1.56G [00:19<00:35, 28.2MB/s]Downloading [pretrain_hq.jsonl]:  41%|██▍   | 648M/1.56G [00:19<00:32, 30.8MB/s]Downloading [pretrain_hq.jsonl]:  41%|██▍   | 652M/1.56G [00:19<00:29, 33.1MB/s]Downloading [pretrain_hq.jsonl]:  41%|██▍   | 656M/1.56G [00:19<00:28, 34.2MB/s]Downloading [pretrain_hq.jsonl]:  41%|██▍   | 660M/1.56G [00:19<00:27, 35.2MB/s]Downloading [pretrain_hq.jsonl]:  42%|██▌   | 664M/1.56G [00:20<00:27, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  42%|██▌   | 668M/1.56G [00:20<00:26, 35.9MB/s]Downloading [pretrain_hq.jsonl]:  42%|██▌   | 672M/1.56G [00:20<00:26, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  42%|██▌   | 676M/1.56G [00:20<00:26, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  43%|██▌   | 680M/1.56G [00:20<00:26, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  43%|██▌   | 684M/1.56G [00:20<00:26, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  43%|██▌   | 688M/1.56G [00:20<00:25, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  43%|██▌   | 692M/1.56G [00:20<00:25, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  44%|██▌   | 696M/1.56G [00:20<00:25, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  44%|██▋   | 700M/1.56G [00:21<00:25, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  44%|██▋   | 704M/1.56G [00:21<00:28, 32.8MB/s]Downloading [pretrain_hq.jsonl]:  44%|██▋   | 708M/1.56G [00:21<00:27, 33.8MB/s]Downloading [pretrain_hq.jsonl]:  45%|██▋   | 712M/1.56G [00:21<00:26, 34.8MB/s]Downloading [pretrain_hq.jsonl]:  45%|██▋   | 716M/1.56G [00:21<00:25, 35.4MB/s]Downloading [pretrain_hq.jsonl]:  45%|██▋   | 720M/1.56G [00:21<00:25, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  45%|██▋   | 724M/1.56G [00:21<00:25, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  46%|██▋   | 728M/1.56G [00:21<00:24, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  46%|██▊   | 732M/1.56G [00:21<00:24, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  46%|██▊   | 736M/1.56G [00:22<00:23, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  46%|██▊   | 740M/1.56G [00:22<00:23, 37.5MB/s]Downloading [pretrain_hq.jsonl]:  47%|██▊   | 744M/1.56G [00:22<00:23, 37.8MB/s]Downloading [pretrain_hq.jsonl]:  47%|██▊   | 748M/1.56G [00:22<00:23, 37.9MB/s]Downloading [pretrain_hq.jsonl]:  47%|██▊   | 752M/1.56G [00:22<00:23, 37.4MB/s]Downloading [pretrain_hq.jsonl]:  47%|██▊   | 756M/1.56G [00:22<00:23, 37.4MB/s]Downloading [pretrain_hq.jsonl]:  48%|██▊   | 760M/1.56G [00:22<00:23, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  48%|██▉   | 764M/1.56G [00:22<00:23, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  48%|██▉   | 768M/1.56G [00:22<00:23, 37.3MB/s]Downloading [pretrain_hq.jsonl]:  48%|██▉   | 772M/1.56G [00:23<00:22, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  49%|██▉   | 776M/1.56G [00:23<00:22, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  49%|██▉   | 780M/1.56G [00:23<00:23, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  49%|██▉   | 784M/1.56G [00:23<00:23, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  49%|██▉   | 788M/1.56G [00:23<00:23, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  50%|██▉   | 792M/1.56G [00:23<00:22, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  50%|██▉   | 796M/1.56G [00:23<00:22, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  50%|███   | 800M/1.56G [00:23<00:23, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  50%|███   | 804M/1.56G [00:24<00:22, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  51%|███   | 808M/1.56G [00:24<00:22, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  51%|███   | 812M/1.56G [00:24<00:22, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  51%|███   | 816M/1.56G [00:24<00:22, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  51%|███   | 820M/1.56G [00:24<00:21, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  52%|███   | 824M/1.56G [00:24<00:21, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  52%|███   | 828M/1.56G [00:24<00:21, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  52%|███▏  | 832M/1.56G [00:24<00:21, 37.5MB/s]Downloading [pretrain_hq.jsonl]:  52%|███▏  | 836M/1.56G [00:24<00:21, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  53%|███▏  | 840M/1.56G [00:25<00:20, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  53%|███▏  | 844M/1.56G [00:25<00:22, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  53%|███▏  | 848M/1.56G [00:25<00:21, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  54%|███▏  | 852M/1.56G [00:25<00:21, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  54%|███▏  | 856M/1.56G [00:25<00:21, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  54%|███▏  | 860M/1.56G [00:25<00:21, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  54%|███▎  | 864M/1.56G [00:25<00:20, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  55%|███▎  | 868M/1.56G [00:25<00:20, 37.8MB/s]Downloading [pretrain_hq.jsonl]:  55%|███▎  | 872M/1.56G [00:25<00:20, 37.5MB/s]Downloading [pretrain_hq.jsonl]:  55%|███▎  | 876M/1.56G [00:26<00:20, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  55%|███▎  | 880M/1.56G [00:26<00:20, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  56%|███▎  | 884M/1.56G [00:26<00:20, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  56%|███▎  | 888M/1.56G [00:26<00:20, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  56%|███▎  | 892M/1.56G [00:26<00:20, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  56%|███▍  | 896M/1.56G [00:26<00:20, 35.5MB/s]Downloading [pretrain_hq.jsonl]:  57%|███▍  | 900M/1.56G [00:26<00:21, 33.8MB/s]Downloading [pretrain_hq.jsonl]:  57%|███▍  | 904M/1.56G [00:26<00:20, 34.6MB/s]Downloading [pretrain_hq.jsonl]:  57%|███▍  | 908M/1.56G [00:27<00:20, 35.3MB/s]Downloading [pretrain_hq.jsonl]:  57%|███▍  | 912M/1.56G [00:27<00:20, 35.1MB/s]Downloading [pretrain_hq.jsonl]:  58%|███▍  | 916M/1.56G [00:27<00:19, 35.8MB/s]Downloading [pretrain_hq.jsonl]:  58%|███▍  | 920M/1.56G [00:27<00:19, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  58%|███▍  | 924M/1.56G [00:27<00:19, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  58%|███▍  | 928M/1.56G [00:27<00:19, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  59%|███▌  | 932M/1.56G [00:27<00:18, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  59%|███▌  | 936M/1.56G [00:27<00:18, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  59%|███▌  | 940M/1.56G [00:27<00:18, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  59%|███▌  | 944M/1.56G [00:28<00:18, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  60%|███▌  | 948M/1.56G [00:28<00:18, 37.1MB/s]Downloading [pretrain_hq.jsonl]:  60%|███▌  | 952M/1.56G [00:28<00:18, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  60%|███▌  | 956M/1.56G [00:28<00:21, 31.5MB/s]Downloading [pretrain_hq.jsonl]:  60%|███▌  | 960M/1.56G [00:28<00:21, 30.8MB/s]Downloading [pretrain_hq.jsonl]:  61%|███▋  | 964M/1.56G [00:28<00:20, 32.2MB/s]Downloading [pretrain_hq.jsonl]:  61%|███▋  | 968M/1.56G [00:28<00:19, 33.6MB/s]Downloading [pretrain_hq.jsonl]:  61%|███▋  | 972M/1.56G [00:28<00:18, 34.6MB/s]Downloading [pretrain_hq.jsonl]:  61%|███▋  | 976M/1.56G [00:29<00:18, 35.0MB/s]Downloading [pretrain_hq.jsonl]:  62%|███▋  | 980M/1.56G [00:29<00:18, 35.4MB/s]Downloading [pretrain_hq.jsonl]:  62%|███▋  | 984M/1.56G [00:29<00:17, 35.9MB/s]Downloading [pretrain_hq.jsonl]:  62%|███▋  | 988M/1.56G [00:29<00:17, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  62%|███▋  | 992M/1.56G [00:29<00:17, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  63%|███▊  | 996M/1.56G [00:29<00:17, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  63%|███▏ | 0.98G/1.56G [00:29<00:17, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  63%|███▏ | 0.98G/1.56G [00:29<00:16, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  63%|███▏ | 0.98G/1.56G [00:29<00:16, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  64%|███▏ | 0.99G/1.56G [00:30<00:16, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  64%|███▏ | 0.99G/1.56G [00:30<00:16, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  64%|███▏ | 1.00G/1.56G [00:30<00:16, 35.9MB/s]Downloading [pretrain_hq.jsonl]:  64%|███▏ | 1.00G/1.56G [00:30<00:16, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  65%|███▏ | 1.00G/1.56G [00:30<00:16, 35.9MB/s]Downloading [pretrain_hq.jsonl]:  65%|███▏ | 1.01G/1.56G [00:30<00:16, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  65%|███▎ | 1.01G/1.56G [00:30<00:15, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  65%|███▎ | 1.02G/1.56G [00:30<00:15, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  66%|███▎ | 1.02G/1.56G [00:31<00:15, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  66%|███▎ | 1.02G/1.56G [00:31<00:15, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  66%|███▎ | 1.03G/1.56G [00:31<00:15, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  66%|███▎ | 1.03G/1.56G [00:31<00:15, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  67%|███▎ | 1.04G/1.56G [00:31<00:15, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  67%|███▎ | 1.04G/1.56G [00:31<00:14, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  67%|███▎ | 1.04G/1.56G [00:31<00:15, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  67%|███▎ | 1.05G/1.56G [00:31<00:15, 35.3MB/s]Downloading [pretrain_hq.jsonl]:  68%|███▍ | 1.05G/1.56G [00:31<00:15, 35.3MB/s]Downloading [pretrain_hq.jsonl]:  68%|███▍ | 1.05G/1.56G [00:32<00:15, 35.5MB/s]Downloading [pretrain_hq.jsonl]:  68%|███▍ | 1.06G/1.56G [00:32<00:14, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  68%|███▍ | 1.06G/1.56G [00:32<00:14, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  69%|███▍ | 1.07G/1.56G [00:32<00:14, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  69%|███▍ | 1.07G/1.56G [00:32<00:14, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  69%|███▍ | 1.07G/1.56G [00:32<00:14, 35.8MB/s]Downloading [pretrain_hq.jsonl]:  69%|███▍ | 1.08G/1.56G [00:32<00:14, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  70%|███▍ | 1.08G/1.56G [00:32<00:14, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  70%|███▍ | 1.09G/1.56G [00:32<00:13, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  70%|███▌ | 1.09G/1.56G [00:33<00:13, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  70%|███▌ | 1.09G/1.56G [00:33<00:13, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  71%|███▌ | 1.10G/1.56G [00:33<00:13, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  71%|███▌ | 1.10G/1.56G [00:33<00:13, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  71%|███▌ | 1.11G/1.56G [00:33<00:13, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  71%|███▌ | 1.11G/1.56G [00:33<00:13, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  72%|███▌ | 1.11G/1.56G [00:33<00:13, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  72%|███▌ | 1.12G/1.56G [00:33<00:12, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  72%|███▌ | 1.12G/1.56G [00:34<00:12, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  72%|███▌ | 1.12G/1.56G [00:34<00:12, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  73%|███▋ | 1.13G/1.56G [00:34<00:12, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  73%|███▋ | 1.13G/1.56G [00:34<00:12, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  73%|███▋ | 1.14G/1.56G [00:34<00:12, 37.1MB/s]Downloading [pretrain_hq.jsonl]:  73%|███▋ | 1.14G/1.56G [00:34<00:11, 37.5MB/s]Downloading [pretrain_hq.jsonl]:  74%|███▋ | 1.14G/1.56G [00:34<00:11, 37.8MB/s]Downloading [pretrain_hq.jsonl]:  74%|███▋ | 1.15G/1.56G [00:34<00:11, 37.6MB/s]Downloading [pretrain_hq.jsonl]:  74%|███▋ | 1.15G/1.56G [00:34<00:11, 37.5MB/s]Downloading [pretrain_hq.jsonl]:  74%|███▋ | 1.16G/1.56G [00:35<00:11, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  75%|███▋ | 1.16G/1.56G [00:35<00:11, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  75%|███▋ | 1.16G/1.56G [00:35<00:11, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  75%|███▊ | 1.17G/1.56G [00:35<00:11, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  75%|███▊ | 1.17G/1.56G [00:35<00:11, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  76%|███▊ | 1.18G/1.56G [00:35<00:11, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  76%|███▊ | 1.18G/1.56G [00:35<00:11, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  76%|███▊ | 1.18G/1.56G [00:35<00:10, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  76%|███▊ | 1.19G/1.56G [00:35<00:10, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  77%|███▊ | 1.19G/1.56G [00:36<00:10, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  77%|███▊ | 1.20G/1.56G [00:36<00:10, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  77%|███▊ | 1.20G/1.56G [00:36<00:10, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  77%|███▊ | 1.20G/1.56G [00:36<00:10, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  78%|███▉ | 1.21G/1.56G [00:36<00:10, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  78%|███▉ | 1.21G/1.56G [00:36<00:10, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  78%|███▉ | 1.21G/1.56G [00:36<00:09, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  78%|███▉ | 1.22G/1.56G [00:36<00:09, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  79%|███▉ | 1.22G/1.56G [00:37<00:10, 33.4MB/s]Downloading [pretrain_hq.jsonl]:  79%|███▉ | 1.23G/1.56G [00:37<00:10, 34.2MB/s]Downloading [pretrain_hq.jsonl]:  79%|███▉ | 1.23G/1.56G [00:37<00:09, 34.9MB/s]Downloading [pretrain_hq.jsonl]:  79%|███▉ | 1.23G/1.56G [00:37<00:09, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  80%|███▉ | 1.24G/1.56G [00:37<00:09, 35.7MB/s]Downloading [pretrain_hq.jsonl]:  80%|███▉ | 1.24G/1.56G [00:37<00:09, 34.0MB/s]Downloading [pretrain_hq.jsonl]:  80%|████ | 1.25G/1.56G [00:37<00:09, 34.7MB/s]Downloading [pretrain_hq.jsonl]:  80%|████ | 1.25G/1.56G [00:37<00:09, 35.3MB/s]Downloading [pretrain_hq.jsonl]:  81%|████ | 1.25G/1.56G [00:37<00:09, 35.6MB/s]Downloading [pretrain_hq.jsonl]:  81%|████ | 1.26G/1.56G [00:38<00:08, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  81%|████ | 1.26G/1.56G [00:38<00:08, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  81%|████ | 1.27G/1.56G [00:38<00:08, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  82%|████ | 1.27G/1.56G [00:38<00:08, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  82%|████ | 1.27G/1.56G [00:38<00:08, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  82%|████ | 1.28G/1.56G [00:38<00:08, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  82%|████ | 1.28G/1.56G [00:38<00:08, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  83%|████▏| 1.29G/1.56G [00:38<00:07, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  83%|████▏| 1.29G/1.56G [00:38<00:07, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  83%|████▏| 1.29G/1.56G [00:39<00:07, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  83%|████▏| 1.30G/1.56G [00:39<00:07, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  84%|████▏| 1.30G/1.56G [00:39<00:07, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  84%|████▏| 1.30G/1.56G [00:39<00:07, 37.3MB/s]Downloading [pretrain_hq.jsonl]:  84%|████▏| 1.31G/1.56G [00:39<00:07, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  84%|████▏| 1.31G/1.56G [00:39<00:07, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  85%|████▏| 1.32G/1.56G [00:39<00:07, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  85%|████▏| 1.32G/1.56G [00:39<00:06, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  85%|████▎| 1.32G/1.56G [00:40<00:06, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  85%|████▎| 1.33G/1.56G [00:40<00:06, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  86%|████▎| 1.33G/1.56G [00:40<00:06, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  86%|████▎| 1.34G/1.56G [00:40<00:06, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  86%|████▎| 1.34G/1.56G [00:40<00:06, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  86%|████▎| 1.34G/1.56G [00:40<00:06, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  87%|████▎| 1.35G/1.56G [00:40<00:06, 35.9MB/s]Downloading [pretrain_hq.jsonl]:  87%|████▎| 1.35G/1.56G [00:40<00:06, 36.1MB/s]Downloading [pretrain_hq.jsonl]:  87%|████▎| 1.36G/1.56G [00:40<00:05, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  87%|████▎| 1.36G/1.56G [00:41<00:05, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  88%|████▍| 1.36G/1.56G [00:41<00:05, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  88%|████▍| 1.37G/1.56G [00:41<00:05, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  88%|████▍| 1.37G/1.56G [00:41<00:05, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  88%|████▍| 1.38G/1.56G [00:41<00:05, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  89%|████▍| 1.38G/1.56G [00:41<00:05, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  89%|████▍| 1.38G/1.56G [00:41<00:05, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  89%|████▍| 1.39G/1.56G [00:41<00:04, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  89%|████▍| 1.39G/1.56G [00:41<00:04, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  90%|████▍| 1.39G/1.56G [00:42<00:04, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  90%|████▍| 1.40G/1.56G [00:42<00:04, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  90%|████▌| 1.40G/1.56G [00:42<00:04, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  90%|████▌| 1.41G/1.56G [00:42<00:04, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  91%|████▌| 1.41G/1.56G [00:42<00:04, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  91%|████▌| 1.41G/1.56G [00:42<00:04, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  91%|████▌| 1.42G/1.56G [00:42<00:04, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  91%|████▌| 1.42G/1.56G [00:42<00:03, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  92%|████▌| 1.43G/1.56G [00:43<00:03, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  92%|████▌| 1.43G/1.56G [00:43<00:03, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  92%|████▌| 1.43G/1.56G [00:43<00:03, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  92%|████▌| 1.44G/1.56G [00:43<00:03, 36.3MB/s]Downloading [pretrain_hq.jsonl]:  93%|████▋| 1.44G/1.56G [00:43<00:03, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  93%|████▋| 1.45G/1.56G [00:43<00:03, 36.6MB/s]Downloading [pretrain_hq.jsonl]:  93%|████▋| 1.45G/1.56G [00:43<00:03, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  93%|████▋| 1.45G/1.56G [00:43<00:02, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  94%|████▋| 1.46G/1.56G [00:43<00:02, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  94%|████▋| 1.46G/1.56G [00:44<00:02, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  94%|████▋| 1.46G/1.56G [00:44<00:02, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  94%|████▋| 1.47G/1.56G [00:44<00:02, 37.1MB/s]Downloading [pretrain_hq.jsonl]:  95%|████▋| 1.47G/1.56G [00:44<00:02, 37.2MB/s]Downloading [pretrain_hq.jsonl]:  95%|████▋| 1.48G/1.56G [00:44<00:02, 36.0MB/s]Downloading [pretrain_hq.jsonl]:  95%|████▊| 1.48G/1.56G [00:44<00:02, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  95%|████▊| 1.48G/1.56G [00:44<00:02, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  96%|████▊| 1.49G/1.56G [00:44<00:01, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  96%|████▊| 1.49G/1.56G [00:44<00:01, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  96%|████▊| 1.50G/1.56G [00:45<00:01, 36.2MB/s]Downloading [pretrain_hq.jsonl]:  96%|████▊| 1.50G/1.56G [00:45<00:01, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  97%|████▊| 1.50G/1.56G [00:45<00:01, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  97%|████▊| 1.51G/1.56G [00:45<00:01, 36.9MB/s]Downloading [pretrain_hq.jsonl]:  97%|████▊| 1.51G/1.56G [00:45<00:01, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  97%|████▊| 1.52G/1.56G [00:45<00:01, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  98%|████▉| 1.52G/1.56G [00:45<00:01, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  98%|████▉| 1.52G/1.56G [00:45<00:00, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  98%|████▉| 1.53G/1.56G [00:45<00:00, 37.0MB/s]Downloading [pretrain_hq.jsonl]:  98%|████▉| 1.53G/1.56G [00:46<00:00, 36.8MB/s]Downloading [pretrain_hq.jsonl]:  99%|████▉| 1.54G/1.56G [00:46<00:00, 36.7MB/s]Downloading [pretrain_hq.jsonl]:  99%|████▉| 1.54G/1.56G [00:46<00:00, 36.5MB/s]Downloading [pretrain_hq.jsonl]:  99%|████▉| 1.54G/1.56G [00:46<00:00, 36.4MB/s]Downloading [pretrain_hq.jsonl]:  99%|████▉| 1.55G/1.56G [00:46<00:00, 36.9MB/s]Downloading [pretrain_hq.jsonl]: 100%|████▉| 1.55G/1.56G [00:46<00:00, 37.0MB/s]Downloading [pretrain_hq.jsonl]: 100%|████▉| 1.55G/1.56G [00:46<00:00, 36.8MB/s]Downloading [pretrain_hq.jsonl]: 100%|█████| 1.56G/1.56G [00:46<00:00, 35.7MB/s]
+89.5s 44 
+89.5s 45 Successfully Downloaded from dataset gongjy/minimind_dataset.
+89.5s 46 
+91.3s 47 Already up to date.
+91.5s 48 total 708K
+91.5s 49 -rw-r--r-- 1 root root 2.7K Oct 17 23:46 AGENTS.md
+91.5s 50 -rw-r--r-- 1 root root 3.6K Oct 17 23:46 check_ddp_port.py
+91.5s 51 -rw-r--r-- 1 root root 8.7K Oct 17 23:46 CLAUDE.md
+91.5s 52 drwxr-xr-x 3 root root 4.0K Oct 17 23:47 [0m[01;34mdataset[0m/
+91.5s 53 -rw-r--r-- 1 root root  11K Oct 17 23:46 main.py
+91.5s 54 drwxr-xr-x 2 root root 4.0K Oct 17 23:46 [01;34mmodel[0m/
+91.5s 55 -rw-r--r-- 1 root root  99K Oct 17 23:47 __notebook__.ipynb
+91.5s 56 -rw-r--r-- 1 root root 2.1K Oct 17 23:46 pyproject.toml
+91.5s 57 -rw-r--r-- 1 root root  814 Oct 17 23:46 test_gpu_detection.py
+91.5s 58 -rw-r--r-- 1 root root  465 Oct 17 23:46 test_syntax.py
+91.5s 59 drwxr-xr-x 2 root root 4.0K Oct 17 23:46 [01;34mtriainer[0m/
+91.5s 60 -rw-r--r-- 1 root root 552K Oct 17 23:46 uv.lock
+93.6s 61 检测到 2 个 GPU，自动启用分布式训练
+93.6s 62 使用 torchrun 启动分布式训练...
+93.6s 63 使用端口: 41705
+97.4s 64 检测到 2 个 GPU，使用分布式训练模式
+115.9s 65 2025-10-17 23:47:42.586395: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+115.9s 66 2025-10-17 23:47:42.586417: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+116.3s 67 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+116.3s 68 E0000 00:00:1760744862.990216      84 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+116.3s 69 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+116.3s 70 E0000 00:00:1760744862.990208      85 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+116.4s 71 E0000 00:00:1760744863.106038      84 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+116.4s 72 E0000 00:00:1760744863.106045      85 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+134.3s 73 LLM可训练参数量:95.052 M
+149.4s 74 Epoch:[1/2](0/22080) loss:277.185 lr:0.000550000000 epoch_Time:1025.0min:
+221.3s 75 Epoch:[1/2](100/22080) loss:293.618 lr:0.000549993674 epoch_Time:270.0min:
+302.3s 76 Epoch:[1/2](200/22080) loss:260.157 lr:0.000549974695 epoch_Time:282.0min:
+383.2s 77 Epoch:[1/2](300/22080) loss:234.200 lr:0.000549943065 epoch_Time:286.0min:
+464.5s 78 Epoch:[1/2](400/22080) loss:244.951 lr:0.000549898786 epoch_Time:286.0min:
+546.5s 79 Epoch:[1/2](500/22080) loss:229.443 lr:0.000549841859 epoch_Time:287.0min:
+628.3s 80 Epoch:[1/2](600/22080) loss:224.832 lr:0.000549772287 epoch_Time:286.0min:
+710.3s 81 Epoch:[1/2](700/22080) loss:222.247 lr:0.000549690074 epoch_Time:286.0min:
+792.8s 82 Epoch:[1/2](800/22080) loss:219.309 lr:0.000549595224 epoch_Time:286.0min:
+874.6s 83 Epoch:[1/2](900/22080) loss:226.281 lr:0.000549487743 epoch_Time:285.0min:
+957.1s 84 Epoch:[1/2](1000/22080) loss:220.573 lr:0.000549367634 epoch_Time:284.0min:
+1038.7s 85 Epoch:[1/2](1100/22080) loss:225.024 lr:0.000549234905 epoch_Time:284.0min:
+1120.4s 86 Epoch:[1/2](1200/22080) loss:221.201 lr:0.000549089562 epoch_Time:282.0min:
+1202.1s 87 Epoch:[1/2](1300/22080) loss:221.024 lr:0.000548931613 epoch_Time:281.0min:
+1284.0s 88 Epoch:[1/2](1400/22080) loss:222.008 lr:0.000548761065 epoch_Time:280.0min:
+1366.0s 89 Epoch:[1/2](1500/22080) loss:224.450 lr:0.000548577927 epoch_Time:278.0min:
+1447.9s 90 Epoch:[1/2](1600/22080) loss:220.849 lr:0.000548382208 epoch_Time:278.0min:
+1529.5s 91 Epoch:[1/2](1700/22080) loss:221.947 lr:0.000548173919 epoch_Time:276.0min:
+1611.1s 92 Epoch:[1/2](1800/22080) loss:225.600 lr:0.000547953069 epoch_Time:275.0min:
+1692.9s 93 Epoch:[1/2](1900/22080) loss:222.066 lr:0.000547719671 epoch_Time:274.0min:
+1775.2s 94 Epoch:[1/2](2000/22080) loss:220.301 lr:0.000547473735 epoch_Time:272.0min:
+1857.3s 95 Epoch:[1/2](2100/22080) loss:220.356 lr:0.000547215275 epoch_Time:271.0min:
+1939.2s 96 Epoch:[1/2](2200/22080) loss:225.334 lr:0.000546944303 epoch_Time:270.0min:
+2020.9s 97 Epoch:[1/2](2300/22080) loss:224.663 lr:0.000546660833 epoch_Time:268.0min:
+2102.8s 98 Epoch:[1/2](2400/22080) loss:222.247 lr:0.000546364879 epoch_Time:267.0min:
+2185.1s 99 Epoch:[1/2](2500/22080) loss:220.239 lr:0.000546056457 epoch_Time:266.0min:
+2267.0s 100 Epoch:[1/2](2600/22080) loss:218.420 lr:0.000545735582 epoch_Time:264.0min:
+2349.0s 101 Epoch:[1/2](2700/22080) loss:218.747 lr:0.000545402270 epoch_Time:264.0min:
+2431.1s 102 Epoch:[1/2](2800/22080) loss:221.291 lr:0.000545056538 epoch_Time:262.0min:
+2513.1s 103 Epoch:[1/2](2900/22080) loss:219.295 lr:0.000544698404 epoch_Time:261.0min:
+2595.7s 104 Epoch:[1/2](3000/22080) loss:221.497 lr:0.000544327885 epoch_Time:260.0min:
+2677.5s 105 Epoch:[1/2](3100/22080) loss:220.435 lr:0.000543945001 epoch_Time:258.0min:
+2759.3s 106 Epoch:[1/2](3200/22080) loss:218.164 lr:0.000543549771 epoch_Time:257.0min:
+2841.0s 107 Epoch:[1/2](3300/22080) loss:219.395 lr:0.000543142214 epoch_Time:256.0min:
+2922.5s 108 Epoch:[1/2](3400/22080) loss:220.490 lr:0.000542722352 epoch_Time:254.0min:
+3004.6s 109 Epoch:[1/2](3500/22080) loss:219.429 lr:0.000542290206 epoch_Time:253.0min:
+3086.4s 110 Epoch:[1/2](3600/22080) loss:219.796 lr:0.000541845797 epoch_Time:252.0min:
+3167.7s 111 Epoch:[1/2](3700/22080) loss:219.278 lr:0.000541389149 epoch_Time:250.0min:
+3249.1s 112 Epoch:[1/2](3800/22080) loss:221.050 lr:0.000540920283 epoch_Time:249.0min:
+3330.2s 113 Epoch:[1/2](3900/22080) loss:219.009 lr:0.000540439225 epoch_Time:247.0min:
+3411.9s 114 Epoch:[1/2](4000/22080) loss:217.677 lr:0.000539945998 epoch_Time:246.0min:
+3493.3s 115 Epoch:[1/2](4100/22080) loss:217.572 lr:0.000539440627 epoch_Time:245.0min:
+3574.9s 116 Epoch:[1/2](4200/22080) loss:218.789 lr:0.000538923138 epoch_Time:243.0min:
+3656.7s 117 Epoch:[1/2](4300/22080) loss:220.709 lr:0.000538393557 epoch_Time:242.0min:
+3738.5s 118 Epoch:[1/2](4400/22080) loss:219.010 lr:0.000537851910 epoch_Time:241.0min:
+3820.5s 119 Epoch:[1/2](4500/22080) loss:219.124 lr:0.000537298226 epoch_Time:239.0min:
+3902.2s 120 Epoch:[1/2](4600/22080) loss:218.488 lr:0.000536732532 epoch_Time:238.0min:
+3983.6s 121 Epoch:[1/2](4700/22080) loss:217.676 lr:0.000536154857 epoch_Time:237.0min:
+4065.1s 122 Epoch:[1/2](4800/22080) loss:220.033 lr:0.000535565231 epoch_Time:235.0min:
+4146.7s 123 Epoch:[1/2](4900/22080) loss:218.471 lr:0.000534963682 epoch_Time:234.0min:
+4228.6s 124 Epoch:[1/2](5000/22080) loss:218.661 lr:0.000534350241 epoch_Time:232.0min:
+4310.0s 125 Epoch:[1/2](5100/22080) loss:217.369 lr:0.000533724940 epoch_Time:231.0min:
+4391.9s 126 Epoch:[1/2](5200/22080) loss:220.946 lr:0.000533087810 epoch_Time:230.0min:
+4473.5s 127 Epoch:[1/2](5300/22080) loss:217.974 lr:0.000532438883 epoch_Time:228.0min:
+4555.1s 128 Epoch:[1/2](5400/22080) loss:215.469 lr:0.000531778193 epoch_Time:227.0min:
+4637.0s 129 Epoch:[1/2](5500/22080) loss:216.912 lr:0.000531105772 epoch_Time:226.0min:
+4718.4s 130 Epoch:[1/2](5600/22080) loss:217.035 lr:0.000530421655 epoch_Time:224.0min:
+4800.0s 131 Epoch:[1/2](5700/22080) loss:219.298 lr:0.000529725876 epoch_Time:223.0min:
+4881.5s 132 Epoch:[1/2](5800/22080) loss:217.880 lr:0.000529018470 epoch_Time:222.0min:
+4962.9s 133 Epoch:[1/2](5900/22080) loss:218.607 lr:0.000528299474 epoch_Time:220.0min:
+5044.7s 134 Epoch:[1/2](6000/22080) loss:217.069 lr:0.000527568924 epoch_Time:219.0min:
+5126.0s 135 Epoch:[1/2](6100/22080) loss:219.295 lr:0.000526826856 epoch_Time:218.0min:
+5207.5s 136 Epoch:[1/2](6200/22080) loss:217.064 lr:0.000526073308 epoch_Time:216.0min:
+5289.0s 137 Epoch:[1/2](6300/22080) loss:217.826 lr:0.000525308319 epoch_Time:215.0min:
+5370.2s 138 Epoch:[1/2](6400/22080) loss:217.285 lr:0.000524531926 epoch_Time:213.0min:
+5451.9s 139 Epoch:[1/2](6500/22080) loss:216.507 lr:0.000523744170 epoch_Time:212.0min:
+5533.2s 140 Epoch:[1/2](6600/22080) loss:219.529 lr:0.000522945091 epoch_Time:211.0min:
+5614.6s 141 Epoch:[1/2](6700/22080) loss:218.990 lr:0.000522134728 epoch_Time:209.0min:
+5695.8s 142 Epoch:[1/2](6800/22080) loss:219.174 lr:0.000521313122 epoch_Time:208.0min:
+5777.2s 143 Epoch:[1/2](6900/22080) loss:217.697 lr:0.000520480316 epoch_Time:207.0min:
+5858.9s 144 Epoch:[1/2](7000/22080) loss:214.960 lr:0.000519636351 epoch_Time:205.0min:
+5940.2s 145 Epoch:[1/2](7100/22080) loss:215.119 lr:0.000518781271 epoch_Time:204.0min:
+6021.5s 146 Epoch:[1/2](7200/22080) loss:217.378 lr:0.000517915118 epoch_Time:203.0min:
+6102.9s 147 Epoch:[1/2](7300/22080) loss:213.733 lr:0.000517037936 epoch_Time:201.0min:
+6184.4s 148 Epoch:[1/2](7400/22080) loss:215.754 lr:0.000516149769 epoch_Time:200.0min:
+6266.1s 149 Epoch:[1/2](7500/22080) loss:214.894 lr:0.000515250663 epoch_Time:199.0min:
+6347.7s 150 Epoch:[1/2](7600/22080) loss:217.138 lr:0.000514340664 epoch_Time:197.0min:
+6429.2s 151 Epoch:[1/2](7700/22080) loss:217.988 lr:0.000513419816 epoch_Time:196.0min:
+6510.7s 152 Epoch:[1/2](7800/22080) loss:215.455 lr:0.000512488167 epoch_Time:194.0min:
+6592.0s 153 Epoch:[1/2](7900/22080) loss:217.782 lr:0.000511545764 epoch_Time:193.0min:
+6674.0s 154 Epoch:[1/2](8000/22080) loss:216.671 lr:0.000510592655 epoch_Time:192.0min:
+6755.5s 155 Epoch:[1/2](8100/22080) loss:213.131 lr:0.000509628887 epoch_Time:190.0min:
+6837.0s 156 Epoch:[1/2](8200/22080) loss:214.454 lr:0.000508654510 epoch_Time:189.0min:
+6918.4s 157 Epoch:[1/2](8300/22080) loss:212.694 lr:0.000507669573 epoch_Time:188.0min:
+7000.0s 158 Epoch:[1/2](8400/22080) loss:214.642 lr:0.000506674126 epoch_Time:186.0min:
+7082.1s 159 Epoch:[1/2](8500/22080) loss:218.471 lr:0.000505668219 epoch_Time:185.0min:
+7163.6s 160 Epoch:[1/2](8600/22080) loss:217.961 lr:0.000504651903 epoch_Time:184.0min:
+7245.1s 161 Epoch:[1/2](8700/22080) loss:217.904 lr:0.000503625229 epoch_Time:182.0min:
+7326.8s 162 Epoch:[1/2](8800/22080) loss:218.044 lr:0.000502588250 epoch_Time:181.0min:
+7408.2s 163 Epoch:[1/2](8900/22080) loss:216.422 lr:0.000501541018 epoch_Time:179.0min:
+7490.1s 164 Epoch:[1/2](9000/22080) loss:215.584 lr:0.000500483585 epoch_Time:178.0min:
+7571.6s 165 Epoch:[1/2](9100/22080) loss:216.791 lr:0.000499416006 epoch_Time:177.0min:
+7653.1s 166 Epoch:[1/2](9200/22080) loss:217.055 lr:0.000498338335 epoch_Time:175.0min:
+7734.5s 167 Epoch:[1/2](9300/22080) loss:216.474 lr:0.000497250626 epoch_Time:174.0min:
+7815.9s 168 Epoch:[1/2](9400/22080) loss:213.947 lr:0.000496152933 epoch_Time:173.0min:
+7897.7s 169 Epoch:[1/2](9500/22080) loss:215.463 lr:0.000495045314 epoch_Time:171.0min:
+7979.1s 170 Epoch:[1/2](9600/22080) loss:215.195 lr:0.000493927823 epoch_Time:170.0min:
+8060.5s 171 Epoch:[1/2](9700/22080) loss:216.059 lr:0.000492800517 epoch_Time:169.0min:
+8142.0s 172 Epoch:[1/2](9800/22080) loss:213.999 lr:0.000491663453 epoch_Time:167.0min:
+8223.4s 173 Epoch:[1/2](9900/22080) loss:216.367 lr:0.000490516690 epoch_Time:166.0min:
+8305.2s 174 Epoch:[1/2](10000/22080) loss:215.787 lr:0.000489360284 epoch_Time:165.0min:
+8386.6s 175 Epoch:[1/2](10100/22080) loss:217.173 lr:0.000488194295 epoch_Time:163.0min:
+8468.0s 176 Epoch:[1/2](10200/22080) loss:213.850 lr:0.000487018781 epoch_Time:162.0min:
+8549.4s 177 Epoch:[1/2](10300/22080) loss:217.520 lr:0.000485833802 epoch_Time:160.0min:
+8631.0s 178 Epoch:[1/2](10400/22080) loss:215.288 lr:0.000484639417 epoch_Time:159.0min:
+8712.8s 179 Epoch:[1/2](10500/22080) loss:216.688 lr:0.000483435689 epoch_Time:158.0min:
+8794.4s 180 Epoch:[1/2](10600/22080) loss:215.411 lr:0.000482222676 epoch_Time:156.0min:
+8875.5s 181 Epoch:[1/2](10700/22080) loss:212.882 lr:0.000481000441 epoch_Time:155.0min:
+8956.7s 182 Epoch:[1/2](10800/22080) loss:216.736 lr:0.000479769045 epoch_Time:154.0min:
+9037.9s 183 Epoch:[1/2](10900/22080) loss:216.117 lr:0.000478528552 epoch_Time:152.0min:
+9119.4s 184 Epoch:[1/2](11000/22080) loss:212.229 lr:0.000477279023 epoch_Time:151.0min:
+9200.1s 185 Epoch:[1/2](11100/22080) loss:213.530 lr:0.000476020521 epoch_Time:150.0min:
+9281.3s 186 Epoch:[1/2](11200/22080) loss:212.004 lr:0.000474753112 epoch_Time:148.0min:
+9362.7s 187 Epoch:[1/2](11300/22080) loss:216.843 lr:0.000473476858 epoch_Time:147.0min:
+9444.2s 188 Epoch:[1/2](11400/22080) loss:212.777 lr:0.000472191824 epoch_Time:146.0min:
+9526.1s 189 Epoch:[1/2](11500/22080) loss:212.543 lr:0.000470898076 epoch_Time:144.0min:
+9607.6s 190 Epoch:[1/2](11600/22080) loss:212.297 lr:0.000469595678 epoch_Time:143.0min:
+9689.0s 191 Epoch:[1/2](11700/22080) loss:214.526 lr:0.000468284697 epoch_Time:141.0min:
+9770.4s 192 Epoch:[1/2](11800/22080) loss:211.454 lr:0.000466965199 epoch_Time:140.0min:
+9851.8s 193 Epoch:[1/2](11900/22080) loss:214.743 lr:0.000465637251 epoch_Time:139.0min:
+9933.8s 194 Epoch:[1/2](12000/22080) loss:212.706 lr:0.000464300920 epoch_Time:137.0min:
+10015.1s 195 Epoch:[1/2](12100/22080) loss:216.125 lr:0.000462956273 epoch_Time:136.0min:
+10096.5s 196 Epoch:[1/2](12200/22080) loss:215.730 lr:0.000461603380 epoch_Time:135.0min:
+10177.9s 197 Epoch:[1/2](12300/22080) loss:215.974 lr:0.000460242307 epoch_Time:133.0min:
+10259.5s 198 Epoch:[1/2](12400/22080) loss:213.560 lr:0.000458873125 epoch_Time:132.0min:
+10341.3s 199 Epoch:[1/2](12500/22080) loss:212.809 lr:0.000457495902 epoch_Time:131.0min:
+10422.7s 200 Epoch:[1/2](12600/22080) loss:213.967 lr:0.000456110708 epoch_Time:129.0min:
+10504.1s 201 Epoch:[1/2](12700/22080) loss:212.251 lr:0.000454717613 epoch_Time:128.0min:
+10585.5s 202 Epoch:[1/2](12800/22080) loss:212.437 lr:0.000453316688 epoch_Time:127.0min:
+10666.8s 203 Epoch:[1/2](12900/22080) loss:212.122 lr:0.000451908003 epoch_Time:125.0min:
+10748.8s 204 Epoch:[1/2](13000/22080) loss:211.676 lr:0.000450491630 epoch_Time:124.0min:
+10830.1s 205 Epoch:[1/2](13100/22080) loss:212.651 lr:0.000449067641 epoch_Time:122.0min:
+10911.5s 206 Epoch:[1/2](13200/22080) loss:214.767 lr:0.000447636108 epoch_Time:121.0min:
+10993.0s 207 Epoch:[1/2](13300/22080) loss:212.752 lr:0.000446197102 epoch_Time:120.0min:
+11074.4s 208 Epoch:[1/2](13400/22080) loss:215.850 lr:0.000444750698 epoch_Time:118.0min:
+11156.2s 209 Epoch:[1/2](13500/22080) loss:213.258 lr:0.000443296967 epoch_Time:117.0min:
+11237.6s 210 Epoch:[1/2](13600/22080) loss:213.138 lr:0.000441835985 epoch_Time:116.0min:
+11319.0s 211 Epoch:[1/2](13700/22080) loss:212.580 lr:0.000440367823 epoch_Time:114.0min:
+11400.4s 212 Epoch:[1/2](13800/22080) loss:212.556 lr:0.000438892558 epoch_Time:113.0min:
+11481.6s 213 Epoch:[1/2](13900/22080) loss:213.424 lr:0.000437410264 epoch_Time:112.0min:
+11563.4s 214 Epoch:[1/2](14000/22080) loss:215.429 lr:0.000435921015 epoch_Time:110.0min:
+11644.8s 215 Epoch:[1/2](14100/22080) loss:211.916 lr:0.000434424887 epoch_Time:109.0min:
+11726.2s 216 Epoch:[1/2](14200/22080) loss:211.479 lr:0.000432921955 epoch_Time:108.0min:
+11807.5s 217 Epoch:[1/2](14300/22080) loss:213.561 lr:0.000431412297 epoch_Time:106.0min:
+11888.9s 218 Epoch:[1/2](14400/22080) loss:214.595 lr:0.000429895988 epoch_Time:105.0min:
+11970.7s 219 Epoch:[1/2](14500/22080) loss:213.561 lr:0.000428373104 epoch_Time:103.0min:
+12052.2s 220 Epoch:[1/2](14600/22080) loss:214.534 lr:0.000426843724 epoch_Time:102.0min:
+12133.7s 221 Epoch:[1/2](14700/22080) loss:212.126 lr:0.000425307924 epoch_Time:101.0min:
+12215.4s 222 Epoch:[1/2](14800/22080) loss:214.263 lr:0.000423765782 epoch_Time:99.0min:
+12296.8s 223 Epoch:[1/2](14900/22080) loss:211.704 lr:0.000422217376 epoch_Time:98.0min:
+12378.7s 224 Epoch:[1/2](15000/22080) loss:212.259 lr:0.000420662785 epoch_Time:97.0min:
+12460.1s 225 Epoch:[1/2](15100/22080) loss:214.253 lr:0.000419102086 epoch_Time:95.0min:
+12541.6s 226 Epoch:[1/2](15200/22080) loss:211.947 lr:0.000417535361 epoch_Time:94.0min:
+12623.0s 227 Epoch:[1/2](15300/22080) loss:214.967 lr:0.000415962686 epoch_Time:93.0min:
+12704.3s 228 Epoch:[1/2](15400/22080) loss:211.820 lr:0.000414384143 epoch_Time:91.0min:
+12786.1s 229 Epoch:[1/2](15500/22080) loss:211.404 lr:0.000412799811 epoch_Time:90.0min:
+12867.5s 230 Epoch:[1/2](15600/22080) loss:211.357 lr:0.000411209769 epoch_Time:88.0min:
+12948.9s 231 Epoch:[1/2](15700/22080) loss:211.756 lr:0.000409614100 epoch_Time:87.0min:
+13030.3s 232 Epoch:[1/2](15800/22080) loss:211.925 lr:0.000408012883 epoch_Time:86.0min:
+13111.7s 233 Epoch:[1/2](15900/22080) loss:211.385 lr:0.000406406199 epoch_Time:84.0min:
+13193.6s 234 Epoch:[1/2](16000/22080) loss:211.734 lr:0.000404794130 epoch_Time:83.0min:
+13275.0s 235 Epoch:[1/2](16100/22080) loss:211.298 lr:0.000403176757 epoch_Time:82.0min:
+13356.4s 236 Epoch:[1/2](16200/22080) loss:211.316 lr:0.000401554163 epoch_Time:80.0min:
+13437.8s 237 Epoch:[1/2](16300/22080) loss:211.761 lr:0.000399926429 epoch_Time:79.0min:
+13519.3s 238 Epoch:[1/2](16400/22080) loss:214.238 lr:0.000398293637 epoch_Time:78.0min:
+13601.1s 239 Epoch:[1/2](16500/22080) loss:214.376 lr:0.000396655871 epoch_Time:76.0min:
+13682.5s 240 Epoch:[1/2](16600/22080) loss:211.967 lr:0.000395013213 epoch_Time:75.0min:
+13763.9s 241 Epoch:[1/2](16700/22080) loss:211.928 lr:0.000393365747 epoch_Time:74.0min:
+13845.3s 242 Epoch:[1/2](16800/22080) loss:211.557 lr:0.000391713555 epoch_Time:72.0min:
+13926.8s 243 Epoch:[1/2](16900/22080) loss:213.081 lr:0.000390056721 epoch_Time:71.0min:
+14008.7s 244 Epoch:[1/2](17000/22080) loss:214.369 lr:0.000388395330 epoch_Time:69.0min:
+14090.3s 245 Epoch:[1/2](17100/22080) loss:215.295 lr:0.000386729465 epoch_Time:68.0min:
+14171.9s 246 Epoch:[1/2](17200/22080) loss:214.984 lr:0.000385059210 epoch_Time:67.0min:
+14253.6s 247 Epoch:[1/2](17300/22080) loss:213.061 lr:0.000383384651 epoch_Time:65.0min:
+14335.4s 248 Epoch:[1/2](17400/22080) loss:214.439 lr:0.000381705871 epoch_Time:64.0min:
+14417.5s 249 Epoch:[1/2](17500/22080) loss:214.574 lr:0.000380022957 epoch_Time:63.0min:
+14499.4s 250 Epoch:[1/2](17600/22080) loss:213.812 lr:0.000378335992 epoch_Time:61.0min:
+14581.3s 251 Epoch:[1/2](17700/22080) loss:211.526 lr:0.000376645063 epoch_Time:60.0min:
+14662.8s 252 Epoch:[1/2](17800/22080) loss:211.698 lr:0.000374950254 epoch_Time:59.0min:
+14744.2s 253 Epoch:[1/2](17900/22080) loss:211.356 lr:0.000373251653 epoch_Time:57.0min:
+14826.0s 254 Epoch:[1/2](18000/22080) loss:214.545 lr:0.000371549344 epoch_Time:56.0min:
+14907.4s 255 Epoch:[1/2](18100/22080) loss:211.325 lr:0.000369843414 epoch_Time:54.0min:
+14988.9s 256 Epoch:[1/2](18200/22080) loss:213.018 lr:0.000368133949 epoch_Time:53.0min:
+15070.3s 257 Epoch:[1/2](18300/22080) loss:213.798 lr:0.000366421036 epoch_Time:52.0min:
+15151.8s 258 Epoch:[1/2](18400/22080) loss:211.295 lr:0.000364704761 epoch_Time:50.0min:
+15233.6s 259 Epoch:[1/2](18500/22080) loss:213.638 lr:0.000362985212 epoch_Time:49.0min:
+15315.2s 260 Epoch:[1/2](18600/22080) loss:210.311 lr:0.000361262475 epoch_Time:48.0min:
+15396.8s 261 Epoch:[1/2](18700/22080) loss:212.318 lr:0.000359536637 epoch_Time:46.0min:
+15478.4s 262 Epoch:[1/2](18800/22080) loss:213.777 lr:0.000357807786 epoch_Time:45.0min:
+15559.8s 263 Epoch:[1/2](18900/22080) loss:214.286 lr:0.000356076010 epoch_Time:44.0min:
+15641.7s 264 Epoch:[1/2](19000/22080) loss:214.156 lr:0.000354341395 epoch_Time:42.0min:
+15723.6s 265 Epoch:[1/2](19100/22080) loss:214.245 lr:0.000352604030 epoch_Time:41.0min:
+15805.2s 266 Epoch:[1/2](19200/22080) loss:213.715 lr:0.000350864003 epoch_Time:40.0min:
+15886.9s 267 Epoch:[1/2](19300/22080) loss:211.147 lr:0.000349121402 epoch_Time:38.0min:
+15968.5s 268 Epoch:[1/2](19400/22080) loss:214.333 lr:0.000347376315 epoch_Time:37.0min:
+16050.5s 269 Epoch:[1/2](19500/22080) loss:214.453 lr:0.000345628829 epoch_Time:35.0min:
+16132.5s 270 Epoch:[1/2](19600/22080) loss:210.264 lr:0.000343879035 epoch_Time:34.0min:
+16214.2s 271 Epoch:[1/2](19700/22080) loss:211.063 lr:0.000342127020 epoch_Time:33.0min:
+16296.1s 272 Epoch:[1/2](19800/22080) loss:214.370 lr:0.000340372873 epoch_Time:31.0min:
+16377.8s 273 Epoch:[1/2](19900/22080) loss:211.480 lr:0.000338616682 epoch_Time:30.0min:
+16459.9s 274 Epoch:[1/2](20000/22080) loss:210.543 lr:0.000336858537 epoch_Time:29.0min:
+16541.8s 275 Epoch:[1/2](20100/22080) loss:210.547 lr:0.000335098527 epoch_Time:27.0min:
+16623.6s 276 Epoch:[1/2](20200/22080) loss:210.880 lr:0.000333336740 epoch_Time:26.0min:
+16705.5s 277 Epoch:[1/2](20300/22080) loss:211.672 lr:0.000331573266 epoch_Time:25.0min:
+16787.1s 278 Epoch:[1/2](20400/22080) loss:214.288 lr:0.000329808194 epoch_Time:23.0min:
+16869.2s 279 Epoch:[1/2](20500/22080) loss:214.183 lr:0.000328041614 epoch_Time:22.0min:
+16950.9s 280 Epoch:[1/2](20600/22080) loss:211.401 lr:0.000326273614 epoch_Time:20.0min:
+17032.5s 281 Epoch:[1/2](20700/22080) loss:210.497 lr:0.000324504285 epoch_Time:19.0min:
+17114.1s 282 Epoch:[1/2](20800/22080) loss:210.668 lr:0.000322733716 epoch_Time:18.0min:
+17195.7s 283 Epoch:[1/2](20900/22080) loss:213.895 lr:0.000320961996 epoch_Time:16.0min:
+17277.8s 284 Epoch:[1/2](21000/22080) loss:214.132 lr:0.000319189215 epoch_Time:15.0min:
+17359.6s 285 Epoch:[1/2](21100/22080) loss:210.586 lr:0.000317415462 epoch_Time:14.0min:
+17441.2s 286 Epoch:[1/2](21200/22080) loss:211.115 lr:0.000315640829 epoch_Time:12.0min:
+17522.8s 287 Epoch:[1/2](21300/22080) loss:210.218 lr:0.000313865404 epoch_Time:11.0min:
+17604.5s 288 Epoch:[1/2](21400/22080) loss:213.907 lr:0.000312089277 epoch_Time:10.0min:
+17686.4s 289 Epoch:[1/2](21500/22080) loss:210.671 lr:0.000310312538 epoch_Time:8.0min:
+17768.0s 290 Epoch:[1/2](21600/22080) loss:210.453 lr:0.000308535278 epoch_Time:7.0min:
+17849.5s 291 Epoch:[1/2](21700/22080) loss:211.646 lr:0.000306757585 epoch_Time:5.0min:
+17931.0s 292 Epoch:[1/2](21800/22080) loss:210.413 lr:0.000304979550 epoch_Time:4.0min:
+18012.5s 293 Epoch:[1/2](21900/22080) loss:212.856 lr:0.000303201264 epoch_Time:3.0min:
+18094.5s 294 Epoch:[1/2](22000/22080) loss:212.515 lr:0.000301422815 epoch_Time:1.0min:
+18160.0s 295 Epoch:[2/2](0/22080) loss:212.428 lr:0.000300000000 epoch_Time:367.0min:
+18241.5s 296 Epoch:[2/2](100/22080) loss:210.987 lr:0.000298221487 epoch_Time:299.0min:
+18323.1s 297 Epoch:[2/2](200/22080) loss:213.924 lr:0.000296443063 epoch_Time:298.0min:
+18404.6s 298 Epoch:[2/2](300/22080) loss:213.748 lr:0.000294664820 epoch_Time:296.0min:
+18486.1s 299 Epoch:[2/2](400/22080) loss:213.846 lr:0.000292886846 epoch_Time:295.0min:
+18568.1s 300 Epoch:[2/2](500/22080) loss:210.202 lr:0.000291109233 epoch_Time:294.0min:
+18649.6s 301 Epoch:[2/2](600/22080) loss:214.038 lr:0.000289332069 epoch_Time:292.0min:
+18731.0s 302 Epoch:[2/2](700/22080) loss:210.322 lr:0.000287555446 epoch_Time:291.0min:
+18812.5s 303 Epoch:[2/2](800/22080) loss:213.564 lr:0.000285779452 epoch_Time:290.0min:
+18894.0s 304 Epoch:[2/2](900/22080) loss:210.039 lr:0.000284004178 epoch_Time:288.0min:
+18975.9s 305 Epoch:[2/2](1000/22080) loss:211.507 lr:0.000282229714 epoch_Time:287.0min:
+19057.3s 306 Epoch:[2/2](1100/22080) loss:210.326 lr:0.000280456149 epoch_Time:286.0min:
+19138.7s 307 Epoch:[2/2](1200/22080) loss:213.455 lr:0.000278683573 epoch_Time:284.0min:
+19220.2s 308 Epoch:[2/2](1300/22080) loss:213.149 lr:0.000276912076 epoch_Time:283.0min:
+19301.6s 309 Epoch:[2/2](1400/22080) loss:213.457 lr:0.000275141747 epoch_Time:281.0min:
+19383.4s 310 Epoch:[2/2](1500/22080) loss:214.095 lr:0.000273372676 epoch_Time:280.0min:
+19464.8s 311 Epoch:[2/2](1600/22080) loss:213.794 lr:0.000271604953 epoch_Time:279.0min:
+19546.3s 312 Epoch:[2/2](1700/22080) loss:213.175 lr:0.000269838668 epoch_Time:277.0min:
+19627.8s 313 Epoch:[2/2](1800/22080) loss:211.278 lr:0.000268073908 epoch_Time:276.0min:
+19709.4s 314 Epoch:[2/2](1900/22080) loss:213.093 lr:0.000266310765 epoch_Time:275.0min:
+19791.7s 315 Epoch:[2/2](2000/22080) loss:211.524 lr:0.000264549326 epoch_Time:273.0min:
+19873.4s 316 Epoch:[2/2](2100/22080) loss:210.151 lr:0.000262789682 epoch_Time:272.0min:
+19955.1s 317 Epoch:[2/2](2200/22080) loss:212.506 lr:0.000261031921 epoch_Time:271.0min:
+20036.7s 318 Epoch:[2/2](2300/22080) loss:210.120 lr:0.000259276132 epoch_Time:269.0min:
+20118.1s 319 Epoch:[2/2](2400/22080) loss:209.833 lr:0.000257522404 epoch_Time:268.0min:
+20200.0s 320 Epoch:[2/2](2500/22080) loss:213.090 lr:0.000255770826 epoch_Time:266.0min:
+20281.6s 321 Epoch:[2/2](2600/22080) loss:213.026 lr:0.000254021486 epoch_Time:265.0min:
+20363.0s 322 Epoch:[2/2](2700/22080) loss:209.815 lr:0.000252274473 epoch_Time:264.0min:
+20444.0s 323 Epoch:[2/2](2800/22080) loss:212.641 lr:0.000250529876 epoch_Time:262.0min:
+20525.3s 324 Epoch:[2/2](2900/22080) loss:212.647 lr:0.000248787783 epoch_Time:261.0min:
+20606.6s 325 Epoch:[2/2](3000/22080) loss:213.156 lr:0.000247048281 epoch_Time:260.0min:
+20687.9s 326 Epoch:[2/2](3100/22080) loss:213.465 lr:0.000245311459 epoch_Time:258.0min:
+20769.0s 327 Epoch:[2/2](3200/22080) loss:209.851 lr:0.000243577405 epoch_Time:257.0min:
+20850.4s 328 Epoch:[2/2](3300/22080) loss:212.527 lr:0.000241846207 epoch_Time:256.0min:
+20931.8s 329 Epoch:[2/2](3400/22080) loss:213.086 lr:0.000240117952 epoch_Time:254.0min:
+21013.6s 330 Epoch:[2/2](3500/22080) loss:209.857 lr:0.000238392727 epoch_Time:253.0min:
+21095.2s 331 Epoch:[2/2](3600/22080) loss:210.475 lr:0.000236670620 epoch_Time:252.0min:
+21176.7s 332 Epoch:[2/2](3700/22080) loss:210.472 lr:0.000234951719 epoch_Time:250.0min:
+21258.2s 333 Epoch:[2/2](3800/22080) loss:211.314 lr:0.000233236110 epoch_Time:249.0min:
+21339.6s 334 Epoch:[2/2](3900/22080) loss:213.118 lr:0.000231523879 epoch_Time:247.0min:
+21421.5s 335 Epoch:[2/2](4000/22080) loss:213.037 lr:0.000229815115 epoch_Time:246.0min:
+21502.9s 336 Epoch:[2/2](4100/22080) loss:213.154 lr:0.000228109902 epoch_Time:245.0min:
+21584.4s 337 Epoch:[2/2](4200/22080) loss:213.128 lr:0.000226408328 epoch_Time:243.0min:
+21665.8s 338 Epoch:[2/2](4300/22080) loss:211.162 lr:0.000224710478 epoch_Time:242.0min:
+21747.3s 339 Epoch:[2/2](4400/22080) loss:209.906 lr:0.000223016438 epoch_Time:241.0min:
+21829.0s 340 Epoch:[2/2](4500/22080) loss:212.984 lr:0.000221326295 epoch_Time:239.0min:
+21910.7s 341 Epoch:[2/2](4600/22080) loss:210.749 lr:0.000219640134 epoch_Time:238.0min:
+21992.2s 342 Epoch:[2/2](4700/22080) loss:213.013 lr:0.000217958039 epoch_Time:237.0min:
+22073.7s 343 Epoch:[2/2](4800/22080) loss:210.403 lr:0.000216280097 epoch_Time:235.0min:
+22155.0s 344 Epoch:[2/2](4900/22080) loss:209.753 lr:0.000214606392 epoch_Time:234.0min:
+22237.1s 345 Epoch:[2/2](5000/22080) loss:209.837 lr:0.000212937008 epoch_Time:233.0min:
+22318.7s 346 Epoch:[2/2](5100/22080) loss:210.014 lr:0.000211272031 epoch_Time:231.0min:
+22400.2s 347 Epoch:[2/2](5200/22080) loss:213.294 lr:0.000209611545 epoch_Time:230.0min:
+22481.6s 348 Epoch:[2/2](5300/22080) loss:210.125 lr:0.000207955633 epoch_Time:228.0min:
+22563.1s 349 Epoch:[2/2](5400/22080) loss:209.782 lr:0.000206304379 epoch_Time:227.0min:
+22644.8s 350 Epoch:[2/2](5500/22080) loss:210.379 lr:0.000204657868 epoch_Time:226.0min:
+22726.3s 351 Epoch:[2/2](5600/22080) loss:209.746 lr:0.000203016182 epoch_Time:224.0min:
+22807.8s 352 Epoch:[2/2](5700/22080) loss:213.025 lr:0.000201379404 epoch_Time:223.0min:
+22889.3s 353 Epoch:[2/2](5800/22080) loss:209.843 lr:0.000199747617 epoch_Time:222.0min:
+22970.9s 354 Epoch:[2/2](5900/22080) loss:211.788 lr:0.000198120904 epoch_Time:220.0min:
+23053.2s 355 Epoch:[2/2](6000/22080) loss:209.859 lr:0.000196499348 epoch_Time:219.0min:
+23134.7s 356 Epoch:[2/2](6100/22080) loss:209.653 lr:0.000194883029 epoch_Time:218.0min:
+23216.2s 357 Epoch:[2/2](6200/22080) loss:209.813 lr:0.000193272031 epoch_Time:216.0min:
+23297.8s 358 Epoch:[2/2](6300/22080) loss:211.971 lr:0.000191666434 epoch_Time:215.0min:
+23379.4s 359 Epoch:[2/2](6400/22080) loss:210.796 lr:0.000190066320 epoch_Time:213.0min:
+23461.3s 360 Epoch:[2/2](6500/22080) loss:210.388 lr:0.000188471769 epoch_Time:212.0min:
+23542.7s 361 Epoch:[2/2](6600/22080) loss:211.265 lr:0.000186882864 epoch_Time:211.0min:
+23624.3s 362 Epoch:[2/2](6700/22080) loss:212.341 lr:0.000185299683 epoch_Time:209.0min:
+23705.7s 363 Epoch:[2/2](6800/22080) loss:212.455 lr:0.000183722307 epoch_Time:208.0min:
+23787.2s 364 Epoch:[2/2](6900/22080) loss:209.530 lr:0.000182150816 epoch_Time:207.0min:
+23869.0s 365 Epoch:[2/2](7000/22080) loss:212.107 lr:0.000180585289 epoch_Time:205.0min:
+23950.4s 366 Epoch:[2/2](7100/22080) loss:212.837 lr:0.000179025806 epoch_Time:204.0min:
+24031.9s 367 Epoch:[2/2](7200/22080) loss:211.140 lr:0.000177472446 epoch_Time:203.0min:
+24113.3s 368 Epoch:[2/2](7300/22080) loss:212.218 lr:0.000175925286 epoch_Time:201.0min:
+24194.7s 369 Epoch:[2/2](7400/22080) loss:212.256 lr:0.000174384407 epoch_Time:200.0min:
+24276.4s 370 Epoch:[2/2](7500/22080) loss:211.965 lr:0.000172849884 epoch_Time:199.0min:
+24357.9s 371 Epoch:[2/2](7600/22080) loss:211.560 lr:0.000171321797 epoch_Time:197.0min:
+24439.3s 372 Epoch:[2/2](7700/22080) loss:210.030 lr:0.000169800222 epoch_Time:196.0min:
+24520.7s 373 Epoch:[2/2](7800/22080) loss:212.867 lr:0.000168285237 epoch_Time:194.0min:
+24602.1s 374 Epoch:[2/2](7900/22080) loss:212.051 lr:0.000166776918 epoch_Time:193.0min:
+24683.9s 375 Epoch:[2/2](8000/22080) loss:212.172 lr:0.000165275341 epoch_Time:192.0min:
+24765.4s 376 Epoch:[2/2](8100/22080) loss:211.097 lr:0.000163780583 epoch_Time:190.0min:
+24846.8s 377 Epoch:[2/2](8200/22080) loss:212.391 lr:0.000162292719 epoch_Time:189.0min:
+24928.2s 378 Epoch:[2/2](8300/22080) loss:209.632 lr:0.000160811824 epoch_Time:188.0min:
+25009.6s 379 Epoch:[2/2](8400/22080) loss:210.307 lr:0.000159337974 epoch_Time:186.0min:
+25091.4s 380 Epoch:[2/2](8500/22080) loss:209.532 lr:0.000157871242 epoch_Time:185.0min:
+25172.9s 381 Epoch:[2/2](8600/22080) loss:211.127 lr:0.000156411704 epoch_Time:184.0min:
+25254.3s 382 Epoch:[2/2](8700/22080) loss:209.728 lr:0.000154959433 epoch_Time:182.0min:
+25335.7s 383 Epoch:[2/2](8800/22080) loss:212.527 lr:0.000153514502 epoch_Time:181.0min:
+25417.1s 384 Epoch:[2/2](8900/22080) loss:209.108 lr:0.000152076986 epoch_Time:180.0min:
+25498.9s 385 Epoch:[2/2](9000/22080) loss:211.353 lr:0.000150646955 epoch_Time:178.0min:
+25580.3s 386 Epoch:[2/2](9100/22080) loss:210.325 lr:0.000149224484 epoch_Time:177.0min:
+25661.7s 387 Epoch:[2/2](9200/22080) loss:211.578 lr:0.000147809643 epoch_Time:175.0min:
+25743.1s 388 Epoch:[2/2](9300/22080) loss:209.579 lr:0.000146402504 epoch_Time:174.0min:
+25824.5s 389 Epoch:[2/2](9400/22080) loss:210.306 lr:0.000145003140 epoch_Time:173.0min:
+25906.3s 390 Epoch:[2/2](9500/22080) loss:210.149 lr:0.000143611619 epoch_Time:171.0min:
+25987.8s 391 Epoch:[2/2](9600/22080) loss:212.473 lr:0.000142228014 epoch_Time:170.0min:
+26069.2s 392 Epoch:[2/2](9700/22080) loss:209.962 lr:0.000140852393 epoch_Time:169.0min:
+26150.4s 393 Epoch:[2/2](9800/22080) loss:209.200 lr:0.000139484827 epoch_Time:167.0min:
+26231.7s 394 Epoch:[2/2](9900/22080) loss:209.511 lr:0.000138125385 epoch_Time:166.0min:
+26313.6s 395 Epoch:[2/2](10000/22080) loss:212.359 lr:0.000136774135 epoch_Time:165.0min:
+26395.0s 396 Epoch:[2/2](10100/22080) loss:210.624 lr:0.000135431147 epoch_Time:163.0min:
+26476.4s 397 Epoch:[2/2](10200/22080) loss:212.469 lr:0.000134096487 epoch_Time:162.0min:
+26557.9s 398 Epoch:[2/2](10300/22080) loss:212.356 lr:0.000132770223 epoch_Time:161.0min:
+26639.3s 399 Epoch:[2/2](10400/22080) loss:209.237 lr:0.000131452423 epoch_Time:159.0min:
+26721.1s 400 Epoch:[2/2](10500/22080) loss:211.456 lr:0.000130143154 epoch_Time:158.0min:
+26802.5s 401 Epoch:[2/2](10600/22080) loss:210.563 lr:0.000128842481 epoch_Time:156.0min:
+26883.9s 402 Epoch:[2/2](10700/22080) loss:210.826 lr:0.000127550470 epoch_Time:155.0min:
+26965.4s 403 Epoch:[2/2](10800/22080) loss:211.449 lr:0.000126267187 epoch_Time:154.0min:
+27047.1s 404 Epoch:[2/2](10900/22080) loss:211.535 lr:0.000124992697 epoch_Time:152.0min:
+27129.1s 405 Epoch:[2/2](11000/22080) loss:211.640 lr:0.000123727064 epoch_Time:151.0min:
+27210.5s 406 Epoch:[2/2](11100/22080) loss:209.983 lr:0.000122470352 epoch_Time:150.0min:
+27292.2s 407 Epoch:[2/2](11200/22080) loss:210.290 lr:0.000121222625 epoch_Time:148.0min:
+27374.0s 408 Epoch:[2/2](11300/22080) loss:209.524 lr:0.000119983946 epoch_Time:147.0min:
+27455.7s 409 Epoch:[2/2](11400/22080) loss:210.754 lr:0.000118754377 epoch_Time:146.0min:
+27537.5s 410 Epoch:[2/2](11500/22080) loss:211.711 lr:0.000117533982 epoch_Time:144.0min:
+27618.9s 411 Epoch:[2/2](11600/22080) loss:211.187 lr:0.000116322821 epoch_Time:143.0min:
+27700.4s 412 Epoch:[2/2](11700/22080) loss:211.971 lr:0.000115120956 epoch_Time:141.0min:
+27781.8s 413 Epoch:[2/2](11800/22080) loss:209.728 lr:0.000113928448 epoch_Time:140.0min:
+27863.2s 414 Epoch:[2/2](11900/22080) loss:212.191 lr:0.000112745357 epoch_Time:139.0min:
+27945.1s 415 Epoch:[2/2](12000/22080) loss:211.741 lr:0.000111571744 epoch_Time:137.0min:
+28026.5s 416 Epoch:[2/2](12100/22080) loss:212.412 lr:0.000110407666 epoch_Time:136.0min:
+28107.9s 417 Epoch:[2/2](12200/22080) loss:211.916 lr:0.000109253184 epoch_Time:135.0min:
+28189.4s 418 Epoch:[2/2](12300/22080) loss:211.827 lr:0.000108108356 epoch_Time:133.0min:
+28270.8s 419 Epoch:[2/2](12400/22080) loss:209.099 lr:0.000106973239 epoch_Time:132.0min:
+28352.6s 420 Epoch:[2/2](12500/22080) loss:212.163 lr:0.000105847892 epoch_Time:131.0min:
+28434.0s 421 Epoch:[2/2](12600/22080) loss:209.060 lr:0.000104732371 epoch_Time:129.0min:
+28515.4s 422 Epoch:[2/2](12700/22080) loss:211.208 lr:0.000103626732 epoch_Time:128.0min:
+28596.9s 423 Epoch:[2/2](12800/22080) loss:210.627 lr:0.000102531032 epoch_Time:127.0min:
+28678.3s 424 Epoch:[2/2](12900/22080) loss:210.922 lr:0.000101445326 epoch_Time:125.0min:
+28760.1s 425 Epoch:[2/2](13000/22080) loss:210.441 lr:0.000100369669 epoch_Time:124.0min:
+28841.5s 426 Epoch:[2/2](13100/22080) loss:210.655 lr:0.000099304115 epoch_Time:122.0min:
+28923.0s 427 Epoch:[2/2](13200/22080) loss:211.377 lr:0.000098248718 epoch_Time:121.0min:
+29004.4s 428 Epoch:[2/2](13300/22080) loss:209.414 lr:0.000097203532 epoch_Time:120.0min:
+29085.8s 429 Epoch:[2/2](13400/22080) loss:209.114 lr:0.000096168610 epoch_Time:118.0min:
+29167.6s 430 Epoch:[2/2](13500/22080) loss:209.434 lr:0.000095144004 epoch_Time:117.0min:
+29249.0s 431 Epoch:[2/2](13600/22080) loss:209.090 lr:0.000094129765 epoch_Time:116.0min:
+29330.4s 432 Epoch:[2/2](13700/22080) loss:212.002 lr:0.000093125946 epoch_Time:114.0min:
+29411.9s 433 Epoch:[2/2](13800/22080) loss:209.797 lr:0.000092132597 epoch_Time:113.0min:
+29493.3s 434 Epoch:[2/2](13900/22080) loss:211.908 lr:0.000091149768 epoch_Time:112.0min:
+29575.1s 435 Epoch:[2/2](14000/22080) loss:210.745 lr:0.000090177509 epoch_Time:110.0min:
+29656.5s 436 Epoch:[2/2](14100/22080) loss:212.082 lr:0.000089215869 epoch_Time:109.0min:
+29738.0s 437 Epoch:[2/2](14200/22080) loss:211.780 lr:0.000088264897 epoch_Time:108.0min:
+29819.4s 438 Epoch:[2/2](14300/22080) loss:212.027 lr:0.000087324641 epoch_Time:106.0min:
+29900.9s 439 Epoch:[2/2](14400/22080) loss:211.847 lr:0.000086395149 epoch_Time:105.0min:
+29982.7s 440 Epoch:[2/2](14500/22080) loss:212.069 lr:0.000085476467 epoch_Time:103.0min:
+30064.1s 441 Epoch:[2/2](14600/22080) loss:209.895 lr:0.000084568643 epoch_Time:102.0min:
+30145.6s 442 Epoch:[2/2](14700/22080) loss:210.637 lr:0.000083671721 epoch_Time:101.0min:
+30227.0s 443 Epoch:[2/2](14800/22080) loss:209.860 lr:0.000082785748 epoch_Time:99.0min:
+30308.8s 444 Epoch:[2/2](14900/22080) loss:209.790 lr:0.000081910768 epoch_Time:98.0min:
+30391.2s 445 Epoch:[2/2](15000/22080) loss:210.919 lr:0.000081046826 epoch_Time:97.0min:
+30472.5s 446 Epoch:[2/2](15100/22080) loss:210.620 lr:0.000080193965 epoch_Time:95.0min:
+30554.0s 447 Epoch:[2/2](15200/22080) loss:210.310 lr:0.000079352229 epoch_Time:94.0min:
+30635.4s 448 Epoch:[2/2](15300/22080) loss:211.111 lr:0.000078521659 epoch_Time:93.0min:
+30716.8s 449 Epoch:[2/2](15400/22080) loss:211.358 lr:0.000077702299 epoch_Time:91.0min:
+30798.6s 450 Epoch:[2/2](15500/22080) loss:209.695 lr:0.000076894189 epoch_Time:90.0min:
+30880.1s 451 Epoch:[2/2](15600/22080) loss:209.777 lr:0.000076097371 epoch_Time:88.0min:
+30961.5s 452 Epoch:[2/2](15700/22080) loss:210.955 lr:0.000075311885 epoch_Time:87.0min:
+31043.0s 453 Epoch:[2/2](15800/22080) loss:210.324 lr:0.000074537770 epoch_Time:86.0min:
+31124.4s 454 Epoch:[2/2](15900/22080) loss:209.986 lr:0.000073775066 epoch_Time:84.0min:
+31206.3s 455 Epoch:[2/2](16000/22080) loss:209.869 lr:0.000073023811 epoch_Time:83.0min:
+31287.6s 456 Epoch:[2/2](16100/22080) loss:210.704 lr:0.000072284044 epoch_Time:82.0min:
+31369.1s 457 Epoch:[2/2](16200/22080) loss:210.569 lr:0.000071555801 epoch_Time:80.0min:
+31450.5s 458 Epoch:[2/2](16300/22080) loss:209.550 lr:0.000070839120 epoch_Time:79.0min:
+31532.0s 459 Epoch:[2/2](16400/22080) loss:209.496 lr:0.000070134037 epoch_Time:78.0min:
+31613.8s 460 Epoch:[2/2](16500/22080) loss:210.077 lr:0.000069440588 epoch_Time:76.0min:
+31695.2s 461 Epoch:[2/2](16600/22080) loss:210.151 lr:0.000068758807 epoch_Time:75.0min:
+31776.7s 462 Epoch:[2/2](16700/22080) loss:209.713 lr:0.000068088730 epoch_Time:74.0min:
+31858.1s 463 Epoch:[2/2](16800/22080) loss:209.983 lr:0.000067430389 epoch_Time:72.0min:
+31939.5s 464 Epoch:[2/2](16900/22080) loss:208.823 lr:0.000066783819 epoch_Time:71.0min:
+32021.5s 465 Epoch:[2/2](17000/22080) loss:209.966 lr:0.000066149052 epoch_Time:69.0min:
+32102.9s 466 Epoch:[2/2](17100/22080) loss:210.169 lr:0.000065526121 epoch_Time:68.0min:
+32184.4s 467 Epoch:[2/2](17200/22080) loss:210.310 lr:0.000064915056 epoch_Time:67.0min:
+32266.3s 468 Epoch:[2/2](17300/22080) loss:210.867 lr:0.000064315889 epoch_Time:65.0min:
+32347.7s 469 Epoch:[2/2](17400/22080) loss:209.850 lr:0.000063728651 epoch_Time:64.0min:
+32429.6s 470 Epoch:[2/2](17500/22080) loss:209.880 lr:0.000063153369 epoch_Time:63.0min:
+32511.2s 471 Epoch:[2/2](17600/22080) loss:210.203 lr:0.000062590075 epoch_Time:61.0min:
+32592.7s 472 Epoch:[2/2](17700/22080) loss:209.803 lr:0.000062038797 epoch_Time:60.0min:
+32674.2s 473 Epoch:[2/2](17800/22080) loss:210.347 lr:0.000061499561 epoch_Time:59.0min:
+32755.5s 474 Epoch:[2/2](17900/22080) loss:210.211 lr:0.000060972396 epoch_Time:57.0min:
+32837.4s 475 Epoch:[2/2](18000/22080) loss:211.091 lr:0.000060457329 epoch_Time:56.0min:
+32918.8s 476 Epoch:[2/2](18100/22080) loss:210.865 lr:0.000059954384 epoch_Time:55.0min:
+33000.3s 477 Epoch:[2/2](18200/22080) loss:209.347 lr:0.000059463589 epoch_Time:53.0min:
+33081.7s 478 Epoch:[2/2](18300/22080) loss:209.034 lr:0.000058984967 epoch_Time:52.0min:
+33163.1s 479 Epoch:[2/2](18400/22080) loss:211.714 lr:0.000058518543 epoch_Time:50.0min:
+33244.8s 480 Epoch:[2/2](18500/22080) loss:211.032 lr:0.000058064341 epoch_Time:49.0min:
+33326.3s 481 Epoch:[2/2](18600/22080) loss:208.845 lr:0.000057622383 epoch_Time:48.0min:
+33407.7s 482 Epoch:[2/2](18700/22080) loss:209.079 lr:0.000057192692 epoch_Time:46.0min:
+33489.1s 483 Epoch:[2/2](18800/22080) loss:209.574 lr:0.000056775289 epoch_Time:45.0min:
+33570.5s 484 Epoch:[2/2](18900/22080) loss:211.711 lr:0.000056370197 epoch_Time:44.0min:
+33652.3s 485 Epoch:[2/2](19000/22080) loss:211.790 lr:0.000055977434 epoch_Time:42.0min:
+33733.8s 486 Epoch:[2/2](19100/22080) loss:210.371 lr:0.000055597021 epoch_Time:41.0min:
+33815.2s 487 Epoch:[2/2](19200/22080) loss:210.749 lr:0.000055228978 epoch_Time:40.0min:
+33896.5s 488 Epoch:[2/2](19300/22080) loss:211.354 lr:0.000054873323 epoch_Time:38.0min:
+33977.8s 489 Epoch:[2/2](19400/22080) loss:209.964 lr:0.000054530073 epoch_Time:37.0min:
+34059.5s 490 Epoch:[2/2](19500/22080) loss:209.401 lr:0.000054199248 epoch_Time:35.0min:
+34140.7s 491 Epoch:[2/2](19600/22080) loss:209.455 lr:0.000053880862 epoch_Time:34.0min:
+34222.1s 492 Epoch:[2/2](19700/22080) loss:209.185 lr:0.000053574932 epoch_Time:33.0min:
+34303.2s 493 Epoch:[2/2](19800/22080) loss:208.826 lr:0.000053281474 epoch_Time:31.0min:
+34384.2s 494 Epoch:[2/2](19900/22080) loss:209.446 lr:0.000053000502 epoch_Time:30.0min:
+34465.9s 495 Epoch:[2/2](20000/22080) loss:209.378 lr:0.000052732032 epoch_Time:29.0min:
+34547.0s 496 Epoch:[2/2](20100/22080) loss:211.275 lr:0.000052476075 epoch_Time:27.0min:
+34628.3s 497 Epoch:[2/2](20200/22080) loss:211.592 lr:0.000052232646 epoch_Time:26.0min:
+34709.3s 498 Epoch:[2/2](20300/22080) loss:211.234 lr:0.000052001756 epoch_Time:25.0min:
+34790.5s 499 Epoch:[2/2](20400/22080) loss:210.530 lr:0.000051783418 epoch_Time:23.0min:
+34872.1s 500 Epoch:[2/2](20500/22080) loss:211.008 lr:0.000051577642 epoch_Time:22.0min:
+34953.5s 501 Epoch:[2/2](20600/22080) loss:209.760 lr:0.000051384439 epoch_Time:21.0min:
+35034.4s 502 Epoch:[2/2](20700/22080) loss:210.138 lr:0.000051203818 epoch_Time:18.0min:
+35115.6s 503 Epoch:[2/2](20800/22080) loss:210.195 lr:0.000051035789 epoch_Time:17.0min:
+35196.8s 504 Epoch:[2/2](20900/22080) loss:210.063 lr:0.000050880361 epoch_Time:16.0min:
+35278.5s 505 Epoch:[2/2](21000/22080) loss:210.231 lr:0.000050737540 epoch_Time:14.0min:
+35359.6s 506 Epoch:[2/2](21100/22080) loss:209.951 lr:0.000050607334 epoch_Time:13.0min:
+35440.4s 507 Epoch:[2/2](21200/22080) loss:209.838 lr:0.000050489751 epoch_Time:11.0min:
+35521.8s 508 Epoch:[2/2](21300/22080) loss:210.648 lr:0.000050384795 epoch_Time:10.0min:
+35603.1s 509 Epoch:[2/2](21400/22080) loss:210.193 lr:0.000050292472 epoch_Time:9.0min:
+35684.6s 510 Epoch:[2/2](21500/22080) loss:210.212 lr:0.000050212787 epoch_Time:7.0min:
+35765.8s 511 Epoch:[2/2](21600/22080) loss:209.154 lr:0.000050145744 epoch_Time:6.0min:
+35846.8s 512 Epoch:[2/2](21700/22080) loss:208.685 lr:0.000050091347 epoch_Time:5.0min:
+35928.2s 513 Epoch:[2/2](21800/22080) loss:209.009 lr:0.000050049597 epoch_Time:3.0min:
+36009.3s 514 Epoch:[2/2](21900/22080) loss:210.307 lr:0.000050020497 epoch_Time:2.0min:
+36090.9s 515 Epoch:[2/2](22000/22080) loss:210.879 lr:0.000050004049 epoch_Time:1.0min:
+36157.0s 516 [rank0]:[W1018 09:48:23.341290271 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+36162.6s 517 /usr/local/lib/python3.11/dist-packages/traitlets/traitlets.py:2915: FutureWarning: --Exporter.preprocessors=["remove_papermill_header.RemovePapermillHeader"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.
+36162.6s 518 warn(
+36162.7s 519 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+36163.0s 520 [NbConvertApp] Writing 53166 bytes to __notebook__.ipynb
+36164.3s 521 /usr/local/lib/python3.11/dist-packages/traitlets/traitlets.py:2915: FutureWarning: --Exporter.preprocessors=["nbconvert.preprocessors.ExtractOutputPreprocessor"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.
+36164.3s 522 warn(
+36164.3s 523 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+36165.0s 524 [NbConvertApp] Writing 319101 bytes to __results__.html
