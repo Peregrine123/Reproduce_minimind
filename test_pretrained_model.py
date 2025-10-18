@@ -131,7 +131,7 @@ print(f"     Std: {np.std(pretrained_results['losses']):.4f}")
 # 生成测试
 print("\n9. 生成测试:")
 try:
-    test_prompt = "你好, 你知道中国在哪个大洲吗?"
+    test_prompt = "hello where is china?"
     test_input = tokenizer(test_prompt, return_tensors="pt")
     test_input_ids = test_input["input_ids"].to(device)
     test_attention_mask = test_input["attention_mask"].to(device)
