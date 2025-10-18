@@ -67,6 +67,9 @@ def train_epoch(epoch, wandb):
             loss = (loss * loss_mask).sum() / loss_mask.sum()
             loss += res.aux_loss
 
+            # 保存用于显示的实际 loss（在归一化之前）
+            actual_loss = loss.item()
+
             loss = loss / args.accumulation_steps
 
         scaler.scale(loss).backward()
@@ -88,7 +91,7 @@ def train_epoch(epoch, wandb):
                     args.epochs,
                     step,
                     iter_per_epoch,
-                    loss.item() * args.accumulation_steps,  # 恢复实际损失值
+                    actual_loss,  # 使用真实的 loss 值
                     optimizer.param_groups[-1]["lr"],
                     spend_time / (step + 1) * iter_per_epoch // 60 - spend_time // 60,
                 )
@@ -98,7 +101,7 @@ def train_epoch(epoch, wandb):
             if (wandb is not None) and (not ddp or dist.get_rank() == 0):
                 wandb.log(
                     {
-                        "loss": loss.item() * args.accumulation_steps,
+                        "loss": actual_loss,  # 使用真实的 loss 值
                         "lr": optimizer.param_groups[-1]["lr"],
                         "epoch_Time": spend_time / (step + 1) * iter_per_epoch // 60 - spend_time // 60,
                     }
