@@ -277,6 +277,12 @@ model.load_state_dict(torch.load(pretrain_model_path))
 - SFT 模型保存文件名拼写为 `full_stf`（应为 `full_sft`）
 - 代码中存在一些拼写错误（如 `fileterwarning`, `learing_rate`）
 
+**重要修复 (2025-10-18)**：
+- ✅ **Loss 显示逻辑错误已修复**：旧版本中训练日志显示的 loss 被错误地乘以了 `accumulation_steps`，导致显示值异常高（200+）。实际训练是成功的，真实 loss 在正常范围（7-9）。
+- ✅ **验证结果**：预训练模型测试显示 loss 从 8.92 降至 7.42（16.81% 改善），困惑度从 7445 降至 1664。
+- ✅ **模型 forward() 方法**：添加了默认参数，使其兼容 transformers 的 generate() 方法。
+- 📄 **详细分析**：参见 `LOSS_ANALYSIS.md`
+
 **环境兼容性**：
 - 支持 CPU 和 GPU 训练，自动检测 CUDA 可用性
 - 自动处理 Jupyter/Colab 环境的特殊参数

@@ -447,7 +447,15 @@ class MiniMindForCasualLM(PreTrainedModel, GenerationMixin):
         self.model.embed_tokens.weight = self.lm_head.weight
         self.OUT = CausalLMOutputWithPast()
 
-    def forward(self, input_ids, attention_mask, past_key_values, use_cache, logits_to_keep, **args):
+    def forward(self, input_ids, attention_mask=None, past_key_values=None, use_cache=True, logits_to_keep=None, **args):
+        # 如果没有提供 attention_mask，创建一个全 1 的 mask
+        if attention_mask is None:
+            attention_mask = torch.ones_like(input_ids)
+
+        # 如果没有指定 logits_to_keep，使用所有 logits
+        if logits_to_keep is None:
+            logits_to_keep = slice(None)
+
         h, past_kvs, aux_loss = self.model(
             input_ids,
             attention_mask,
