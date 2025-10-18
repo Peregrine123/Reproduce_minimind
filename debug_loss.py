@@ -76,8 +76,17 @@ with torch.no_grad():
     # 计算平均loss（和训练代码一致）
     avg_loss = (loss * loss_mask).sum() / loss_mask.sum()
     print(f"\n平均loss（训练代码计算方式）: {avg_loss.item():.3f}")
-    print(f"Aux loss: {res.aux_loss.item():.3f}")
-    print(f"总loss: {(avg_loss + res.aux_loss).item():.3f}")
+
+    # aux_loss 可能是张量（MoE模式）或整数（标准模式）
+    if isinstance(res.aux_loss, torch.Tensor):
+        aux_loss_value = res.aux_loss.item()
+        total_loss = (avg_loss + res.aux_loss).item()
+    else:
+        aux_loss_value = res.aux_loss
+        total_loss = avg_loss.item() + res.aux_loss
+
+    print(f"Aux loss: {aux_loss_value:.3f}")
+    print(f"总loss: {total_loss:.3f}")
 
 print("\n理论上：")
 print(f"  随机初始化模型的loss应该接近 ln({config.vocab_size}) = {torch.tensor(config.vocab_size).log().item():.3f}")

@@ -287,3 +287,4 @@ model.load_state_dict(torch.load(pretrain_model_path))
 - SFT 时使用较小的学习率（5e-7）避免灾难性遗忘
 - MoE 模式会增加约 4x 参数量和计算量
 - 使用梯度累积可以模拟更大的批次大小
+- 本项目是运行在云端的 所以不主张在本地跑完整测试, 如果我们需要做实际上的改动 请你在改动完就是上传git 并push
