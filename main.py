@@ -46,7 +46,7 @@ def main():
     parser.add_argument("--num_workers", type=int, default=1, help="数据加载器工作进程数")
     parser.add_argument("--ddp", action="store_true", help="是否启用分布式训练")
     parser.add_argument("--auto_ddp", action="store_true", default=True, help="自动检测多GPU并启用分布式训练")
-    parser.add_argument("--accumulation_steps", type=int, default=4, help="梯度累积步数 (有效batch=32×4×2=256)")
+    parser.add_argument("--accumulation_steps", type=int, default=1, help="梯度累积步数 (有效batch=32×1×2=64)")
     parser.add_argument("--grad_clip", type=float, default=1.0, help="梯度裁剪阈值")
     parser.add_argument("--warmup_iters", type=int, default=2000, help="学习率预热步数 (推荐2000)")
     parser.add_argument("--log_interval", type=int, default=50, help="日志打印间隔 (更频繁的监控)")

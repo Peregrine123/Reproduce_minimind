@@ -38,10 +38,9 @@ python main.py --mode pretrain \
     --batch_size 32 \
     --learning_rate 2e-4 \
     --warmup_iters 2000 \
-    --accumulation_steps 4 \
-    --use_moe True
+    --accumulation_steps 1
 
-# 有效 batch_size = 32 × 4 × 2 = 256
+# 有效 batch_size = 32 × 1 × 2 = 64
 # 预计训练时间：约 25 小时 (基于实测 2 epoch = 10 小时)
 ```
 
@@ -50,7 +49,7 @@ python main.py --mode pretrain \
 - ✅ Batch size 从 16 增加到 32（充分利用 T4 显存）
 - ✅ Learning rate 从 5e-4 降至 2e-4（提高稳定性）
 - ✅ Warmup 从 0 增加到 2000 步（避免初期震荡）
-- ✅ Accumulation steps 从 8 降至 4（batch size 已增大）
+- ✅ Accumulation steps 设为 1（参数更新更频繁，训练更快，有效batch=64适合小模型）
 
 📄 **详细分析**：参见 `TRAINING_OPTIMIZATION.md`
 
@@ -125,7 +124,7 @@ torchrun --nproc_per_node=2 triainer/train_pretrian.py \
 | `--num_hidden_layers` | `8` | Transformer 层数 |
 | `--max_seq_len` | `512` | 最大序列长度 |
 | `--use_moe` | `False` | 是否使用 MoE |
-| `--accumulation_steps` | `8` | 梯度累积步数 |
+| `--accumulation_steps` | `1` | 梯度累积步数 (推荐1，有效batch=32×1×2=64) |
 | `--grad_clip` | `1.0` | 梯度裁剪阈值 |
 | `--warmup_iters` | `0` | 学习率预热步数 |
 | `--save_interval` | `500` | 模型保存间隔（步） |
