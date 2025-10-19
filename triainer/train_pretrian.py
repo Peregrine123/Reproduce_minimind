@@ -9,10 +9,14 @@ from pathlib import Path
 
 import torch
 import torch.distributed as dist
+from dotenv import load_dotenv
 from torch import nn, optim
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader, DistributedSampler
 from transformers import AutoTokenizer
+
+# 加载 .env 文件中的环境变量
+load_dotenv()
 
 from dataset.lm_dataset import PretrianDataset
 from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
