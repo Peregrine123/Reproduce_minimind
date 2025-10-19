@@ -68,7 +68,7 @@ class SFTDataset(Dataset):
     def _create_chat_prompt(self, conversations):
         messages = []
         for i, turn in enumerate(conversations):
-            role = 'user' if i % 2 == 0 else 'assisant'
+            role = 'user' if i % 2 == 0 else 'assistant'
             messages.append({
                 "role":role,
                 "content": turn['content']
@@ -95,7 +95,7 @@ class SFTDataset(Dataset):
                     i = end + len(self.eos_id) if end < len(input_ids) else len(input_ids)
             else:
                 i += 1
-        return loss_mask
+        return loss
        
     def __getitem__(self, idx):
         sample = self.samples[idx]
@@ -133,12 +133,12 @@ class DPODataset(Dataset):
         rejected = item['rejected']
         chosen_prompt = self.tokenizer.apply_chat_template(
             chosen,
-            tokenizer=False,
+            tokenize=False,
             add_generation_prompt=False
         )
         rejected_prompt = self.tokenizer.apply_chat_template(
             rejected,
-            tokenizer=False,
+            tokenize=False,
             add_generation_prompt=False
         )
 
@@ -158,12 +158,12 @@ class DPODataset(Dataset):
 
         chosen_input_ids = chosen_encoding['input_ids']
         chosen_loss_mask = self._generate_loss_mask(chosen_input_ids)
-         
+
         rejected_input_ids = rejected_encoding['input_ids']
-        rejected_loss_mask = self._generation_loss_mask(rejected_input_ids)
+        rejected_loss_mask = self._generate_loss_mask(rejected_input_ids)
         x_chosen = torch.tensor(chosen_input_ids[:-1], dtype=torch.long)
         y_chosen = torch.tensor(chosen_input_ids[1:], dtype=torch.long)
-        mask_chosen = torch.tensor(chosen_input_ids[1:], dtype=torch.long)
+        mask_chosen = torch.tensor(chosen_loss_mask[1:], dtype=torch.long)
         x_rejected = torch.tensor(rejected_input_ids[:-1], dtype=torch.long)
         y_rejected = torch.tensor(rejected_input_ids[1:], dtype=torch.long)
         mask_rejected = torch.tensor(rejected_loss_mask[1:], dtype=torch.long)
@@ -202,7 +202,7 @@ class RLAIFDataset(Dataset):
         self.tokenizer = tokenizer
         self.max_length = max_length
         self.samples = self.load_data(jsonl_path)
-        self.bos_id = tokenizer("<|im_start|>assisant", add_special_tokens=False).input_ids
+        self.bos_id = tokenizer("<|im_start|>assistant", add_special_tokens=False).input_ids
         self.eos_id = tokenizer("<|im_end|>", add_special_tokens=False).input_ids
 
     def __len__(self):
@@ -212,7 +212,7 @@ class RLAIFDataset(Dataset):
         samples = []
         with open(path, 'r', encoding='utf-8') as f:
             for line_num, line in enumerate(f, 1):
-                data = json.load(line.strip())
+                data = json.loads(line.strip())
                 samples.append(data)
         return samples
 

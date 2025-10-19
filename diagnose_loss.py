@@ -2,7 +2,7 @@
 import torch
 from transformers import AutoTokenizer
 from dataset.lm_dataset import PretrianDataset
-from model.model_minimind import MiniMindConfig, MiniMindForCasualLM
+from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
 import torch.nn as nn
 
 print("=" * 80)
@@ -38,7 +38,7 @@ if invalid_tokens > 0:
 
 # 加载模型
 config = MiniMindConfig(hidden_size=512, num_hidden_layers=8, use_moe=False)
-model = MiniMindForCasualLM(config)
+model = MiniMindForCausalLM(config)
 model.eval()
 
 print(f"\n4. 模型配置:")

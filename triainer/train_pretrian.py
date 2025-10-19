@@ -14,7 +14,8 @@ from torch.utils.data import DataLoader, DistributedSampler
 from transformers import AutoTokenizer
 
 from dataset.lm_dataset import PretrianDataset
-from model.model_minimind import MiniMindConfig, MiniMindForCasualLM
+from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
+from utils.reproducibility import set_seed
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -126,7 +127,7 @@ def train_epoch(epoch, wandb):
 
 def init_model(lm_config):
     tokenizer = AutoTokenizer.from_pretrained("./model/")
-    model = MiniMindForCasualLM(lm_config).to(args.device)
+    model = MiniMindForCausalLM(lm_config).to(args.device)
     logger(f"LLM可训练参数量:{sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6:.3f} M")
     return model, tokenizer
 
@@ -193,16 +194,17 @@ if __name__ == "__main__":
     ddp_local_rank, DEVICE = 0, "cuda:0"
 
     base_seed = 1337
-    torch.manual_seed(base_seed)
-    torch.cuda.manual_seed(base_seed)
 
     # 如果启用 DDP，初始化分布式训练
     if ddp:
         init_distributed_mode()
         args.device = torch.device(DEVICE)
         rank = dist.get_rank()
-        torch.manual_seed(base_seed + rank)
-        torch.cuda.manual_seed(base_seed + rank)
+        # 设置种子，DDP 模式下每个进程使用不同的种子
+        set_seed(base_seed, rank=rank, offset_by_rank=True)
+    else:
+        # 单机训练，设置统一种子
+        set_seed(base_seed)
 
     if args.use_wandb and (not ddp or dist.get_rank() == 0):
         import wandb

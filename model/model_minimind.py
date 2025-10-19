@@ -436,7 +436,7 @@ class MiniMindModel(nn.Module):
         )
         return hidden_states, present_kvs, aux_loss
 
-class MiniMindForCasualLM(PreTrainedModel, GenerationMixin):
+class MiniMindForCausalLM(PreTrainedModel, GenerationMixin):
     config_class = MiniMindConfig
 
     def __init__(self, config:MiniMindConfig):

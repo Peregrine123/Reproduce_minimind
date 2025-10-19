@@ -166,7 +166,7 @@ ruff check model/model_minimind.py
 
 **核心类**：
 - `MiniMindConfig`: 模型配置类，支持标准和 MoE 配置
-- `MiniMindForCasualLM`: 主模型类，用于因果语言建模
+- `MiniMindForCausalLM`: 主模型类，用于因果语言建模
 - `MiniMindModel`: Transformer 主体，多层堆叠
 - `MiniMindBlock`: 单个 Transformer 块（Attention + FFN）
 - `Attention`: 支持 Flash Attention 和 RoPE 位置编码
