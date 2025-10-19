@@ -274,6 +274,8 @@ class MoEGate(nn.Module):
                     topk_idx_for_aux_loss,
                     torch.ones(bsz, seq_len * aux_topk, device=hidden_state.device),
                 )
+                # 【修复】归一化 ce 为频率（除以总选择次数）
+                ce = ce / (seq_len * aux_topk)
                 aux_loss = (ce * scores_for_seq_aux.mean(dim=1)).sum(
                     dim=1
                 ).mean() * self.alpha
