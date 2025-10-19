@@ -33,11 +33,15 @@ def get_lr(current_step, total_steps, lr):
     return lr / 10 + 0.5 * lr * (1 + math.cos(math.pi * current_step / total_steps))
 
 
-def train_epoch(epoch, wandb):
+def train_epoch(epoch, wandb, start_step=0):
     loss_fct = nn.CrossEntropyLoss(reduction="none")
     start_time = time.time()
 
     for step, (X, Y, loss_mask) in enumerate(train_loader):
+        # 如果正在恢复训练，跳过已经训练过的步骤
+        if step < start_step:
+            continue
+
         X = X.to(args.device)
         Y = Y.to(args.device)
         loss_mask = loss_mask.to(args.device)
@@ -112,7 +116,12 @@ def train_epoch(epoch, wandb):
 
             # 根据是否使用 MoE 设置文件名后缀
             moe_path = "_moe" if lm_config.use_moe else ""
+
+            # 保存最终模型（兼容旧版本）
             ckp = f"{args.save_dir}/pretrain_{lm_config.hidden_size}{moe_path}.pth"
+
+            # 保存完整的checkpoint（用于断点重续）
+            ckp_full = f"{args.save_dir}/checkpoint_epoch{epoch}_step{step + 1}.pth"
 
             # 获取模型状态字典（处理分布式训练的情况）
             if isinstance(model, torch.nn.parallel.DistributedDataParallel):
@@ -120,9 +129,23 @@ def train_epoch(epoch, wandb):
             else:
                 state_dict = model.state_dict()
 
-            # 转换为半精度以节省存储空间
-            state_dict = {k: v.half() for k, v in state_dict.items()}
-            torch.save(state_dict, ckp)
+            # 保存最终模型（半精度，仅模型权重）
+            state_dict_half = {k: v.half() for k, v in state_dict.items()}
+            torch.save(state_dict_half, ckp)
+
+            # 保存完整checkpoint（全精度，包含训练状态）
+            checkpoint = {
+                'epoch': epoch,
+                'step': step + 1,
+                'model_state_dict': state_dict,
+                'optimizer_state_dict': optimizer.state_dict(),
+                'scaler_state_dict': scaler.state_dict(),
+                'lm_config': lm_config,
+                'args': vars(args)
+            }
+            torch.save(checkpoint, ckp_full)
+            logger(f"Checkpoint saved: {ckp_full}")
+
             model.train()  # 切回训练模式
 
 def init_model(lm_config):
@@ -130,6 +153,31 @@ def init_model(lm_config):
     model = MiniMindForCausalLM(lm_config).to(args.device)
     logger(f"LLM可训练参数量:{sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6:.3f} M")
     return model, tokenizer
+
+
+def load_checkpoint(checkpoint_path, model, optimizer, scaler):
+    """加载checkpoint以恢复训练"""
+    logger(f"Loading checkpoint from {checkpoint_path}...")
+    checkpoint = torch.load(checkpoint_path, map_location=args.device)
+
+    # 加载模型状态
+    if isinstance(model, torch.nn.parallel.DistributedDataParallel):
+        model.module.load_state_dict(checkpoint['model_state_dict'])
+    else:
+        model.load_state_dict(checkpoint['model_state_dict'])
+
+    # 加载优化器状态
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
+    # 加载scaler状态
+    scaler.load_state_dict(checkpoint['scaler_state_dict'])
+
+    start_epoch = checkpoint['epoch']
+    start_step = checkpoint['step']
+
+    logger(f"Checkpoint loaded: resuming from epoch {start_epoch + 1}, step {start_step}")
+    return start_epoch, start_step
+
 
 
 def init_distributed_mode():
@@ -171,6 +219,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_seq_len", default=512, type=int, help="最大序列长度")
     parser.add_argument("--use_moe", default=False, type=bool, help="是否使用混合专家模型")
     parser.add_argument("--data_path", type=str, default="/kaggle/working/dir/pretrain_hq.jsonl", help="训练数据路径")
+    parser.add_argument("--resume_from_checkpoint", type=str, default=None, help="从checkpoint恢复训练的路径")
     args = parser.parse_args()
 
     lm_config = MiniMindConfig(
@@ -244,5 +293,27 @@ if __name__ == "__main__":
 
     iter_per_epoch = len(train_loader)
 
-    for epoch in range(args.epochs):
-        train_epoch(epoch, wandb)
+    # 初始化起始epoch和step
+    start_epoch = 0
+    start_step = 0
+
+    # 如果指定了checkpoint路径，则加载checkpoint
+    if args.resume_from_checkpoint:
+        if os.path.exists(args.resume_from_checkpoint):
+            start_epoch, start_step = load_checkpoint(
+                args.resume_from_checkpoint, model, optimizer, scaler
+            )
+        else:
+            logger(f"Warning: Checkpoint file not found: {args.resume_from_checkpoint}")
+            logger("Starting training from scratch...")
+
+    for epoch in range(start_epoch, args.epochs):
+        # 在分布式训练中设置sampler的epoch
+        if ddp:
+            train_sampler.set_epoch(epoch)
+
+        # 如果是从checkpoint恢复的第一个epoch，传入start_step
+        # 否则从step 0开始
+        current_start_step = start_step if epoch == start_epoch else 0
+        train_epoch(epoch, wandb, start_step=current_start_step)
+

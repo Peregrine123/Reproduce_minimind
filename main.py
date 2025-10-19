@@ -63,6 +63,9 @@ def main():
     # SFT特定参数
     parser.add_argument("--sft_data_path", type=str, default="./dataset/sft_data.jsonl", help="SFT训练数据路径")
 
+    # 断点重续参数
+    parser.add_argument("--resume_from_checkpoint", type=str, default=None, help="从checkpoint恢复训练的路径")
+
     # 解析参数，忽略Jupyter/Colab环境自动添加的参数
     args, unknown_args = parser.parse_known_args()
 
@@ -139,6 +142,9 @@ def main():
             else:
                 torchrun_cmd.append(f"--sft_data_path={args.sft_data_path}")
 
+            if args.resume_from_checkpoint:
+                torchrun_cmd.append(f"--resume_from_checkpoint={args.resume_from_checkpoint}")
+
             if args.use_wandb:
                 torchrun_cmd.append("--use_wandb")
                 torchrun_cmd.append(f"--wandb_project={args.wandb_project}")
@@ -181,6 +187,9 @@ def main():
             f"--use_moe={args.use_moe}",
             f"--data_path={args.pretrain_data_path}"
         ]
+
+        if args.resume_from_checkpoint:
+            pretrain_args.append(f"--resume_from_checkpoint={args.resume_from_checkpoint}")
 
         if args.use_wandb:
             pretrain_args.append("--use_wandb")
