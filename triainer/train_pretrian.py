@@ -246,7 +246,12 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", type=float, default=5e-4, help="学习率")
     parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu", help="训练设备")
     parser.add_argument("--dtype", type=str, default="bfloat16", help="数据类型")
-    parser.add_argument("--use_wandb", action="store_true", help="是否使用 wandb 记录训练过程")
+    parser.add_argument(
+        "--use_wandb",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="是否使用 wandb 记录训练过程（默认开启，可用 --no-use_wandb 关闭）"
+    )
     parser.add_argument("--wandb_project", type=str, default="MiniMind-Pretrain", help="wandb 项目名称")
     parser.add_argument("--num_workers", type=int, default=1, help="数据加载器工作进程数")
     parser.add_argument("--ddp", action="store_true", help="是否启用分布式训练")

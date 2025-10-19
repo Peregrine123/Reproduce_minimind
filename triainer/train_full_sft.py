@@ -146,7 +146,12 @@ def main():
         "--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu"
     )
     parser.add_argument("--dtype", type=str, default="bfloat16")
-    parser.add_argument("--use_wandb", action="store_true")
+    parser.add_argument(
+        "--use_wandb",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="是否使用 wandb 记录训练过程（默认开启，可用 --no-use_wandb 关闭）"
+    )
     parser.add_argument("--wandb_project", type=str, default="MiniMind-Full-SFT")
     parser.add_argument("--num_workers", type=int, default=1)
     parser.add_argument("--ddp", action="store_true")

@@ -41,7 +41,12 @@ def main():
     parser.add_argument("--learning_rate", type=float, default=2e-4, help="学习率 (预训练2e-4, SFT 5e-5)")
     parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu", help="训练设备")
     parser.add_argument("--dtype", type=str, default="bfloat16", help="数据类型")
-    parser.add_argument("--use_wandb", action="store_true", help="是否使用 wandb 记录训练过程")
+    parser.add_argument(
+        "--use_wandb",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="是否使用 wandb 记录训练过程（默认开启，可用 --no-use_wandb 关闭）"
+    )
     parser.add_argument("--wandb_project", type=str, default="MiniMind", help="wandb 项目名称")
     parser.add_argument("--num_workers", type=int, default=1, help="数据加载器工作进程数")
     parser.add_argument("--ddp", action="store_true", help="是否启用分布式训练")
@@ -149,8 +154,9 @@ def main():
                 torchrun_cmd.append(f"--resume_from_checkpoint={args.resume_from_checkpoint}")
 
             if args.use_wandb:
-                torchrun_cmd.append("--use_wandb")
                 torchrun_cmd.append(f"--wandb_project={args.wandb_project}")
+            else:
+                torchrun_cmd.append("--no-use_wandb")
 
             # 执行 torchrun 命令
             result = subprocess.run(torchrun_cmd)
@@ -198,8 +204,9 @@ def main():
             pretrain_args.append(f"--resume_from_checkpoint={args.resume_from_checkpoint}")
 
         if args.use_wandb:
-            pretrain_args.append("--use_wandb")
             pretrain_args.append(f"--wandb_project={args.wandb_project}-Pretrain")
+        else:
+            pretrain_args.append("--no-use_wandb")
 
         if args.ddp:
             pretrain_args.append("--ddp")
@@ -247,8 +254,9 @@ def main():
             sft_args.append("--use_moe")
 
         if args.use_wandb:
-            sft_args.append("--use_wandb")
             sft_args.append(f"--wandb_project={args.wandb_project}-SFT")
+        else:
+            sft_args.append("--no-use_wandb")
 
         if args.ddp:
             sft_args.append("--ddp")
