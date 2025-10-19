@@ -93,16 +93,19 @@ def train_epoch(epoch, wandb):
                     }
                 )
         if (step + 1) % args.save_interval == 0 and (not ddp or dist.get_rank() == 0):
-            model.eval()
-            moe_path = "_moe" if lm_config.use_moe else ""
-            ckp = f"{args.save_dir}/full_sft_{lm_config.hidden_size}{moe_path}.pth"
-            if isinstance(model, torch.nn.parallel.DistributedDataParallel):
-                state_dict = model.module.state_dict()
+            if args.save_total_limit == 0:
+                Logger("跳过权重保存（save_total_limit=0）。")
             else:
-                state_dict = model.state_dict()
-            state_dict = {k: v.half() for k, v in state_dict.items()}
-            torch.save(state_dict, ckp)
-            model.train()
+                model.eval()
+                moe_path = "_moe" if lm_config.use_moe else ""
+                ckp = f"{args.save_dir}/full_sft_{lm_config.hidden_size}{moe_path}.pth"
+                if isinstance(model, torch.nn.parallel.DistributedDataParallel):
+                    state_dict = model.module.state_dict()
+                else:
+                    state_dict = model.state_dict()
+                state_dict = {k: v.half() for k, v in state_dict.items()}
+                torch.save(state_dict, ckp)
+                model.train()
 
 
 def init_model(lm_config):
@@ -152,6 +155,7 @@ def main():
     parser.add_argument("--warmup_iters", type=int, default=0)
     parser.add_argument("--log_interval", type=int, default=100)
     parser.add_argument("--save_interval", type=int, default=100)
+    parser.add_argument("--save_total_limit", type=int, default=5, help="最多保留的checkpoint数量（SFT默认覆盖保存）")
     parser.add_argument("--local_rank", type=int, default=-1)
     parser.add_argument("--hidden_size", default=512, type=int)
     parser.add_argument("--num_hidden_layers", default=8, type=int)

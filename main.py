@@ -51,6 +51,7 @@ def main():
     parser.add_argument("--warmup_iters", type=int, default=2000, help="学习率预热步数 (推荐2000)")
     parser.add_argument("--log_interval", type=int, default=50, help="日志打印间隔 (更频繁的监控)")
     parser.add_argument("--save_interval", type=int, default=1000, help="模型保存间隔")
+    parser.add_argument("--save_total_limit", type=int, default=5, help="最多保留的checkpoint数量（包含最新）")
     parser.add_argument("--local_rank", type=int, default=-1, help="本地进程排名")
     parser.add_argument("--hidden_size", default=512, type=int, help="隐藏层维度")
     parser.add_argument("--num_hidden_layers", default=8, type=int, help="隐藏层层数")
@@ -182,6 +183,7 @@ def main():
             f"--warmup_iters={args.warmup_iters}",
             f"--log_interval={args.log_interval}",
             f"--save_interval={args.save_interval}",
+            f"--save_total_limit={args.save_total_limit}",
             f"--local_rank={args.local_rank}",
             f"--hidden_size={args.hidden_size}",
             f"--num_hidden_layers={args.num_hidden_layers}",
@@ -233,6 +235,7 @@ def main():
             f"--warmup_iters={args.warmup_iters}",
             f"--log_interval={args.log_interval}",
             f"--save_interval={args.save_interval}",
+            f"--save_total_limit={args.save_total_limit}",
             f"--local_rank={args.local_rank}",
             f"--hidden_size={args.hidden_size}",
             f"--num_hidden_layers={args.num_hidden_layers}",

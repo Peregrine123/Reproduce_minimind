@@ -5,6 +5,7 @@ import sys
 import time
 import warnings
 from contextlib import nullcontext
+from pathlib import Path
 
 import torch
 import torch.distributed as dist
@@ -27,6 +28,26 @@ warnings.filterwarnings("ignore")
 def logger(content):
     if not ddp or dist.get_rank() == 0:
         print(content)
+
+
+def cleanup_old_checkpoints(save_dir: str, keep: int) -> None:
+    """根据限制数量删除旧的checkpoint文件，避免磁盘占用无限增长。"""
+    if keep <= 0:
+        return
+    checkpoint_dir = Path(save_dir)
+    if not checkpoint_dir.exists():
+        return
+    checkpoints = sorted(
+        checkpoint_dir.glob("checkpoint_epoch*.pth"),
+        key=lambda path: path.stat().st_mtime,
+        reverse=True,
+    )
+    for outdated_ckp in checkpoints[keep:]:
+        try:
+            outdated_ckp.unlink()
+            logger(f"Pruned old checkpoint: {outdated_ckp}")
+        except OSError as exc:
+            logger(f"Failed to prune checkpoint {outdated_ckp}: {exc}")
 
 
 def get_lr(current_step, total_steps, lr):
@@ -121,8 +142,6 @@ def train_epoch(epoch, wandb, start_step=0):
             ckp = f"{args.save_dir}/pretrain_{lm_config.hidden_size}{moe_path}.pth"
 
             # 保存完整的checkpoint（用于断点重续）
-            ckp_full = f"{args.save_dir}/checkpoint_epoch{epoch}_step{step + 1}.pth"
-
             # 获取模型状态字典（处理分布式训练的情况）
             if isinstance(model, torch.nn.parallel.DistributedDataParallel):
                 state_dict = model.module.state_dict()
@@ -133,18 +152,27 @@ def train_epoch(epoch, wandb, start_step=0):
             state_dict_half = {k: v.half() for k, v in state_dict.items()}
             torch.save(state_dict_half, ckp)
 
-            # 保存完整checkpoint（全精度，包含训练状态）
-            checkpoint = {
-                'epoch': epoch,
-                'step': step + 1,
-                'model_state_dict': state_dict,
-                'optimizer_state_dict': optimizer.state_dict(),
-                'scaler_state_dict': scaler.state_dict(),
-                'lm_config': lm_config,
-                'args': vars(args)
-            }
-            torch.save(checkpoint, ckp_full)
-            logger(f"Checkpoint saved: {ckp_full}")
+            should_save_full_checkpoint = args.save_total_limit is None or args.save_total_limit != 0
+            if should_save_full_checkpoint:
+                ckp_full = f"{args.save_dir}/checkpoint_epoch{epoch}_step{step + 1}.pth"
+                # 保存完整checkpoint（全精度，包含训练状态）
+                checkpoint = {
+                    'epoch': epoch,
+                    'step': step + 1,
+                    'model_state_dict': state_dict,
+                    'optimizer_state_dict': optimizer.state_dict(),
+                    'scaler_state_dict': scaler.state_dict(),
+                    'lm_config': lm_config,
+                    'args': vars(args)
+                }
+                torch.save(checkpoint, ckp_full)
+                logger(f"Checkpoint saved: {ckp_full}")
+
+                # 控制checkpoint总数量，默认仅保留最新的若干份
+                if args.save_total_limit is not None and args.save_total_limit > 0:
+                    cleanup_old_checkpoints(args.save_dir, args.save_total_limit)
+            else:
+                logger("跳过完整checkpoint保存（save_total_limit=0）：只保留最新权重文件。")
 
             model.train()  # 切回训练模式
 
@@ -227,6 +255,7 @@ if __name__ == "__main__":
     parser.add_argument("--warmup_iters", type=int, default=0, help="学习率预热步数")
     parser.add_argument("--log_interval", type=int, default=100, help="日志打印间隔")
     parser.add_argument("--save_interval", type=int, default=100, help="模型保存间隔")
+    parser.add_argument("--save_total_limit", type=int, default=5, help="最多保留的checkpoint数量（包含最新）")
     parser.add_argument("--local_rank", type=int, default=-1, help="本地进程排名")
     parser.add_argument("--hidden_size", default=512, type=int, help="隐藏层维度")
     parser.add_argument("--num_hidden_layers", default=8, type=int, help="隐藏层层数")
