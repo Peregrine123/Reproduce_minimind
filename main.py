@@ -55,7 +55,7 @@ def main():
     parser.add_argument("--hidden_size", default=512, type=int, help="隐藏层维度")
     parser.add_argument("--num_hidden_layers", default=8, type=int, help="隐藏层层数")
     parser.add_argument("--max_seq_len", default=512, type=int, help="最大序列长度")
-    parser.add_argument("--use_moe", default=False, type=bool, help="是否使用混合专家模型")
+    parser.add_argument("--use_moe", action="store_true", default=True, help="是否使用混合专家模型（默认启用）")
 
     # 预训练特定参数
     parser.add_argument("--pretrain_data_path", type=str, default="./dataset/pretrain_hq.jsonl", help="预训练数据路径")
@@ -134,8 +134,10 @@ def main():
                 f"--hidden_size={args.hidden_size}",
                 f"--num_hidden_layers={args.num_hidden_layers}",
                 f"--max_seq_len={args.max_seq_len}",
-                f"--use_moe={args.use_moe}",
             ]
+
+            if args.use_moe:
+                torchrun_cmd.append("--use_moe")
 
             if args.mode == "pretrain":
                 torchrun_cmd.append(f"--pretrain_data_path={args.pretrain_data_path}")
@@ -184,9 +186,11 @@ def main():
             f"--hidden_size={args.hidden_size}",
             f"--num_hidden_layers={args.num_hidden_layers}",
             f"--max_seq_len={args.max_seq_len}",
-            f"--use_moe={args.use_moe}",
             f"--data_path={args.pretrain_data_path}"
         ]
+
+        if args.use_moe:
+            pretrain_args.append("--use_moe")
 
         if args.resume_from_checkpoint:
             pretrain_args.append(f"--resume_from_checkpoint={args.resume_from_checkpoint}")
@@ -233,9 +237,11 @@ def main():
             f"--hidden_size={args.hidden_size}",
             f"--num_hidden_layers={args.num_hidden_layers}",
             f"--max_seq_len={args.max_seq_len}",
-            f"--use_moe={args.use_moe}",
             f"--data_path={args.sft_data_path}"
         ]
+
+        if args.use_moe:
+            sft_args.append("--use_moe")
 
         if args.use_wandb:
             sft_args.append("--use_wandb")

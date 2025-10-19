@@ -172,8 +172,22 @@ def load_checkpoint(checkpoint_path, model, optimizer, scaler):
     # 加载scaler状态
     scaler.load_state_dict(checkpoint['scaler_state_dict'])
 
+    # 恢复位置
     start_epoch = checkpoint['epoch']
     start_step = checkpoint['step']
+
+    # 清空梯度，避免残留值影响重放的小批次
+    optimizer.zero_grad(set_to_none=True)
+
+    accumulation_steps = max(1, getattr(args, "accumulation_steps", 1))
+    remainder = start_step % accumulation_steps
+    if remainder != 0:
+        adjusted_step = max(0, start_step - remainder)
+        logger(
+            f"Checkpoint 在 optimizer.step 前保存：从 step {start_step} 回退到 {adjusted_step}，"
+            f"重放 {remainder} 个未完成的 microbatch（accumulation_steps={accumulation_steps}）。"
+        )
+        start_step = adjusted_step
 
     logger(f"Checkpoint loaded: resuming from epoch {start_epoch + 1}, step {start_step}")
     return start_epoch, start_step
@@ -217,7 +231,7 @@ if __name__ == "__main__":
     parser.add_argument("--hidden_size", default=512, type=int, help="隐藏层维度")
     parser.add_argument("--num_hidden_layers", default=8, type=int, help="隐藏层层数")
     parser.add_argument("--max_seq_len", default=512, type=int, help="最大序列长度")
-    parser.add_argument("--use_moe", default=False, type=bool, help="是否使用混合专家模型")
+    parser.add_argument("--use_moe", action="store_true", default=True, help="是否使用混合专家模型（默认启用）")
     parser.add_argument("--data_path", type=str, default="/kaggle/working/dir/pretrain_hq.jsonl", help="训练数据路径")
     parser.add_argument("--resume_from_checkpoint", type=str, default=None, help="从checkpoint恢复训练的路径")
     args = parser.parse_args()
