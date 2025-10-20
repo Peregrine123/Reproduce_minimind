@@ -105,7 +105,7 @@ def format_chat_prompt(messages, tokenizer):
 
 
 def generate_response(model, tokenizer, messages, max_new_tokens=256, temperature=0.7, top_p=0.9, top_k=50, device='cuda'):
-    """生成回复"""
+    """生成回复 - 手动实现生成逻辑以避免兼容性问题"""
 
     # 格式化输入
     prompt = format_chat_prompt(messages, tokenizer)
@@ -113,28 +113,70 @@ def generate_response(model, tokenizer, messages, max_new_tokens=256, temperatur
     # Tokenize
     inputs = tokenizer(prompt, return_tensors='pt')
     input_ids = inputs['input_ids'].to(device)
-    attention_mask = inputs['attention_mask'].to(device)
 
-    # 生成
+    # 手动生成
+    generated_tokens = []
+    past_key_values = None
+
+    model.eval()
     with torch.no_grad():
-        outputs = model.generate(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            top_p=top_p,
-            top_k=top_k,
-            do_sample=temperature > 0,
-            pad_token_id=tokenizer.pad_token_id,
-            eos_token_id=tokenizer.eos_token_id,
-            use_cache=True,
-        )
+        for _ in range(max_new_tokens):
+            # Forward pass
+            outputs = model(
+                input_ids=input_ids,
+                past_key_values=past_key_values,
+                use_cache=True
+            )
 
-    # 解码（只取生成的部分）
-    generated_ids = outputs[0][input_ids.shape[1]:]
-    response = tokenizer.decode(generated_ids, skip_special_tokens=True)
+            # 获取最后一个位置的 logits
+            next_token_logits = outputs.logits[:, -1, :]
 
-    return response.strip()
+            # 温度采样
+            if temperature > 0:
+                next_token_logits = next_token_logits / temperature
+
+                # Top-k 过滤
+                if top_k > 0:
+                    indices_to_remove = next_token_logits < torch.topk(next_token_logits, top_k)[0][..., -1, None]
+                    next_token_logits[indices_to_remove] = float('-inf')
+
+                # Top-p (nucleus) 过滤
+                if top_p < 1.0:
+                    sorted_logits, sorted_indices = torch.sort(next_token_logits, descending=True)
+                    cumulative_probs = torch.cumsum(torch.softmax(sorted_logits, dim=-1), dim=-1)
+
+                    # 移除累积概率超过 top_p 的 token
+                    sorted_indices_to_remove = cumulative_probs > top_p
+                    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+                    sorted_indices_to_remove[..., 0] = 0
+
+                    indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
+                    next_token_logits[indices_to_remove] = float('-inf')
+
+                # 采样
+                probs = torch.softmax(next_token_logits, dim=-1)
+                next_token = torch.multinomial(probs, num_samples=1)
+            else:
+                # Greedy decoding
+                next_token = torch.argmax(next_token_logits, dim=-1, keepdim=True)
+
+            # 检查是否生成了结束 token
+            if next_token.item() == tokenizer.eos_token_id:
+                break
+
+            # 添加到生成的 token 列表
+            generated_tokens.append(next_token.item())
+
+            # 准备下一轮输入
+            input_ids = next_token
+            past_key_values = outputs.past_key_values
+
+    # 解码生成的 token
+    if generated_tokens:
+        response = tokenizer.decode(generated_tokens, skip_special_tokens=True)
+        return response.strip()
+    else:
+        return ""
 
 
 def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temperature=0.7, top_p=0.9, top_k=50):
