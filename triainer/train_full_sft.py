@@ -11,7 +11,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import torch
 import torch.distributed as dist
-from dotenv import load_dotenv
 from dataset.lm_dataset import SFTDataset
 from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
 from utils.reproducibility import set_seed
@@ -20,8 +19,12 @@ from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader, DistributedSampler
 from transformers import AutoTokenizer
 
-# 加载 .env 文件中的环境变量
-load_dotenv()
+# 可选加载 .env 文件中的环境变量
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # 在 Kaggle 等环境中，环境变量可能已直接配置
 
 warnings.filterwarnings("ignore")
 

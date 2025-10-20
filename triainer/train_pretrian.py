@@ -9,14 +9,17 @@ from pathlib import Path
 
 import torch
 import torch.distributed as dist
-from dotenv import load_dotenv
 from torch import nn, optim
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader, DistributedSampler
 from transformers import AutoTokenizer
 
-# 加载 .env 文件中的环境变量
-load_dotenv()
+# 可选加载 .env 文件中的环境变量
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # 在 Kaggle 等环境中，环境变量可能已直接配置
 
 from dataset.lm_dataset import PretrianDataset
 from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
@@ -245,9 +248,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="MiniMind Pretraining")
     parser.add_argument("--out_dir", type=str, default="../out", help="输出目录")
     # 训练轮数：快速测试设为1轮，正式训练建议2-6轮
-    parser.add_argument("--epochs", type=int, default=1, help="训练轮数")
+    parser.add_argument("--epochs", type=int, default=2, help="训练轮数")
     parser.add_argument("--batch_size", type=int, default=32, help="批次大小")
-    parser.add_argument("--learning_rate", type=float, default=5e-4, help="学习率")
+    parser.add_argument("--learning_rate", type=float, default=2e-4, help="学习率")
     parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu", help="训练设备")
     parser.add_argument("--dtype", type=str, default="bfloat16", help="数据类型")
     parser.add_argument(
@@ -259,9 +262,9 @@ if __name__ == "__main__":
     parser.add_argument("--wandb_project", type=str, default="MiniMind-Pretrain", help="wandb 项目名称")
     parser.add_argument("--num_workers", type=int, default=1, help="数据加载器工作进程数")
     parser.add_argument("--ddp", action="store_true", help="是否启用分布式训练")
-    parser.add_argument("--accumulation_steps", type=int, default=8, help="梯度累积步数")
+    parser.add_argument("--accumulation_steps", type=int, default=1, help="梯度累积步数")
     parser.add_argument("--grad_clip", type=float, default=1.0, help="梯度裁剪阈值")
-    parser.add_argument("--warmup_iters", type=int, default=0, help="学习率预热步数")
+    parser.add_argument("--warmup_iters", type=int, default=2000, help="学习率预热步数")
     parser.add_argument("--log_interval", type=int, default=100, help="日志打印间隔")
     parser.add_argument("--save_interval", type=int, default=100, help="模型保存间隔")
     parser.add_argument("--save_total_limit", type=int, default=5, help="最多保留的checkpoint数量（包含最新）")
