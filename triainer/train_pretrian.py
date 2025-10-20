@@ -310,7 +310,12 @@ if __name__ == "__main__":
     if args.use_wandb and (not ddp or dist.get_rank() == 0):
         import wandb
 
-        wandb.init(project=args.wandb_project, name=args.wandb_run_name)
+        # 使用非交互式模式初始化，避免分布式训练时卡住
+        wandb.init(
+            project=args.wandb_project,
+            name=args.wandb_run_name,
+            settings=wandb.Settings(start_method="thread")
+        )
 
     else:
         wandb = None
