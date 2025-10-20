@@ -18,13 +18,9 @@ from torch import nn, optim
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader, DistributedSampler
 from transformers import AutoTokenizer
+from dotenv import load_dotenv
 
-# 可选加载 .env 文件中的环境变量
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass  # 在 Kaggle 等环境中，环境变量可能已直接配置
+load_dotenv()
 
 warnings.filterwarnings("ignore")
 
