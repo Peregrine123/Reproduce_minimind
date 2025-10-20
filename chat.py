@@ -104,15 +104,25 @@ def format_chat_prompt(messages, tokenizer):
     return prompt
 
 
-def generate_response(model, tokenizer, messages, max_new_tokens=256, temperature=0.7, top_p=0.9, top_k=50, device='cuda'):
+def generate_response(model, tokenizer, messages, max_new_tokens=256, temperature=0.7, top_p=0.9, top_k=50, device='cuda', debug=False):
     """生成回复 - 手动实现生成逻辑以避免兼容性问题"""
 
     # 格式化输入
     prompt = format_chat_prompt(messages, tokenizer)
 
+    if debug:
+        print(f"\n[DEBUG] Prompt: {prompt[:200]}...")
+        print(f"[DEBUG] Vocab size: {len(tokenizer)}")
+        print(f"[DEBUG] EOS token: {tokenizer.eos_token} (ID: {tokenizer.eos_token_id})")
+        print(f"[DEBUG] BOS token: {tokenizer.bos_token} (ID: {tokenizer.bos_token_id})")
+
     # Tokenize
     inputs = tokenizer(prompt, return_tensors='pt')
     input_ids = inputs['input_ids'].to(device)
+
+    if debug:
+        print(f"[DEBUG] Input IDs shape: {input_ids.shape}")
+        print(f"[DEBUG] Input IDs range: [{input_ids.min().item()}, {input_ids.max().item()}]")
 
     # 手动生成
     generated_tokens = []
@@ -120,7 +130,7 @@ def generate_response(model, tokenizer, messages, max_new_tokens=256, temperatur
 
     model.eval()
     with torch.no_grad():
-        for _ in range(max_new_tokens):
+        for step in range(max_new_tokens):
             # Forward pass
             outputs = model(
                 input_ids=input_ids,
@@ -160,12 +170,25 @@ def generate_response(model, tokenizer, messages, max_new_tokens=256, temperatur
                 # Greedy decoding
                 next_token = torch.argmax(next_token_logits, dim=-1, keepdim=True)
 
+            next_token_id = next_token.item()
+
+            if debug and step < 10:  # 只显示前10个 token
+                token_str = tokenizer.decode([next_token_id], skip_special_tokens=False)
+                print(f"[DEBUG] Step {step}: Token ID {next_token_id} -> '{token_str}'")
+
+            # 检查 token ID 是否在有效范围内
+            if next_token_id >= len(tokenizer):
+                print(f"\n⚠️  警告：生成的 token ID {next_token_id} 超出词汇表范围 [0, {len(tokenizer)-1}]")
+                break
+
             # 检查是否生成了结束 token
-            if next_token.item() == tokenizer.eos_token_id:
+            if next_token_id == tokenizer.eos_token_id:
+                if debug:
+                    print(f"[DEBUG] EOS token generated at step {step}")
                 break
 
             # 添加到生成的 token 列表
-            generated_tokens.append(next_token.item())
+            generated_tokens.append(next_token_id)
 
             # 准备下一轮输入
             input_ids = next_token
@@ -173,13 +196,17 @@ def generate_response(model, tokenizer, messages, max_new_tokens=256, temperatur
 
     # 解码生成的 token
     if generated_tokens:
+        if debug:
+            print(f"\n[DEBUG] Generated {len(generated_tokens)} tokens")
+            print(f"[DEBUG] Token IDs: {generated_tokens[:20]}...")
+
         response = tokenizer.decode(generated_tokens, skip_special_tokens=True)
         return response.strip()
     else:
         return ""
 
 
-def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temperature=0.7, top_p=0.9, top_k=50):
+def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temperature=0.7, top_p=0.9, top_k=50, debug=False):
     """交互式对话循环"""
 
     print("\n" + "="*60)
@@ -188,6 +215,7 @@ def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temper
     print("\n命令：")
     print("  - 输入消息开始对话")
     print("  - 输入 'clear' 清空对话历史")
+    print("  - 输入 'debug' 切换调试模式")
     print("  - 输入 'exit' 或 'quit' 退出")
     print("  - 输入 'params' 查看/修改生成参数")
     print("\n生成参数：")
@@ -195,6 +223,7 @@ def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temper
     print(f"  - temperature: {temperature}")
     print(f"  - top_p: {top_p}")
     print(f"  - top_k: {top_k}")
+    print(f"  - debug: {'✅ 启用' if debug else '❌ 禁用'}")
     print("="*60 + "\n")
 
     # 对话历史
@@ -218,12 +247,18 @@ def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temper
                 print("🗑️  对话历史已清空\n")
                 continue
 
+            elif user_input.lower() == 'debug':
+                debug = not debug
+                print(f"🐛 调试模式已{'启用' if debug else '禁用'}\n")
+                continue
+
             elif user_input.lower() == 'params':
                 print("\n当前生成参数：")
                 print(f"  max_new_tokens: {max_new_tokens}")
                 print(f"  temperature: {temperature}")
                 print(f"  top_p: {top_p}")
                 print(f"  top_k: {top_k}")
+                print(f"  debug: {'✅ 启用' if debug else '❌ 禁用'}")
 
                 modify = input("\n是否修改参数？(y/n): ").strip().lower()
                 if modify == 'y':
@@ -250,7 +285,8 @@ def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temper
                 temperature=temperature,
                 top_p=top_p,
                 top_k=top_k,
-                device=device
+                device=device,
+                debug=debug
             )
             print(response + "\n")
 
@@ -262,6 +298,9 @@ def interactive_chat(model, tokenizer, device='cuda', max_new_tokens=256, temper
             break
         except Exception as e:
             print(f"\n❌ 生成失败: {e}\n")
+            import traceback
+            if debug:
+                traceback.print_exc()
             # 移除失败的消息
             if messages and messages[-1]["role"] == "user":
                 messages.pop()
@@ -293,6 +332,8 @@ def main():
     # 设备参数
     parser.add_argument('--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu',
                         help='运行设备')
+    parser.add_argument('--debug', action='store_true',
+                        help='启用调试模式，显示详细的生成信息')
 
     args = parser.parse_args()
 
@@ -325,7 +366,8 @@ def main():
         max_new_tokens=args.max_new_tokens,
         temperature=args.temperature,
         top_p=args.top_p,
-        top_k=args.top_k
+        top_k=args.top_k,
+        debug=args.debug
     )
 
 
