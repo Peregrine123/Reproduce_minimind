@@ -36,8 +36,8 @@ def main():
 
     # 通用参数
     parser.add_argument("--out_dir", type=str, default="./out", help="输出目录")
-    parser.add_argument("--epochs", type=int, default=5, help="训练轮数 (推荐预训练5轮，SFT 2-3轮)")
-    parser.add_argument("--batch_size", type=int, default=32, help="批次大小 (T4 x2 推荐32)")
+    parser.add_argument("--epochs", type=int, default=2, help="训练轮数 (推荐预训练5轮，SFT 2-3轮)")
+    parser.add_argument("--batch_size", type=int, default=40, help="批次大小 (T4 x2 推荐32)")
     parser.add_argument("--learning_rate", type=float, default=2e-4, help="学习率 (预训练2e-4, SFT 5e-5)")
     parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu", help="训练设备")
     parser.add_argument("--dtype", type=str, default="bfloat16", help="数据类型")
