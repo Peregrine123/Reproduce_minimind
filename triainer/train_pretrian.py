@@ -111,7 +111,10 @@ def train_epoch(epoch, wandb):
 
 
 def init_model(lm_config):
-    tokenizer = AutoTokenizer.from_pretrained("../model/")
+    # 使用绝对路径以支持分布式训练
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(script_dir, "..", "model")
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = MiniMindForCausalLM(lm_config).to(args.device)
     Logger(
         f"LLM可训练总参数量：{sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6:.3f} 百万"
@@ -160,6 +163,13 @@ if __name__ == "__main__":
     parser.add_argument("--use_moe", default=True, type=bool)
     parser.add_argument("--data_path", type=str, default="../dataset/pretrain_hq.jsonl")
     args = parser.parse_args()
+
+    # 将相对路径转换为绝对路径，以支持分布式训练
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if not os.path.isabs(args.data_path):
+        args.data_path = os.path.join(script_dir, args.data_path)
+    if not os.path.isabs(args.out_dir):
+        args.out_dir = os.path.join(script_dir, args.out_dir)
 
     lm_config = MiniMindConfig(
         hidden_size=args.hidden_size,
