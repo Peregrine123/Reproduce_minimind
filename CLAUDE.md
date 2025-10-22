@@ -27,6 +27,43 @@ uv sync
 source .venv/bin/activate
 ```
 
+### WandB 配置
+
+项目使用 WandB 进行训练日志记录。所有训练脚本会自动从根目录的 `.env` 文件读取配置，**无需交互式登录**。
+
+**配置步骤**：
+
+1. 复制 `.env.example` 为 `.env`：
+   ```bash
+   cp .env.example .env
+   ```
+
+2. 编辑 `.env` 文件，填入你的 WandB API Key：
+   ```bash
+   # WandB Configuration
+   WANDB_API_KEY=your_wandb_api_key_here
+
+   # 禁用 WandB 交互式模式（避免训练时需要手动输入）
+   WANDB_MODE=offline  # 可选值: online, offline, disabled
+   # WANDB_MODE=online  # 如需在线同步，请取消注释此行并注释上一行
+   ```
+
+3. （可选）配置其他 WandB 选项：
+   - `WANDB_PROJECT`: 指定项目名称（默认由训练脚本决定）
+   - `WANDB_ENTITY`: 指定团队名称
+   - `WANDB_DIR`: 指定 wandb 文件存储目录
+   - `WANDB_SILENT=true`: 静默模式，减少日志输出
+
+**模式说明**：
+- `online`: 实时同步到 WandB 云端（需要网络）
+- `offline`: 本地记录日志，可稍后使用 `wandb sync` 上传
+- `disabled`: 完全禁用 WandB
+
+**注意**：所有训练脚本（`train_pretrian.py`, `train_full_sft.py` 等）已配置为：
+- 自动从 `.env` 加载环境变量（使用 `python-dotenv`）
+- 使用非交互式模式初始化 WandB（`settings=wandb.Settings(start_method="thread")`）
+- 仅在主进程（DDP rank 0）记录日志
+
 ## Training Workflow
 
 ### 优化后的推荐配置（针对 T4 x 2）
