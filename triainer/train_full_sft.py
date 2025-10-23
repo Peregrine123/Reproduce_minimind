@@ -222,16 +222,22 @@ if __name__ == "__main__":
 
     Logger("[DEBUG] 创建 DataLoader...")
     train_sampler = DistributedSampler(train_ds) if ddp else None
+
+    # 在 DDP 模式下，num_workers > 0 可能导致死锁，强制设为 0
+    num_workers = 0 if ddp else args.num_workers
+    if ddp and args.num_workers > 0:
+        Logger(f"[WARNING] DDP 模式下，将 num_workers 从 {args.num_workers} 设为 0 以避免死锁")
+
     train_loader = DataLoader(
         train_ds,
         batch_size=args.batch_size,
         pin_memory=True,
         drop_last=False,
         shuffle=False,
-        num_workers=args.num_workers,
+        num_workers=num_workers,
         sampler=train_sampler,
     )
-    Logger(f"[DEBUG] DataLoader 创建完成，batch 数量: {len(train_loader)}")
+    Logger(f"[DEBUG] DataLoader 创建完成，batch 数量: {len(train_loader)}, num_workers={num_workers}")
 
     Logger("[DEBUG] 创建 GradScaler...")
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype in ["float16", "bfloat16"]))
