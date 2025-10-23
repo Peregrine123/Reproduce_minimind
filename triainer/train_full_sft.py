@@ -38,9 +38,17 @@ def train_epoch(epoch, wandb):
     loss_fct = nn.CrossEntropyLoss(reduction="none")
     start_time = time.time()
     for step, (X, Y, loss_mask) in enumerate(train_loader):
+        # 第一个 batch 输出日志
+        if step == 0:
+            Logger(f"开始处理第一个 batch... (batch_size={X.shape[0]}, seq_len={X.shape[1]})")
+
         X = X.to(args.device)
         Y = Y.to(args.device)
         loss_mask = loss_mask.to(args.device)
+
+        # 第一个 batch 的数据迁移完成
+        if step == 0:
+            Logger("数据已迁移到 GPU，开始前向传播...")
         lr = get_lr(
             epoch * iter_per_epoch + step,
             args.epochs * iter_per_epoch,
@@ -51,6 +59,10 @@ def train_epoch(epoch, wandb):
 
         with ctx:
             res = model(X)
+            # 第一个 batch 的前向传播完成
+            if step == 0:
+                Logger(f"前向传播完成，开始计算损失... (logits shape: {res.logits.shape})")
+
             loss = loss_fct(res.logits.view(-1, res.logits.size(-1)), Y.view(-1)).view(
                 Y.size()
             )
@@ -59,7 +71,15 @@ def train_epoch(epoch, wandb):
             loss += res.aux_loss
             loss = loss / args.accumulation_steps
 
+            # 第一个 batch 的损失计算完成
+            if step == 0:
+                Logger(f"损失计算完成，loss={loss.item() * args.accumulation_steps:.4f}，开始反向传播...")
+
         scaler.scale(loss).backward()
+
+        # 第一个 batch 的反向传播完成
+        if step == 0:
+            Logger("反向传播完成！")
 
         if (step + 1) % args.accumulation_steps == 0:
             scaler.unscale_(optimizer)
@@ -156,7 +176,7 @@ if __name__ == "__main__":
     parser.add_argument("--accumulation_steps", type=int, default=1)
     parser.add_argument("--grad_clip", type=float, default=1.0)
     parser.add_argument("--warmup_iters", type=int, default=0)
-    parser.add_argument("--log_interval", type=int, default=100)
+    parser.add_argument("--log_interval", type=int, default=10)
     parser.add_argument("--save_interval", type=int, default=100)
     parser.add_argument("--local_rank", type=int, default=-1)
     parser.add_argument("--hidden_size", default=512, type=int)
