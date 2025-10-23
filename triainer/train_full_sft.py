@@ -253,6 +253,37 @@ if __name__ == "__main__":
 
     iter_per_epoch = len(train_loader)
     Logger(f"[DEBUG] 开始训练，共 {args.epochs} 个 epoch，每个 epoch {iter_per_epoch} 步")
+
+    # 在 DDP 模式下，确保所有进程同步
+    if ddp:
+        Logger(f"[DEBUG] Rank {dist.get_rank()}: 进程就绪，准备同步")
+        dist.barrier()
+        Logger(f"[DEBUG] Rank {dist.get_rank()}: 同步完成")
+
+    # 测试 DataLoader 是否能正常迭代
+    Logger("[DEBUG] 测试 DataLoader 迭代...")
+    if ddp:
+        print(f"[DEBUG] Rank {dist.get_rank()}: 开始测试 DataLoader 迭代", flush=True)
+
+    try:
+        test_iter = iter(train_loader)
+        if ddp:
+            print(f"[DEBUG] Rank {dist.get_rank()}: 创建迭代器成功", flush=True)
+        Logger("[DEBUG] 创建迭代器成功，尝试获取第一个 batch...")
+
+        first_batch = next(test_iter)
+        if ddp:
+            print(f"[DEBUG] Rank {dist.get_rank()}: 成功获取第一个 batch", flush=True)
+        Logger(f"[DEBUG] 成功获取第一个 batch，数据形状: {[x.shape if hasattr(x, 'shape') else len(x) for x in first_batch]}")
+        del test_iter, first_batch
+        Logger("[DEBUG] DataLoader 测试完成，开始正式训练")
+    except Exception as e:
+        if ddp:
+            print(f"[ERROR] Rank {dist.get_rank()}: DataLoader 迭代失败: {e}", flush=True)
+        Logger(f"[ERROR] DataLoader 迭代失败: {e}")
+        import traceback
+        Logger(traceback.format_exc())
+
     for epoch in range(args.epochs):
         Logger(f"[DEBUG] 开始第 {epoch + 1}/{args.epochs} 个 epoch")
         train_epoch(epoch, wandb)
