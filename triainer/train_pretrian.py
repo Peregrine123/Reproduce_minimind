@@ -34,6 +34,10 @@ def get_lr(current_step, total_steps, lr):
 
 
 def train_epoch(epoch, wandb):
+    # DDP: 在每个 epoch 开始时设置 sampler 的 epoch，确保数据打乱是确定性的
+    if ddp:
+        train_loader.sampler.set_epoch(epoch)
+
     loss_fct = nn.CrossEntropyLoss(reduction="none")
     start_time = time.time()
     for step, (X, Y, loss_mask) in enumerate(train_loader):

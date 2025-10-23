@@ -35,12 +35,22 @@ def Logger(content):
 
 
 def train_epoch(epoch, wandb):
+    # DDP: 在每个 epoch 开始时设置 sampler 的 epoch，确保数据打乱是确定性的
+    if ddp:
+        Logger(f"设置 DistributedSampler epoch = {epoch}")
+        train_loader.sampler.set_epoch(epoch)
+
     loss_fct = nn.CrossEntropyLoss(reduction="none")
     start_time = time.time()
+
+    Logger(f"train_epoch: 准备开始迭代 DataLoader...")
+    Logger(f"train_epoch: DataLoader 长度 = {len(train_loader)}")
+
     for step, (X, Y, loss_mask) in enumerate(train_loader):
         # 第一个 batch 输出日志
         if step == 0:
-            Logger(f"开始处理第一个 batch... (batch_size={X.shape[0]}, seq_len={X.shape[1]})")
+            Logger(f"成功获取第一个 batch！(batch_size={X.shape[0]}, seq_len={X.shape[1]})")
+            Logger(f"X device: {X.device}, args.device: {args.device}")
 
         X = X.to(args.device)
         Y = Y.to(args.device)
