@@ -1,32 +1,24 @@
-import argparse
-import math
 import os
 import sys
-import time
-import warnings
-from contextlib import nullcontext
 
 __package__ = "trainer"
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import argparse
+import time
+import math
+import warnings
 import torch
 import torch.distributed as dist
-from dataset.lm_dataset import SFTDataset
-from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
-from utils.reproducibility import set_seed
-from torch import nn, optim
+from contextlib import nullcontext
+from torch import optim, nn
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader, DistributedSampler
-from transformers import AutoTokenizer
-from dotenv import load_dotenv
-
-load_dotenv()
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from model.model_minimind import MiniMindConfig, MiniMindForCausalLM
+from dataset.lm_dataset import SFTDataset
 
 warnings.filterwarnings("ignore")
-
-
-def get_lr(current_step, total_step, lr):
-    return lr / 10 + 0.5 * lr * (1 + math.cos(math.pi * current_step / total_step))
 
 
 def Logger(content):
@@ -34,31 +26,17 @@ def Logger(content):
         print(content)
 
 
-def train_epoch(epoch, wandb):
-    # DDP: 在每个 epoch 开始时设置 sampler 的 epoch，确保数据打乱是确定性的
-    if ddp:
-        Logger(f"设置 DistributedSampler epoch = {epoch}")
-        train_loader.sampler.set_epoch(epoch)
+def get_lr(current_step, total_steps, lr):
+    return lr / 10 + 0.5 * lr * (1 + math.cos(math.pi * current_step / total_steps))
 
+
+def train_epoch(epoch, wandb):
     loss_fct = nn.CrossEntropyLoss(reduction="none")
     start_time = time.time()
-
-    Logger(f"train_epoch: 准备开始迭代 DataLoader...")
-    Logger(f"train_epoch: DataLoader 长度 = {len(train_loader)}")
-
     for step, (X, Y, loss_mask) in enumerate(train_loader):
-        # 第一个 batch 输出日志
-        if step == 0:
-            Logger(f"成功获取第一个 batch！(batch_size={X.shape[0]}, seq_len={X.shape[1]})")
-            Logger(f"X device: {X.device}, args.device: {args.device}")
-
         X = X.to(args.device)
         Y = Y.to(args.device)
         loss_mask = loss_mask.to(args.device)
-
-        # 第一个 batch 的数据迁移完成
-        if step == 0:
-            Logger("数据已迁移到 GPU，开始前向传播...")
         lr = get_lr(
             epoch * iter_per_epoch + step,
             args.epochs * iter_per_epoch,
@@ -69,10 +47,6 @@ def train_epoch(epoch, wandb):
 
         with ctx:
             res = model(X)
-            # 第一个 batch 的前向传播完成
-            if step == 0:
-                Logger(f"前向传播完成，开始计算损失... (logits shape: {res.logits.shape})")
-
             loss = loss_fct(res.logits.view(-1, res.logits.size(-1)), Y.view(-1)).view(
                 Y.size()
             )
@@ -81,15 +55,7 @@ def train_epoch(epoch, wandb):
             loss += res.aux_loss
             loss = loss / args.accumulation_steps
 
-            # 第一个 batch 的损失计算完成
-            if step == 0:
-                Logger(f"损失计算完成，loss={loss.item() * args.accumulation_steps:.4f}，开始反向传播...")
-
         scaler.scale(loss).backward()
-
-        # 第一个 batch 的反向传播完成
-        if step == 0:
-            Logger("反向传播完成！")
 
         if (step + 1) % args.accumulation_steps == 0:
             scaler.unscale_(optimizer)
@@ -123,6 +89,7 @@ def train_epoch(epoch, wandb):
                         - spend_time // 60,
                     }
                 )
+
         if ((step + 1) % args.save_interval == 0 or step == iter_per_epoch - 1) and (
             not ddp or dist.get_rank() == 0
         ):
@@ -133,16 +100,13 @@ def train_epoch(epoch, wandb):
                 state_dict = model.module.state_dict()
             else:
                 state_dict = model.state_dict()
-            state_dict = {k: v.half() for k, v in state_dict.items()}
+            state_dict = {k: v.half() for k, v in state_dict.items()}  # 半精度保存
             torch.save(state_dict, ckp)
             model.train()
 
 
 def init_model(lm_config):
-    # 使用绝对路径以支持分布式训练
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(script_dir, "..", "model")
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained("../model")
     model = MiniMindForCausalLM(lm_config)
     moe_path = "_moe" if lm_config.use_moe else ""
     ckp = f"{args.save_dir}/pretrain_{lm_config.hidden_size}{moe_path}.pth"
@@ -173,7 +137,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="MiniMind Full SFT")
     parser.add_argument("--out_dir", type=str, default="../out")
     parser.add_argument("--epochs", type=int, default=2)
-    parser.add_argument("--batch_size", type=int, default=16)
+    parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--learning_rate", type=float, default=5e-7)
     parser.add_argument(
         "--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu"
@@ -186,7 +150,7 @@ if __name__ == "__main__":
     parser.add_argument("--accumulation_steps", type=int, default=1)
     parser.add_argument("--grad_clip", type=float, default=1.0)
     parser.add_argument("--warmup_iters", type=int, default=0)
-    parser.add_argument("--log_interval", type=int, default=10)
+    parser.add_argument("--log_interval", type=int, default=100)
     parser.add_argument("--save_interval", type=int, default=100)
     parser.add_argument("--local_rank", type=int, default=-1)
     parser.add_argument("--hidden_size", default=512, type=int)
@@ -204,25 +168,16 @@ if __name__ == "__main__":
         num_hidden_layers=args.num_hidden_layers,
         use_moe=args.use_moe,
     )
-
-    # 使用绝对路径以支持分布式训练和 Kaggle 环境
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    if not os.path.isabs(args.data_path):
-        args.data_path = os.path.join(script_dir, args.data_path)
-    if not os.path.isabs(args.out_dir):
-        args.out_dir = os.path.join(script_dir, args.out_dir)
-
     args.save_dir = os.path.join(args.out_dir)
     os.makedirs(args.save_dir, exist_ok=True)
     os.makedirs(args.out_dir, exist_ok=True)
-
     tokens_per_iter = args.batch_size * args.max_seq_len
     device_type = "cuda" if "cuda" in args.device else "cpu"
 
     args.wandb_run_name = f"MiniMind-Full-SFT-Epoch-{args.epochs}-BatchSize-{args.batch_size}-LearningRate-{args.learning_rate}"
 
     ctx = nullcontext() if device_type == "cpu" else torch.cuda.amp.autocast()
-    ddp = int(os.environ.get("RANK", -1)) != -1
+    ddp = int(os.environ.get("RANK", -1)) != -1  # is this a ddp run?
     ddp_local_rank, DEVICE = 0, "cuda:0"
     base_seed = 1337
     torch.manual_seed(base_seed)
@@ -237,29 +192,15 @@ if __name__ == "__main__":
         torch.cuda.manual_seed(base_seed + rank)
 
     if args.use_wandb and (not ddp or ddp_local_rank == 0):
-        import wandb
+        import swanlab as wandb
 
-        # 使用非交互式模式初始化，避免分布式训练时卡住
-        wandb.init(
-            project=args.wandb_project,
-            name=args.wandb_run_name,
-            settings=wandb.Settings(start_method="thread"),
-        )
+        wandb.init(project=args.wandb_project, name=args.wandb_run_name)
     else:
         wandb = None
 
-    Logger("=" * 50)
-    Logger("开始初始化模型...")
     model, tokenizer = init_model(lm_config)
-    Logger("模型初始化完成！")
 
-    Logger("=" * 50)
-    Logger(f"开始加载数据集: {args.data_path}")
     train_ds = SFTDataset(args.data_path, tokenizer, max_length=args.max_seq_len)
-    Logger(f"数据集加载完成，共 {len(train_ds)} 条数据")
-
-    Logger("=" * 50)
-    Logger("创建 DataLoader...")
     train_sampler = DistributedSampler(train_ds) if ddp else None
     train_loader = DataLoader(
         train_ds,
@@ -267,29 +208,17 @@ if __name__ == "__main__":
         pin_memory=True,
         drop_last=False,
         shuffle=False,
-        num_workers=0,  # 修改为 0 以避免多进程死锁
+        num_workers=args.num_workers,
         sampler=train_sampler,
     )
-    Logger(f"DataLoader 创建完成，每个 epoch {len(train_loader)} 个 batch")
 
-    Logger("=" * 50)
-    Logger("初始化优化器和梯度缩放器...")
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype in ["float16", "bfloat16"]))
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
-    Logger("优化器初始化完成！")
 
     if ddp:
-        Logger("=" * 50)
-        Logger("初始化分布式训练...")
         model._ddp_params_and_buffers_to_ignore = {"pos_cis"}
         model = DistributedDataParallel(model, device_ids=[ddp_local_rank])
-        Logger("分布式训练初始化完成！")
 
-    Logger("=" * 50)
-    Logger("开始训练循环...")
     iter_per_epoch = len(train_loader)
     for epoch in range(args.epochs):
-        Logger(f"\n{'='*50}")
-        Logger(f"Epoch {epoch + 1}/{args.epochs} 开始")
-        Logger(f"{'='*50}")
         train_epoch(epoch, wandb)
