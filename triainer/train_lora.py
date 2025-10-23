@@ -56,7 +56,7 @@ def train_epoch(epoch, wandb):
 
             optimizer.zero_grad(set_to_none=True)
 
-        if step % args.log_interval == 0:
+        if step % args.log_interval == 0 or step == iter_per_epoch - 1:
             spend_time = time.time() - start_time
             Logger(
                 'Epoch:[{}/{}]({}/{}) loss:{:.3f} lr:{:.12f} epoch_Time:{}min:'.format(
@@ -73,11 +73,11 @@ def train_epoch(epoch, wandb):
                            "lr": optimizer.param_groups[-1]['lr'],
                            "epoch_Time": spend_time / (step + 1) * iter_per_epoch // 60 - spend_time // 60})
          
-        if (step + 1) % args.save_interval == 0 and (not ddp or dist.get_rank() == 0):
+        if ((step + 1) % args.save_interval == 0 or step == iter_per_epoch - 1) and (not ddp or dist.get_rank() == 0):
             model.eval()
             lora_save_path = f'{args.save_dir}/lora/{args.lora_name}_{lm_config.hidden_size}.pth'
             os.makedirs(os.path.dirname(lora_save_path), exist_ok=True)
-            # [区别1]只保存lora权重即可
+            # 【区别1】只保存lora权重即可
             save_lora(model, lora_save_path)
             model.train()
 def init_model(lm_config):
@@ -103,7 +103,7 @@ def init_distributed_mode():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="MiniMind SFT with LoRA")
     parser.add_argument("--out_dir", type=str, default="../out")
-    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--learning_rate", type=float, default=1e-4)
     parser.add_argument("--device", type=str, default="cuda:0" if torch.cuda.is_available() else "cpu")
@@ -115,15 +115,15 @@ if __name__ == "__main__":
     parser.add_argument("--accumulation_steps", type=int, default=1)
     parser.add_argument("--grad_clip", type=float, default=1.0)
     parser.add_argument("--warmup_iters", type=int, default=0)
-    parser.add_argument("--log_interval", type=int, default=100)
-    parser.add_argument("--save_interval", type=int, default=100)
+    parser.add_argument("--log_interval", type=int, default=10)
+    parser.add_argument("--save_interval", type=int, default=1)
     parser.add_argument('--local_rank', type=int, default=-1)
     parser.add_argument('--hidden_size', default=512, type=int)
     parser.add_argument('--num_hidden_layers', default=8, type=int)
     parser.add_argument('--max_seq_len', default=512, type=int)
-    parser.add_argument('--use_moe', action="store_true", default=True, help="是否使用混合专家模型（默认启用）")
-    parser.add_argument("--data_path", type=str, default="../dataset/lora_medical.jsonl")
-    parser.add_argument("--lora_name", type=str, default="lora_medical", help="根据任务保存成lora_(英文/医学/心理...)")
+    parser.add_argument('--use_moe', default=False, type=bool)
+    parser.add_argument("--data_path", type=str, default="../dataset/lora_identity.jsonl")
+    parser.add_argument("--lora_name", type=str, default="lora_identity", help="根据任务保存成lora_(英文/医学/心理...)")
     args = parser.parse_args()
 
     lm_config = MiniMindConfig(hidden_size=args.hidden_size, num_hidden_layers=args.num_hidden_layers,
@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     args.wandb_run_name = f"MiniMind-Lora-SFT-Epoch-{args.epochs}-BatchSize-{args.batch_size}-LearningRate-{args.learning_rate}"
     if args.use_wandb and (not ddp or ddp_local_rank == 0):
-        import wandb
+        import swanlab as wandb
 
         wandb.init(project=args.wandb_project, name=args.wandb_run_name)
     else:

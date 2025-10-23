@@ -59,23 +59,23 @@ def train_epoch(epoch, wandb):
         y_rejected = batch['y_rejected'].to(args.device)
         mask_chosen = batch['mask_chosen'].to(args.device)
         mask_rejected = batch['mask_rejected'].to(args.device)
-        x = torch.cat([x_chosen, x_reject], dim=0)
+        x = torch.cat([x_chosen, x_rejected], dim=0)
         y = torch.cat([y_chosen, y_rejected], dim=0)
-        mask = torch.cat([mask_chosen, mask_reject], dim=0)
+        mask = torch.cat([mask_chosen, mask_rejected], dim=0)
 
         lr = get_lr(epoch * iter_per_epoch + step, args.epochs * iter_per_epoch, args.learning_rate)
-        for param_group in otimizer.param_groups:
+        for param_group in optimizer.param_groups:
             param_group['lr'] = lr
 
         with ctx:
-            with torchno_grad():
+            with torch.no_grad():
                 ref_outputs = ref_model(x)
-                ref_logits = res_outputs.logits
+                ref_logits = ref_outputs.logits
             ref_probs = logits_to_probs(ref_logits, y)
             ref_probs = ref_probs * mask
-            output = model(x)
-            logits = output.logits
-            probs = logits_to_probs(ref_logits, y)
+            outputs = model(x)
+            logits = outputs.logits
+            probs = logits_to_probs(logits, y)
             probs = probs * mask
             loss = dpo_loss(ref_probs, probs, mask, beta=0.1)
             loss = loss / args.accumulation_steps
@@ -89,7 +89,7 @@ def train_epoch(epoch, wandb):
             scaler.update()
             optimizer.zero_grad(set_to_none=True)
 
-        if step % args.log_interval == 0:
+        if step % args.log_interval == 0 or step == iter_per_epoch - 1:
             spend_time = time.time() - start_time
             Logger(
                 'Epoch:[{}/{}]({}/{}) loss:{:.3f} lr:{:.12f} epoch_Time:{}min:'.format(
@@ -106,7 +106,7 @@ def train_epoch(epoch, wandb):
                            "lr": optimizer.param_groups[-1]['lr'],
                            "epoch_Time": spend_time / (step + 1) * iter_per_epoch // 60 - spend_time // 60})
 
-        if (step + 1) % args.save_interval == 0 and (not ddp or dist.get_rank() == 0):
+        if ((step + 1) % args.save_interval == 0 or step == iter_per_epoch - 1) and (not ddp or dist.get_rank() == 0):
             model.eval()
             moe_path = '_moe' if lm_config.use_moe else ''
             ckp = f'{args.save_dir}/rlhf_{lm_config.hidden_size}{moe_path}.pth'
@@ -203,14 +203,9 @@ if __name__ == "__main__":
         torch.cuda.manual_seed(base_seed + rank)
 
     if args.use_wandb and (not ddp or ddp_local_rank == 0):
-        import wandb
+        import swanlab as wandb
 
-        # 使用非交互式模式初始化，避免分布式训练时卡住
-        wandb.init(
-            project=args.wandb_project,
-            name=args.wandb_run_name,
-            settings=wandb.Settings(start_method="thread")
-        )
+        wandb.init(project=args.wandb_project, name=args.wandb_run_name)
     else:
         wandb = None
 
