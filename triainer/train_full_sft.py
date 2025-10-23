@@ -218,9 +218,18 @@ if __name__ == "__main__":
     else:
         wandb = None
 
+    Logger("=" * 50)
+    Logger("开始初始化模型...")
     model, tokenizer = init_model(lm_config)
+    Logger("模型初始化完成！")
 
+    Logger("=" * 50)
+    Logger(f"开始加载数据集: {args.data_path}")
     train_ds = SFTDataset(args.data_path, tokenizer, max_length=args.max_seq_len)
+    Logger(f"数据集加载完成，共 {len(train_ds)} 条数据")
+
+    Logger("=" * 50)
+    Logger("创建 DataLoader...")
     train_sampler = DistributedSampler(train_ds) if ddp else None
     train_loader = DataLoader(
         train_ds,
@@ -228,17 +237,29 @@ if __name__ == "__main__":
         pin_memory=True,
         drop_last=False,
         shuffle=False,
-        num_workers=args.num_workers,
+        num_workers=0,  # 修改为 0 以避免多进程死锁
         sampler=train_sampler,
     )
+    Logger(f"DataLoader 创建完成，每个 epoch {len(train_loader)} 个 batch")
 
+    Logger("=" * 50)
+    Logger("初始化优化器和梯度缩放器...")
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype in ["float16", "bfloat16"]))
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
+    Logger("优化器初始化完成！")
 
     if ddp:
+        Logger("=" * 50)
+        Logger("初始化分布式训练...")
         model._ddp_params_and_buffers_to_ignore = {"pos_cis"}
         model = DistributedDataParallel(model, device_ids=[ddp_local_rank])
+        Logger("分布式训练初始化完成！")
 
+    Logger("=" * 50)
+    Logger("开始训练循环...")
     iter_per_epoch = len(train_loader)
     for epoch in range(args.epochs):
+        Logger(f"\n{'='*50}")
+        Logger(f"Epoch {epoch + 1}/{args.epochs} 开始")
+        Logger(f"{'='*50}")
         train_epoch(epoch, wandb)
