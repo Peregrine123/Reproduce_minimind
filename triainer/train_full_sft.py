@@ -106,7 +106,12 @@ def train_epoch(epoch, wandb):
 
 
 def init_model(lm_config):
-    tokenizer = AutoTokenizer.from_pretrained("../model")
+    # 获取项目根目录的绝对路径
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    model_dir = os.path.join(project_root, "model")
+
+    tokenizer = AutoTokenizer.from_pretrained(model_dir)
     model = MiniMindForCausalLM(lm_config)
     moe_path = "_moe" if lm_config.use_moe else ""
     ckp = f"{args.save_dir}/pretrain_{lm_config.hidden_size}{moe_path}.pth"
@@ -134,8 +139,12 @@ def init_distributed_mode():
 
 
 if __name__ == "__main__":
+    # 获取脚本所在目录和项目根目录
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+
     parser = argparse.ArgumentParser(description="MiniMind Full SFT")
-    parser.add_argument("--out_dir", type=str, default="../out")
+    parser.add_argument("--out_dir", type=str, default=os.path.join(project_root, "out"))
     parser.add_argument("--epochs", type=int, default=2)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--learning_rate", type=float, default=5e-7)
@@ -158,7 +167,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_seq_len", default=512, type=int)
     parser.add_argument("--use_moe", default=True, type=bool)
     parser.add_argument(
-        "--data_path", type=str, default="../dataset/sft_mini_512.jsonl"
+        "--data_path", type=str, default=os.path.join(project_root, "dataset", "sft_mini_512.jsonl")
     )
 
     args = parser.parse_args()
