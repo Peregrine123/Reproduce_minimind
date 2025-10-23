@@ -33,7 +33,10 @@ def get_lr(current_step, total_steps, lr):
 def train_epoch(epoch, wandb):
     loss_fct = nn.CrossEntropyLoss(reduction="none")
     start_time = time.time()
+    Logger(f"[DEBUG] train_epoch 开始，准备遍历 DataLoader")
     for step, (X, Y, loss_mask) in enumerate(train_loader):
+        if step == 0:
+            Logger(f"[DEBUG] 第一个 batch 数据加载成功，X.shape={X.shape}, Y.shape={Y.shape}")
         X = X.to(args.device)
         Y = Y.to(args.device)
         loss_mask = loss_mask.to(args.device)
@@ -200,16 +203,24 @@ if __name__ == "__main__":
         # 同时设置 CUDA 的随机种子
         torch.cuda.manual_seed(base_seed + rank)
 
+    Logger("[DEBUG] 开始初始化 WandB...")
     if args.use_wandb and (not ddp or ddp_local_rank == 0):
         import swanlab as wandb
 
         wandb.init(project=args.wandb_project, name=args.wandb_run_name)
     else:
         wandb = None
+    Logger("[DEBUG] WandB 初始化完成")
 
+    Logger("[DEBUG] 开始加载模型...")
     model, tokenizer = init_model(lm_config)
+    Logger("[DEBUG] 模型加载完成")
 
+    Logger("[DEBUG] 开始加载数据集...")
     train_ds = SFTDataset(args.data_path, tokenizer, max_length=args.max_seq_len)
+    Logger(f"[DEBUG] 数据集加载完成，共 {len(train_ds)} 条数据")
+
+    Logger("[DEBUG] 创建 DataLoader...")
     train_sampler = DistributedSampler(train_ds) if ddp else None
     train_loader = DataLoader(
         train_ds,
@@ -220,14 +231,23 @@ if __name__ == "__main__":
         num_workers=args.num_workers,
         sampler=train_sampler,
     )
+    Logger(f"[DEBUG] DataLoader 创建完成，batch 数量: {len(train_loader)}")
 
+    Logger("[DEBUG] 创建 GradScaler...")
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype in ["float16", "bfloat16"]))
+    Logger("[DEBUG] 创建 Optimizer...")
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
+    Logger("[DEBUG] Optimizer 创建完成")
 
     if ddp:
+        Logger("[DEBUG] 配置 DDP...")
         model._ddp_params_and_buffers_to_ignore = {"pos_cis"}
         model = DistributedDataParallel(model, device_ids=[ddp_local_rank])
+        Logger("[DEBUG] DDP 配置完成")
 
     iter_per_epoch = len(train_loader)
+    Logger(f"[DEBUG] 开始训练，共 {args.epochs} 个 epoch，每个 epoch {iter_per_epoch} 步")
     for epoch in range(args.epochs):
+        Logger(f"[DEBUG] 开始第 {epoch + 1}/{args.epochs} 个 epoch")
         train_epoch(epoch, wandb)
+        Logger(f"[DEBUG] 第 {epoch + 1}/{args.epochs} 个 epoch 完成")
