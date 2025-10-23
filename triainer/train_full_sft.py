@@ -162,7 +162,7 @@ if __name__ == "__main__":
     parser.add_argument("--hidden_size", default=512, type=int)
     parser.add_argument("--num_hidden_layers", default=8, type=int)
     parser.add_argument("--max_seq_len", default=512, type=int)
-    parser.add_argument("--use_moe", default=False, type=bool)
+    parser.add_argument("--use_moe", default=True, type=bool)
     parser.add_argument(
         "--data_path", type=str, default="../dataset/sft_mini_512.jsonl"
     )
@@ -174,6 +174,13 @@ if __name__ == "__main__":
         num_hidden_layers=args.num_hidden_layers,
         use_moe=args.use_moe,
     )
+
+    # 使用绝对路径以支持分布式训练和 Kaggle 环境
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if not os.path.isabs(args.data_path):
+        args.data_path = os.path.join(script_dir, args.data_path)
+    if not os.path.isabs(args.out_dir):
+        args.out_dir = os.path.join(script_dir, args.out_dir)
 
     args.save_dir = os.path.join(args.out_dir)
     os.makedirs(args.save_dir, exist_ok=True)
